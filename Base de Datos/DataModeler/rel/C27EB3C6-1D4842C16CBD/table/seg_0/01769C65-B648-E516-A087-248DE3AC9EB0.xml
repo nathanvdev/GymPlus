@@ -1,0 +1,87 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="01769C65-B648-E516-A087-248DE3AC9EB0" name="product">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>9B4151B9-0CA3-8760-E2BC-318675715B6B</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id" id="05B32F7C-B51A-A969-F4B5-D08DC9E0F8E7">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>60403853-1BB7-C538-C2E9-2B1DA1F5F769</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="name" id="5B01B96B-BF70-181C-C38C-262CEA66DB6B">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>02B29A9E-32D7-7878-1B97-9743836B838D</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>70</dataTypeSize>
+<ownDataTypeParameters>70,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="description" id="B06151C2-44A1-A239-6EDA-F2156486555B">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>85C1413E-EA98-74CB-5B93-5DEEB5B1B394</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>300</dataTypeSize>
+<ownDataTypeParameters>300,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="price" id="E2B8A103-4F95-7AAA-FBC1-4F67C4C521AD">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>03ED99D6-8A4B-24DD-8CB1-2C19F1746AFF</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT021</logicalDatatype>
+<dataTypePrecision>4</dataTypePrecision>
+<dataTypeScale>2</dataTypeScale>
+<ownDataTypeParameters>,4,2</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="stock" id="02912A42-D2A4-C887-F6C8-6F5B7308ABAF">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>78002BFC-D3D6-7473-1FE1-FFC15722B79B</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="4718E8AE-3A0C-70D1-90D8-45C988B2F935" name="product_PK">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>34F7DBEE-25FA-462A-BAF8-F77AEBF6AB43</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="05B32F7C-B51A-A969-F4B5-D08DC9E0F8E7"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

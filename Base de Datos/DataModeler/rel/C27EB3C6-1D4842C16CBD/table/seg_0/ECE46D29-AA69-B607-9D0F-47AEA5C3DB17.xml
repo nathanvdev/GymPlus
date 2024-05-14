@@ -1,0 +1,179 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="ECE46D29-AA69-B607-9D0F-47AEA5C3DB17" name="MemberAnthropometry">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>69C7CD2F-5FC5-9942-1630-DB228F255A9D</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="Id" id="933571B5-157B-0084-0811-127478F59D81">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>7DCBB274-C2C9-E28B-2CFE-26347F9155A4</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="MeasurementDate" id="FA740B9B-ECEB-677A-7239-CC764F3554F4">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>705374E1-FB6E-02FE-7E6A-39187668DDB0</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Height" id="2E872C39-546E-0EDC-B95C-1530DADEE69E">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>4964973D-329A-AC99-24C8-2CD2288FFCE4</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT021</logicalDatatype>
+<dataTypePrecision>3</dataTypePrecision>
+<dataTypeScale>3</dataTypeScale>
+<ownDataTypeParameters>,3,3</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Weight" id="A7A7E903-5A17-8778-76D6-20C9960E1DD6">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>7006A835-5A8D-AE43-8B14-354489410C3F</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT021</logicalDatatype>
+<dataTypePrecision>3</dataTypePrecision>
+<dataTypeScale>3</dataTypeScale>
+<ownDataTypeParameters>,3,3</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="BicepMeasurement" id="D17F5A74-0CD3-5FDE-EEA9-B72BB05C11F5">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>49F06699-3DE0-07EF-06E3-8E228245D5E4</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT021</logicalDatatype>
+<dataTypePrecision>3</dataTypePrecision>
+<dataTypeScale>3</dataTypeScale>
+<ownDataTypeParameters>,3,3</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="WaistMeasurement" id="2EF10C54-A9C4-4468-5150-B8F111DD407E">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>2F1C4BDC-8A38-ACCB-CB26-5698D20F9D13</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT021</logicalDatatype>
+<dataTypePrecision>3</dataTypePrecision>
+<dataTypeScale>3</dataTypeScale>
+<ownDataTypeParameters>,3,3</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="HipMeasurement" id="523646EC-4552-9D36-5719-6E2D6E65DBEA">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>8EEF710C-73D8-14CF-0DCB-A89382B65CD0</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT021</logicalDatatype>
+<dataTypePrecision>3</dataTypePrecision>
+<dataTypeScale>3</dataTypeScale>
+<ownDataTypeParameters>,3,3</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ChestMeasurement" id="B3E02B3B-0CB8-E743-0088-4C88F3F67AB7">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>73E9F567-FDFA-1980-B770-40115C2507A9</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT021</logicalDatatype>
+<dataTypePrecision>3</dataTypePrecision>
+<dataTypeScale>3</dataTypeScale>
+<ownDataTypeParameters>,3,3</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="ThighMeasurement" id="9C78DF04-8433-F845-D26F-881D0EAA07D0">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>32B21142-813D-95CF-14A4-7166201AC9EB</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT021</logicalDatatype>
+<dataTypePrecision>3</dataTypePrecision>
+<dataTypeScale>3</dataTypeScale>
+<ownDataTypeParameters>,3,3</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Notes" id="2E1E2583-5C37-CB09-8AD9-C10F49341C65">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>A179AA9A-4765-681B-775F-9C884577C8C2</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>300</dataTypeSize>
+<ownDataTypeParameters>300,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Member_Id" id="E9B4F386-EC44-ACF2-F684-AFBD270ECE12">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>602B9EE9-5ADF-3326-0042-8080D90757AA</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="D1F7AFA3-06E2-5BA7-3908-B2B719C22858" referredColumn="FE1EA4EA-9BAC-7C30-07D6-0AB3C5EBBD19"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="7FA4FEA9-F16C-813B-C228-75D609728FC5" name="MemberAnthropometry_PK">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>9E2C9D70-4E1A-FE4F-B85A-032CB705C2C1</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="933571B5-157B-0084-0811-127478F59D81"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="CE491B40-72FC-2819-742D-77B0765E3E20" name="MemberAnthropometry_Member_FK">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>57C82668-1BE3-73B2-1201-C67062D0A752</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="E9B4F386-EC44-ACF2-F684-AFBD270ECE12"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

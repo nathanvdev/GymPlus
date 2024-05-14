@@ -1,0 +1,117 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="3AB7DDE2-078C-2040-7153-6A0E9F7A76DF" name="Attendance">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:14:48 UTC</createdTime>
+<generatorID>2C128732-F8E4-2169-C604-D79ECA39B7BD</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<engineerTo>
+<item key="C27EB3C6-BA29-AFDE-A8A5-1D4842C16CBD" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="Id" id="858EE37A-92E5-948C-3545-A8AEEFDC9E95">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:14:48 UTC</createdTime>
+<generatorID>16A70C1E-6643-77B4-4966-ED853BD80BB0</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<engineerTo>
+<item key="C27EB3C6-BA29-AFDE-A8A5-1D4842C16CBD" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Datetime" id="CB74DACE-4C00-DBB4-CB71-6565B1E1D1C3">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:14:48 UTC</createdTime>
+<generatorID>08C84BA5-9079-7642-E3FA-007C758CA098</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<engineerTo>
+<item key="C27EB3C6-BA29-AFDE-A8A5-1D4842C16CBD" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Time In" id="5B137732-0753-BC01-E558-DE5A2863C8F2">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:14:48 UTC</createdTime>
+<generatorID>16B89965-944E-FFA7-1E51-857010341F46</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<engineerTo>
+<item key="C27EB3C6-BA29-AFDE-A8A5-1D4842C16CBD" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Time on" id="C0E5724D-C283-D6EA-C29A-B08312AA2704">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:14:48 UTC</createdTime>
+<generatorID>EA12DE71-2D6C-EA26-0103-AC0DF3BFB247</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<engineerTo>
+<item key="C27EB3C6-BA29-AFDE-A8A5-1D4842C16CBD" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Duration" id="89AA1F73-484F-C60B-844A-70C5AFC2A902">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:14:48 UTC</createdTime>
+<generatorID>7BF758F4-D4CA-98EB-5005-ADB2752A64F1</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<engineerTo>
+<item key="C27EB3C6-BA29-AFDE-A8A5-1D4842C16CBD" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT014</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="Member Id" id="77A5B356-D583-C4F0-9895-EC8380F6AC26">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:14:48 UTC</createdTime>
+<generatorID>6256469D-76E9-D108-6B3F-1F5C9EDEB34E</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<engineerTo>
+<item key="C27EB3C6-BA29-AFDE-A8A5-1D4842C16CBD" value="true"/>
+</engineerTo>
+<referedAttribute>2BDA196B-18A3-6978-560D-3FB25F90F750</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="CA667A58-6354-ADFF-1D1F-B556E2CF43BB" name="Attendance PK">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:14:48 UTC</createdTime>
+<generatorID>D4D15BDF-B7B6-7BF7-3359-942FB2C16009</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<engineerTo>
+<item key="C27EB3C6-BA29-AFDE-A8A5-1D4842C16CBD" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>858EE37A-92E5-948C-3545-A8AEEFDC9E95</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

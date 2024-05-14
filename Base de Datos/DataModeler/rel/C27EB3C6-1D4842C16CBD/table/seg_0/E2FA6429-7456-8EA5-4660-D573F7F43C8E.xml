@@ -1,0 +1,190 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="E2FA6429-7456-8EA5-4660-D573F7F43C8E" name="sale">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>726E3A97-F8A5-E7BB-4CA1-686DA86F7A86</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id" id="E08D362A-4ACB-642B-C3CC-9621A09DB9FE">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>96019D5A-E9FE-0901-1DB7-0FD5D91E18EE</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="date" id="F06DB958-D89A-7921-42AC-6CA6F2DA9FDD">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>DE5CA2C5-053B-D015-F399-8774D0FFEFD5</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="method" id="7896C3B4-6D2D-5859-F74F-FF00DF6764E5">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>187B1C81-54BB-2BE8-6410-251C794D660D</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>25</dataTypeSize>
+<ownDataTypeParameters>25,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="reference_payment" id="7A372650-BEC8-B515-7723-CCB55ED825E8">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>BCFA0F35-5519-9510-9B82-38B3C2D0E433</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="status" id="4E3755AF-AEF2-F549-57F2-C32AC5A94A0A">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>40C423E4-08D2-6E87-B8A8-A204F89341FC</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="amount" id="EC20AA0E-4552-3D5B-1175-45E8AB327911">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>D87ADEF7-9D60-30C8-9514-1F3BFF020BB5</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT021</logicalDatatype>
+<dataTypePrecision>4</dataTypePrecision>
+<dataTypeScale>2</dataTypeScale>
+<ownDataTypeParameters>,4,2</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="discount" id="EB22E0B1-BB4B-73E3-317E-88E17809928F">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>2D647472-44E0-DD83-A4C5-7AC76A2947BD</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT021</logicalDatatype>
+<dataTypePrecision>4</dataTypePrecision>
+<dataTypeScale>2</dataTypeScale>
+<ownDataTypeParameters>,4,2</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="discount_description" id="FA04D566-4678-31AC-6EF1-8DCEDDFBD890">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>0CBB84F0-C9E4-B9DB-5C96-C324404B0FF9</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>300</dataTypeSize>
+<ownDataTypeParameters>300,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="total" id="9081D41D-1BB7-5F41-7A0B-6DF11561F0EA">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>58F71B0B-18A5-7E3F-8D65-DCA8D766D573</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT021</logicalDatatype>
+<dataTypePrecision>4</dataTypePrecision>
+<dataTypeScale>2</dataTypeScale>
+<ownDataTypeParameters>,4,2</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Member_Id" id="2B9925BF-A9CD-F2B4-AEEF-5D050AA15FEF">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>D28CD90A-E535-253E-830C-812578517827</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="30B48D17-C0AD-DB45-E147-A7D44BBE9165" referredColumn="FE1EA4EA-9BAC-7C30-07D6-0AB3C5EBBD19"/>
+</associations>
+</Column>
+<Column name="Admin_Member_Id" id="ABF15BC9-ED00-BD75-DABF-9E3FB4310E7A">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>4452EA5F-9F8E-61CB-F623-D08774D6FF7A</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="05D022A5-9C86-8058-7F06-4DA68F0F9804" referredColumn="7E6B1D4E-5965-9825-E423-4399F8D1D421"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="97492CD4-756C-FED0-D1F0-37951FB37ED7" name="sale_PK">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>0FC7EB7C-E57D-144D-0B37-065E33378F88</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="E08D362A-4ACB-642B-C3CC-9621A09DB9FE"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="3795A14D-241D-D457-2EFA-F555CD4A338F" name="sale_Admin_FK">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>E72A2ED3-8E67-6CA2-E3D8-07E4D03FE27C</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="ABF15BC9-ED00-BD75-DABF-9E3FB4310E7A"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="593FC6D9-6985-2CDF-1557-C553031CCBE8" name="sale_Member_FK">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>57CFDC6C-B704-1D2B-7CE2-0815FF880CFA</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="2B9925BF-A9CD-F2B4-AEEF-5D050AA15FEF"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

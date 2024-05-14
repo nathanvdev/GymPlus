@@ -1,0 +1,110 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="1B383AD7-BB71-B061-51A5-494B4D9BCA80" name="Attendance">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>3AB7DDE2-078C-2040-7153-6A0E9F7A76DF</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="Id" id="F7157D7F-7D16-308B-9310-93D5677161FA">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>858EE37A-92E5-948C-3545-A8AEEFDC9E95</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Datetime" id="98F76B87-4099-8423-B9EF-0AA472901929">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>CB74DACE-4C00-DBB4-CB71-6565B1E1D1C3</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Time_In" id="BE7F68B4-F269-6CC0-4574-65BAD42A1F88">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>5B137732-0753-BC01-E558-DE5A2863C8F2</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Time_on" id="38A1739A-EB8E-5856-2A83-001809B48844">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>C0E5724D-C283-D6EA-C29A-B08312AA2704</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT008</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Duration" id="5420D416-423F-B383-73F6-CF49125FA9E4">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>89AA1F73-484F-C60B-844A-70C5AFC2A902</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT014</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="Member_Id" id="8C9EB0D9-5652-64C8-A442-0B57CDC0C33C">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>77A5B356-D583-C4F0-9895-EC8380F6AC26</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="A86585CE-3D7C-CA9F-E87C-E142E8D37578" referredColumn="FE1EA4EA-9BAC-7C30-07D6-0AB3C5EBBD19"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="B2F0D31C-6D78-D07D-0C32-0495AB7DCFA8" name="Attendance_PK">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>CA667A58-6354-ADFF-1D1F-B556E2CF43BB</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="F7157D7F-7D16-308B-9310-93D5677161FA"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="8244347B-1985-9C4B-A14F-4FDEECBAEB0D" name="Attendance_Member_FK">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:16:06 UTC</createdTime>
+<generatorID>6256469D-76E9-D108-6B3F-1F5C9EDEB34E</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="8C9EB0D9-5652-64C8-A442-0B57CDC0C33C"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

@@ -1,0 +1,20 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="MemberAnthropometry_Member_FK" directorySegmentName="seg_0" id="57C82668-1BE3-73B2-1201-C67062D0A752">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:14:48 UTC</createdTime>
+<generatorID>47E425E3-D130-5EF9-F44B-D44AE7CD4787</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<engineerTo>
+<item key="C27EB3C6-BA29-AFDE-A8A5-1D4842C16CBD" value="true"/>
+</engineerTo>
+<sourcePk>A5FCE7E3-BDE3-103F-F726-89D7861BA9BA</sourcePk>
+<identifying>false</identifying>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>177D2DC4-22E6-6212-5A8A-AAD8990EF8D7</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>69C7CD2F-5FC5-9942-1630-DB228F255A9D</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

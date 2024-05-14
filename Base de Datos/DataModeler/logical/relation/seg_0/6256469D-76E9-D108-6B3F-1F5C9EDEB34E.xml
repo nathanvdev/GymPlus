@@ -1,0 +1,20 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="Attendance_Member_FK" directorySegmentName="seg_0" id="6256469D-76E9-D108-6B3F-1F5C9EDEB34E">
+<createdBy>Nathan</createdBy>
+<createdTime>2024-05-11 22:14:48 UTC</createdTime>
+<generatorID>C409B7D6-5FCF-2AA7-DFDE-BBD8A824982E</generatorID>
+<ownerDesignName>DataModeler</ownerDesignName>
+<engineerTo>
+<item key="C27EB3C6-BA29-AFDE-A8A5-1D4842C16CBD" value="true"/>
+</engineerTo>
+<sourcePk>A5FCE7E3-BDE3-103F-F726-89D7861BA9BA</sourcePk>
+<identifying>false</identifying>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>177D2DC4-22E6-6212-5A8A-AAD8990EF8D7</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>3AB7DDE2-078C-2040-7153-6A0E9F7A76DF</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>
