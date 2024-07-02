@@ -38,6 +38,10 @@ dependencies:
   google_fonts: ^2.1.0  # Asegúrate de usar la última versión
   flutter_svg: ^2.0.9
   pluto_grid: ^8.0.0 
+  flutter_carousel_widget: 2.2.0
+  syncfusion_flutter_datagrid: 25.2.7
+  provider: 6.1.2
+  dio: 5.4.3
 
 dev_dependencies:
   flutter_test:

@@ -1,27 +1,29 @@
+create database gymplus;
+
+
 CREATE TABLE member (
     id INTEGER NOT NULL AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     phone_number BIGINT NOT NULL,
     email VARCHAR(60),
-    contact_preference VARCHAR(10) NOT NULL,
-    emergency_contact BIGINT,
+	date_of_birth DATE,
+    gender VARCHAR(2) NOT NULL,
+    emergency_contact_number BIGINT,
     emergency_contact_name VARCHAR(55),
     allergies VARCHAR(300),
     blood_type VARCHAR(8),
     next_payment DATE NOT NULL,
-    date_of_birth DATE,
-    gender VARCHAR(2) NOT NULL,
     membership_type VARCHAR(10) NOT NULL,
     membership_status BOOLEAN NOT NULL,
-    biometric VARCHAR(500),
-    mac_address VARCHAR(20),
-    inscription_date DATE NOT NULL,
+    last_visit datetime,
+    createdAt timestamp,
+    updatedAt timestamp,
     PRIMARY KEY (id)
 );
 
 
-CREATE TABLE admin (
+CREATE TABLE user (
     member_id INTEGER NOT NULL,
     username VARCHAR(20) NOT NULL,
     password VARCHAR(50) NOT NULL,
@@ -48,7 +50,7 @@ CREATE TABLE sale (
     FOREIGN KEY (costumer_id)
         REFERENCES member (id),
     FOREIGN KEY (seller_id)
-        REFERENCES admin (member_id)
+        REFERENCES user (member_id)
 );
 
 
@@ -77,10 +79,7 @@ CREATE TABLE cart_item (
 
 CREATE TABLE attendance (
     id INTEGER NOT NULL AUTO_INCREMENT,
-    datetime DATETIME NOT NULL,
     time_in DATETIME,
-    time_on DATETIME,
-    duration TIME,
     member_id INTEGER NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (member_id)
@@ -124,5 +123,5 @@ CREATE TABLE payment (
     FOREIGN KEY (member_id)
         REFERENCES member (id),
     FOREIGN KEY (admin_member_id)
-        REFERENCES admin (member_id)
+        REFERENCES user (member_id)
 );

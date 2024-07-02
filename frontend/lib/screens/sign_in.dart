@@ -1,39 +1,37 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:frontend/config/theme/app_theme.dart';
 import 'package:frontend/screens/panel.dart';
+import 'package:frontend/screens/providers/login_provider.dart';
+import 'package:frontend/screens/providers/member_table_provider.dart';
+import 'package:provider/provider.dart';
 
 class SignInPage2 extends StatelessWidget {
   const SignInPage2({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final bool isSmallScreen = MediaQuery.of(context).size.width < 731;
     return Scaffold(
+        persistentFooterButtons: [
+          Text('nathanvdev@gmail.com',
+              style: TextStyle(
+                  color: Theme.of(context).shadowColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold))
+        ],
         body: Center(
-            child: isSmallScreen
-                ? const Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _Logo(),
-                      SizedBox(
-                        height: 12,
-                      ),
-                      _FormContent(),
-                    ],
-                  )
-                : Container(
-                    padding: const EdgeInsets.all(32.0),
-                    constraints: const BoxConstraints(maxWidth: 1800),
-                    child: const Row(
-                      children: [
-                        Expanded(child: _Logo()),
-                        Expanded(
-                          child: Center(child: _FormContent()),
-                        ),
-                      ],
-                    ),
-                  )));
+            child: Container(
+          padding: const EdgeInsets.all(32.0),
+          constraints: const BoxConstraints(maxWidth: 1800),
+          child: const Row(
+            children: [
+              Expanded(child: _Logo()),
+              Expanded(
+                child: Center(child: _FormContent()),
+              ),
+            ],
+          ),
+        )));
   }
 }
 
@@ -42,15 +40,19 @@ class _Logo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Image.file(
-          File('lib/assets/logo.jpg'),
-          height: 200,
-          width: MediaQuery.of(context).size.width * 0.9,
-        ),
-      ],
+    return Container(
+      margin: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(7),
+      decoration: BoxDecoration(
+          color: Colors.black,
+          border:
+              Border.all(color: const Color.fromARGB(255, 0, 0, 0), width: 2),
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: buildShadowBox()),
+      child: Image.file(
+        File('lib/assets/logo.jpg'),
+        width: MediaQuery.of(context).size.width * 0.9,
+      ),
     );
   }
 }
@@ -69,8 +71,10 @@ class __FormContentState extends State<_FormContent> {
 
   @override
   Widget build(BuildContext context) {
-    String usuario = '';
-    String password = '';
+    final loginProvider = context.read<LoginProvider>();
+    final memberProvider = context.read<MemberTableProvider>();
+    late String usuario = "";
+    late String password = "";
 
     return Container(
       constraints: const BoxConstraints(maxWidth: 300),
@@ -104,6 +108,7 @@ class __FormContentState extends State<_FormContent> {
             ),
             _gap(),
             TextFormField(
+              initialValue: null,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Por favor ingresa tu contraseña';
@@ -152,22 +157,38 @@ class __FormContentState extends State<_FormContent> {
                           fontWeight: FontWeight.bold,
                           color: Colors.white)),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState?.validate() ?? false) {
-                    if (usuario == 'admin' && password == 'admin') {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Panel()));
-                    } else {
-                      // ScaffoldMessenger.of(context).showSnackBar(
-                      //   const SnackBar(
-                      //     content: Text('Usuario o contraseña incorrectos'),
-                      //   ),
-                      // );
-                    }
+                    final response =
+                        await LoginProvider().login(usuario, password);
 
-                    /// do something
+                    if (response == null) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Error'),
+                            content:
+                                const Text('Usuario o contraseña incorrectos'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Aceptar'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Panel()),
+                      );
+                      loginProvider.setUser(response);
+                      memberProvider.refresh();
+                    }
                   }
                 },
               ),
