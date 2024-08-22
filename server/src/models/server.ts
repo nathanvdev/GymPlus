@@ -1,6 +1,7 @@
 import express from 'express'
 import memberRoutes from '../routes/member.route'
 import loginRoutes from '../routes/login.route'
+import paymentRoutes from '../routes/payment.route'
 import cors from 'cors'
 import db from '../../db/connection';
 
@@ -10,7 +11,8 @@ class Server {
     private port: string | undefined;
     private apiPaths = {
         member: '/member',
-        login: '/login'
+        login: '/login',
+        payment : '/payment'
     }
     constructor() {
         this.app = express()
@@ -40,6 +42,7 @@ class Server {
     routes() {
         this.app.use(this.apiPaths.member, memberRoutes)
         this.app.use(this.apiPaths.login, loginRoutes)
+        this.app.use(this.apiPaths.payment, paymentRoutes)
     }
 
     listen() {

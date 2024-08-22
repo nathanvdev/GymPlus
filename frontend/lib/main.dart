@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/config/theme/app_theme.dart';
-import 'package:frontend/screens/providers/login_provider.dart';
-import 'package:frontend/screens/providers/member_table_provider.dart';
+import 'package:frontend/screens/providers/login.provider.dart';
+import 'package:frontend/screens/providers/member_table.provider.dart';
 import 'package:frontend/screens/sign_in.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +27,6 @@ class MyApp extends StatelessWidget {
         title: 'Gymplus App',
         debugShowCheckedModeBanner: false,
         theme: AppTheme().lightMode(),
-        // theme: AppTheme().lightMode(),
         home: const SignInPage2(),
       ),
     );

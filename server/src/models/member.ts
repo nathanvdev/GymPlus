@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import db from "../../db/connection";
+import { Payment } from "./payment";
 
 const member = db.define('member', {
     id: {
@@ -37,8 +38,8 @@ const member = db.define('member', {
     blood_type: {
         type: DataTypes.STRING
     },
-    next_payment: {
-        type: DataTypes.DATE
+    last_payment: {
+        type: DataTypes.INTEGER
     },
     membership_type: {
         type: DataTypes.STRING
@@ -49,10 +50,17 @@ const member = db.define('member', {
     last_visit: {
         type: DataTypes.DATE
     },
+    active_days: {
+        type: DataTypes.INTEGER
+    },
+    
 },
     {
         freezeTableName: true
     })
+
+    member.hasOne(Payment, { foreignKey: 'id', sourceKey: 'last_payment' });
+    Payment.belongsTo(member, { foreignKey: 'id', targetKey: 'last_payment' });
 
 export default member
 

@@ -18,6 +18,7 @@
     "dotenv": "^16.4.5",
     "express": "4.19.2",
     "mysql2": "^3.10.0",
+    "pdfkit-table": "^0.1.99",
     "sequelize": "^6.37.3",
     "typescript": "5.4.5"
   },

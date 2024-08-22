@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:frontend/config/theme/app_theme.dart';
 import 'package:frontend/screens/panel.dart';
-import 'package:frontend/screens/providers/login_provider.dart';
-import 'package:frontend/screens/providers/member_table_provider.dart';
+import 'package:frontend/screens/providers/login.provider.dart';
+import 'package:frontend/screens/providers/member_table.provider.dart';
 import 'package:provider/provider.dart';
 
 class SignInPage2 extends StatelessWidget {
@@ -12,26 +12,19 @@ class SignInPage2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        persistentFooterButtons: [
-          Text('nathanvdev@gmail.com',
-              style: TextStyle(
-                  color: Theme.of(context).shadowColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold))
-        ],
         body: Center(
             child: Container(
-          padding: const EdgeInsets.all(32.0),
-          constraints: const BoxConstraints(maxWidth: 1800),
-          child: const Row(
-            children: [
-              Expanded(child: _Logo()),
-              Expanded(
-                child: Center(child: _FormContent()),
-              ),
-            ],
+      padding: const EdgeInsets.all(32.0),
+      constraints: const BoxConstraints(maxWidth: 1800),
+      child: const Row(
+        children: [
+          Expanded(child: _Logo()),
+          Expanded(
+            child: Center(child: _FormContent()),
           ),
-        )));
+        ],
+      ),
+    )));
   }
 }
 
@@ -68,6 +61,8 @@ class __FormContentState extends State<_FormContent> {
   bool _isPasswordVisible = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _usuarioController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +70,22 @@ class __FormContentState extends State<_FormContent> {
     final memberProvider = context.read<MemberTableProvider>();
     late String usuario = "";
     late String password = "";
+
+    @override
+    void initState() {
+      super.initState();
+      // Limpia el controlador cuando la página se inicializa
+      _usuarioController.clear();
+      _passwordController.clear();
+    }
+
+    @override
+    void dispose() {
+      // Asegúrate de limpiar el controlador cuando la página se destruya
+      _usuarioController.dispose();
+      _passwordController.dispose();
+      super.dispose();
+    }
 
     return Container(
       constraints: const BoxConstraints(maxWidth: 300),
@@ -85,6 +96,7 @@ class __FormContentState extends State<_FormContent> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextFormField(
+              controller: _usuarioController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Por favor ingresa tu usuario';
@@ -108,6 +120,7 @@ class __FormContentState extends State<_FormContent> {
             ),
             _gap(),
             TextFormField(
+              controller: _passwordController,
               initialValue: null,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -182,7 +195,7 @@ class __FormContentState extends State<_FormContent> {
                         },
                       );
                     } else {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => const Panel()),
                       );

@@ -1,24 +1,63 @@
 import { Request, Response } from 'express';
 import member from '../models/member';
+import { Payment } from '../models/payment';
+// import Payment from '../models/payment';
+
 
 export const getmembers = async (_req: Request, res: Response) => {
 
-    const response = await member.findAll();
+    // const response = await member.findAll();
 
-    const members = response.map(member => {
-        return {
-            id: member.dataValues.id,
-            name: member.dataValues.name,
-            lastname: member.dataValues.last_name,
-            membershipStatus: member.dataValues.membership_status,
-            lastPaymentDate: member.dataValues.last_visit,
-            nextPaymentDate: member.dataValues.next_payment,
-            birthdate: member.dataValues.date_of_birth
-            
-        }
+    // var lastPaymentDate = '';
+    // var nextPaymentDate = '';
+    
+    // const members = response.map(  member => {
+
+    //     return {
+    //         id: member.dataValues.id,
+    //         name: member.dataValues.name,
+    //         lastname: member.dataValues.last_name,
+    //         membershipStatus: member.dataValues.membership_status,
+    //         lastPaymentDate: lastPaymentDate,
+    //         nextPaymentDate: nextPaymentDate,
+    //         lastVisit: member.dataValues.last_visit,
+    //         activeDays: member.dataValues.active_days
+    //     }
+    // }
+    // )
+    // res.json({ members });
+
+
+
+
+    try {
+        const response = await member.findAll({
+            include: [{
+                model: Payment,
+                as: 'membership_payment', // Usa el alias que definiste en la asociación
+                attributes: ['initialpaymentdate', 'nextpaymentdate']
+            }]
+        });
+
+        const members = response.map(member => {
+            const payment = member.dataValues.membership_payment; // Accede a los datos relacionados de payment
+            return {
+                id: member.dataValues.id,
+                name: member.dataValues.name,
+                lastName: member.dataValues.last_name,
+                membershipStatus: member.dataValues.membership_status,
+                lastPaymentDate: payment ? payment.initialpaymentdate : null,
+                nextPaymentDate: payment ? payment.nextpaymentdate : null,
+                lastVisit: member.dataValues.last_visit,
+                activeDays: member.dataValues.active_days
+            }
+        });
+
+        res.json({ members });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error fetching members' });
     }
-    )
-    res.json({ members });
 }
 
 

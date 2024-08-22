@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import db from "../../db/connection";
+import member from "./member";
 
 
 const user = db.define('user', {
@@ -26,5 +27,7 @@ const user = db.define('user', {
     {
         freezeTableName: true
     })
+
+    user.belongsTo(member, {foreignKey: 'member_id', targetKey: 'id'})
 
 export default user

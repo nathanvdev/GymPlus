@@ -5,7 +5,8 @@ class Member {
   final String membershipStatus;
   final String lastPaymentDate;
   final String nextPaymentDate;
-  final String birthdate;
+  final String lastVisit;
+  final String activeDays;
 
   Member({
     required this.id,
@@ -14,7 +15,8 @@ class Member {
     required this.membershipStatus,
     required this.lastPaymentDate,
     required this.nextPaymentDate,
-    required this.birthdate,
+    required this.lastVisit,
+    required this.activeDays,
   });
 }
 
@@ -30,10 +32,12 @@ class FullMember {
   String? emergencyContactName;
   String? allergies;
   String? bloodType;
+  String? latestPaymentDate;
   String? nextDuePayment;
   String? membershipType;
   String? membershipStatus;
   String? lastVisit;
+  String? activeDays;
 
   FullMember({
     this.id,
@@ -47,10 +51,12 @@ class FullMember {
     this.emergencyContactPhone,
     this.allergies,
     this.bloodType,
+    this.latestPaymentDate,
     this.nextDuePayment,
     this.membershipType,
     this.membershipStatus,
     this.lastVisit,
+    this.activeDays,
   });
 }
 

@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/config/theme/app_theme.dart';
-import 'package:frontend/screens/providers/login_provider.dart';
+import 'package:frontend/screens/panel.dart';
+import 'package:frontend/screens/providers/login.provider.dart';
+import 'package:frontend/screens/store.dart';
 import 'package:provider/provider.dart';
 
 class Menu extends StatelessWidget {
@@ -56,12 +58,16 @@ class Options extends StatelessWidget {
         MenuButtonBar(
           title: "Miembros",
           icon: Icons.people,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Panel()));
+          },
         ),
         MenuButtonBar(
           title: "Tienda",
           icon: Icons.store,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const StoreScreen()));
+          },
         ),
         MenuButtonBar(
           title: "Configuracion",

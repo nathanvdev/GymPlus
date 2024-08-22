@@ -25,11 +25,12 @@ class MemberTableProvider extends ChangeNotifier {
         var newMember = Member(
           id: element['id'],
           name: element['name'],
-          lastname: element['lastname'],
+          lastname: element['lastName'],
           membershipStatus: element['membershipStatus'],
           lastPaymentDate: element['lastPaymentDate'],
           nextPaymentDate: element['nextPaymentDate'],
-          birthdate: element['birthdate'],
+          lastVisit: element['lastVisit'],
+          activeDays: element['activeDays'].toString(),
         );
         memberList.add(newMember);
       }
@@ -61,10 +62,10 @@ class MemberTableProvider extends ChangeNotifier {
   }
 
   getMemberNameById(int id){
-    String _name = memberList.firstWhere((element) => element.id == id).name;
-    String _lastName = memberList.firstWhere((element) => element.id == id).lastname;
+    String name = memberList.firstWhere((element) => element.id == id).name;
+    String lastName = memberList.firstWhere((element) => element.id == id).lastname;
     // return memberList.firstWhere((element) => element.id == id).name;
-    return "$_name $_lastName";
+    return "$name $lastName";
   }
 
 }
