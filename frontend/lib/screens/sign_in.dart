@@ -71,22 +71,6 @@ class __FormContentState extends State<_FormContent> {
     late String usuario = "";
     late String password = "";
 
-    @override
-    void initState() {
-      super.initState();
-      // Limpia el controlador cuando la página se inicializa
-      _usuarioController.clear();
-      _passwordController.clear();
-    }
-
-    @override
-    void dispose() {
-      // Asegúrate de limpiar el controlador cuando la página se destruya
-      _usuarioController.dispose();
-      _passwordController.dispose();
-      super.dispose();
-    }
-
     return Container(
       constraints: const BoxConstraints(maxWidth: 300),
       child: Form(
