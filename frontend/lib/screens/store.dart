@@ -1,12 +1,8 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:frontend/config/theme/app_theme.dart';
+import 'package:frontend/screens/providers/product_provider.dart';
 import 'package:frontend/screens/widgets/display_menu.dart';
+import 'package:provider/provider.dart';
 
 class StoreScreen extends StatelessWidget {
   const StoreScreen({super.key});
@@ -14,22 +10,29 @@ class StoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const StorePage();
+    
   }
 }
 
-class StorePage extends StatelessWidget {
+class StorePage extends StatefulWidget {
   const StorePage({super.key});
 
   @override
+  State<StorePage> createState() => _StorePageState();
+}
+
+class _StorePageState extends State<StorePage> {
+  @override
   Widget build(BuildContext context) {
+    final producProvider = context.watch<ProductProvider>();
+
     return Scaffold(
         body: Center(
             child: SafeArea(
                 child: Row(
       children: [
-        Expanded(
-            child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.5,
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.24,
           height: MediaQuery.of(context).size.height,
           child: Container(
             padding:
@@ -40,7 +43,7 @@ class StorePage extends StatelessWidget {
             ),
             child: const Menu(), // Removed const
           ),
-        )),
+        ),
         Row(
           children: [
             Container(
@@ -59,10 +62,64 @@ class StorePage extends StatelessWidget {
                       children: [
                         FilledButton(
                             onPressed: () {},
-                            child: const Text('Agregar Producto')),
+                            child: const Text(
+                              'Agregar Producto',
+                              style: TextStyle(fontSize: 11),
+                            )),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        FilledButton(
+                          onPressed: () {},
+                          child: const Text('Editar Producto',
+                              style: TextStyle(fontSize: 11)),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
                         FilledButton(
                             onPressed: () {},
-                            child: const Text('Eliminar Producto')),
+                            child: const Text('Eliminar Producto',
+                                style: TextStyle(fontSize: 11))),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.1,
+                          height: 50,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: 10,
+                              bottom: 10,
+                              left: 10,
+                            ),
+                            child: SearchBar(
+                              textStyle: const WidgetStatePropertyAll(
+                                TextStyle(
+                                  fontSize: 10,
+                                  // font bold
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              hintText: "Buscar Producto",
+                              shadowColor: WidgetStatePropertyAll(
+                                Theme.of(context).shadowColor,
+                              ),
+                              elevation: const WidgetStatePropertyAll(8),
+                              shape: WidgetStatePropertyAll(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                  side: BorderSide(
+                                    color: Theme.of(context).shadowColor,
+                                  ),
+                                ),
+                              ),
+                              onChanged: (value) {
+                                producProvider.filtringProducts(value);
+                              },
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -84,57 +141,35 @@ class StorePage extends StatelessWidget {
                       ),
                     ),
                     child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              itemcard(context),
-                              itemcard(context),
-                              itemcard(context),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              itemcard(context),
-                              itemcard(context),
-                              itemcard(context),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              itemcard(context),
-                              itemcard(context),
-                              itemcard(context),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              itemcard(context),
-                              itemcard(context),
-                              itemcard(context),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              itemcard(context),
-                              itemcard(context),
-                              itemcard(context),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
+                        scrollDirection: Axis.vertical,
+                        child: Column(
+                          children: [
+                            for (int i = 0;
+                                i < producProvider.filtredProductList.length;
+                                i += 3)
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  for (int j = 0; j < 3; j++)
+                                    if (i + j <
+                                        producProvider
+                                            .filtredProductList.length)
+                                      itemcard(
+                                        context,
+                                        producProvider
+                                            .filtredProductList[i + j].name,
+                                        producProvider
+                                            .filtredProductList[i + j].price,
+                                        producProvider
+                                            .filtredProductList[i + j].stock,
+                                        producProvider
+                                            .filtredProductList[i + j].imageurl,
+                                      ),
+                                ],
+                              ),
+                          ],
+                        )),
                   ),
                 ],
               ),
@@ -142,6 +177,7 @@ class StorePage extends StatelessWidget {
             Container(
                 height: MediaQuery.of(context).size.height * 0.94,
                 width: MediaQuery.of(context).size.width * 0.25,
+                padding: const EdgeInsets.all(5),
                 margin: const EdgeInsets.only(
                   top: 10,
                   right: 5,
@@ -154,7 +190,7 @@ class StorePage extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child:  Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -164,61 +200,72 @@ class StorePage extends StatelessWidget {
                         color: Colors.black,
                         fontSize: 27,
                         fontWeight: FontWeight.bold,
-                      ),),
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.49,
-                        width: MediaQuery.of(context).size.width * 0.25,
-                        margin: const EdgeInsets.only(
-                          top: 10,
-                          right: 10,
-                          left: 10,
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Theme.of(context).primaryColorDark,
-                            width: 5,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
                       ),
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.2,
-                        width: MediaQuery.of(context).size.width * 0.25,
-                        margin: const EdgeInsets.all(10),
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Theme.of(context).primaryColorDark,
-                            width: 5,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text("Subtotal: Q 500.00",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                              ),),
-                            Text("Descuento: Q 50.00",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                              ),),
-                            Text("Total: Q 450.00",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                              ),),
-                          ],
-                        ),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.52,
+                      width: MediaQuery.of(context).size.width * 0.25,
+                      margin: const EdgeInsets.only(
+                        top: 10,
+                        right: 10,
+                        left: 10,
                       ),
-                      FilledButton(onPressed: () {}, child:  const Text('Realizar Compra')),
-                      const SizedBox(height: 10,),
-                      FilledButton(onPressed: (){}, child: const Text('Vaciar Carrito')),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).shadowColor,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.17,
+                      width: MediaQuery.of(context).size.width * 0.25,
+                      margin: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).shadowColor,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            "Subtotal: Q 500.00",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                            ),
+                          ),
+                          Text(
+                            "Descuento: Q 50.00",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                            ),
+                          ),
+                          Text(
+                            "Total: Q 450.00",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    FilledButton(
+                        onPressed: () {}, child: const Text('Realizar Compra')),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    FilledButton(
+                        onPressed: () {}, child: const Text('Vaciar Carrito')),
                   ],
                 )),
           ],
@@ -227,7 +274,8 @@ class StorePage extends StatelessWidget {
     ))));
   }
 
-  Container itemcard(BuildContext context) {
+  Container itemcard(BuildContext context, String name, String price,
+      String stock, String imageurl) {
     return Container(
       width: MediaQuery.of(context).size.height * 0.24,
       padding: const EdgeInsets.all(10),
@@ -235,38 +283,36 @@ class StorePage extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(
           color: Theme.of(context).primaryColor,
-          width: 5,
+          width: 1,
         ),
         borderRadius: BorderRadius.circular(15),
       ),
-      child: Expanded(
-        child: Column(
-          children: [
-            Container(
-              height: 80,
-              width: 80,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('lib/assets/tmp/iso100.webp'),
-                  fit: BoxFit.fill,
-                ),
+      child: Column(
+        children: [
+          Container(
+            height: 80,
+            width: 80,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(imageurl),
+                fit: BoxFit.fitHeight,
               ),
             ),
-            const Text(
-              'Dymatize® ISO100® Hydrolyzed 5 Lbs.',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 10,
-                fontWeight: FontWeight.bold,
-              ),
+          ),
+          Text(
+            name,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
             ),
-            const Text('Q 500.00  DSP: 10',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontStyle: FontStyle.italic)),
-          ],
-        ),
+          ),
+          Text('Q $price DSP:$stock',
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontStyle: FontStyle.italic)),
+        ],
       ),
     );
   }

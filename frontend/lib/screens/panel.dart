@@ -38,9 +38,8 @@ class Dashboardstate extends State<Dashboard> {
         child: SafeArea(
             child: Row(
           children: [
-            Expanded(
-                child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.5,
+             SizedBox(
+              width: MediaQuery.of(context).size.width * 0.24,
               height: MediaQuery.of(context).size.height,
               child: Container(
                 padding: const EdgeInsets.only(
@@ -51,7 +50,7 @@ class Dashboardstate extends State<Dashboard> {
                 ),
                 child: const Menu(), // Removed const
               ),
-            )),
+            ),
             Expanded(
                 flex: 3,
                 child: Container(
@@ -150,7 +149,7 @@ class Dashboardstate extends State<Dashboard> {
                                                               .pop();
                                                         },
                                                         child: const Text(
-                                                            'Aceptar'),
+                                                           'Aceptar'),
                                                       ),
                                                     ],
                                                   );

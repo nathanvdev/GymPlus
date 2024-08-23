@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/config/theme/app_theme.dart';
 import 'package:frontend/screens/panel.dart';
 import 'package:frontend/screens/providers/login.provider.dart';
+import 'package:frontend/screens/providers/product_provider.dart';
 import 'package:frontend/screens/store.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +24,7 @@ class Options extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
   final loginProvider = context.read<LoginProvider>();
+  final productProvider = context.read<ProductProvider>();
 
     return ListView(
       children: <Widget>[
@@ -66,6 +68,7 @@ class Options extends StatelessWidget {
           title: "Tienda",
           icon: Icons.store,
           onPressed: () {
+            productProvider.refresh();
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const StoreScreen()));
           },
         ),
