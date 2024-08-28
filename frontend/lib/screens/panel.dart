@@ -38,7 +38,7 @@ class Dashboardstate extends State<Dashboard> {
         child: SafeArea(
             child: Row(
           children: [
-             SizedBox(
+            SizedBox(
               width: MediaQuery.of(context).size.width * 0.24,
               height: MediaQuery.of(context).size.height,
               child: Container(
@@ -121,8 +121,6 @@ class Dashboardstate extends State<Dashboard> {
                                                   return const PaymentProcessWidget();
                                                 },
                                               );
-                                              print(
-                                                  "Realizar Pago ${memberselectedProvider.getSelectedMemberId()} ");
                                             }
                                           },
                                           child: const Text("Realizar Pago"),
@@ -149,15 +147,13 @@ class Dashboardstate extends State<Dashboard> {
                                                               .pop();
                                                         },
                                                         child: const Text(
-                                                           'Aceptar'),
+                                                            'Aceptar'),
                                                       ),
                                                     ],
                                                   );
                                                 },
                                               );
                                             }
-                                            print(
-                                                "Medición Antropométrica ${memberselectedProvider.getSelectedMemberId()} ");
                                           },
                                           child: const Text(
                                               "Medición Antropométrica"),
@@ -243,6 +239,8 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
     final memberselectedProvider = context.read<MemberSelectedProvider>();
     final memberProvider = context.read<MemberTableProvider>();
     final loginProvider = context.read<LoginProvider>();
+
+    //
 
     _initialDate.text = DateTime.now().toString().substring(0, 10);
     return AlertDialog(
@@ -750,134 +748,11 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
               bool isPasswordVisible = false;
               final dio = Dio();
 
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: const Text('Verifica tus datos'),
-                    content: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.17,
-                      child: Column(
-                        children: [
-                          TextFormField(
-                            initialValue: loginProvider.getUsername(),
-                            enabled: false,
-                            decoration: const InputDecoration(
-                              labelText: 'Username',
-                              hintText: 'Ingresa tu usuario',
-                              prefixIcon: Icon(Icons.person_outline_rounded),
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                          const SizedBox(height: 15.0),
-                          TextFormField(
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Por favor ingresa tu contraseña';
-                              }
-
-                              if (value.length < 5) {
-                                return 'La contraseña debe tener al menos 6 caracteres';
-                              }
-                              return null;
-                            },
-                            obscureText: !isPasswordVisible,
-                            decoration: InputDecoration(
-                                labelText: 'Contraseña',
-                                hintText: 'Ingresa tu contraseña',
-                                prefixIcon:
-                                    const Icon(Icons.lock_outline_rounded),
-                                border: const OutlineInputBorder(),
-                                suffixIcon: IconButton(
-                                  icon: Icon(isPasswordVisible
-                                      ? Icons.visibility_off
-                                      : Icons.visibility),
-                                  onPressed: () {
-                                    setState(() {
-                                      isPasswordVisible = !isPasswordVisible;
-                                    });
-                                  },
-                                )),
-                            onChanged: (value) {
-                              password = value;
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text('Cancelar'),
-                      ),
-                      TextButton(
-                        child: const Text('Aceptar'),
-                        onPressed: () async {
-                          if (password == loginProvider.user.password) {
-                            try {
-                              await dio.post(
-                                'http://localhost:3569/payment/add',
-                                data: payment.toJson(),
-                              );
-
-                              memberProvider.refresh();
-                              Navigator.pop(context);
-                            } catch (e) {
-                              Navigator.pop(context);
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text('Error'),
-                                    content: const Text(
-                                        'Hubo un error al guardar el miembro'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('Aceptar'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            }
-                            Navigator.pop(context);
-                          } else {
-                            Navigator.pop(context);
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: const Text('Contraseña Incorrecta'),
-                                  content: const Text(
-                                      'La contraseña ingresada no coincide con la de tu usuario'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text('Aceptar'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          }
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
+              authDialog(context, loginProvider, isPasswordVisible, password,
+                  dio, payment, memberProvider);
             } catch (e) {
               _showDialog('Error', 'Ocurrió un error al procesar el pago: $e');
             }
-
-            print("Pago Realizado");
           },
           child: const Text('Aceptar'),
         ),
@@ -888,6 +763,144 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
           child: const Text('Cancelar'),
         ),
       ],
+    );
+  }
+
+  Future<dynamic> authDialog(
+      BuildContext context,
+      LoginProvider loginProvider,
+      bool isPasswordVisible,
+      String password,
+      Dio dio,
+      MembershipPayment payment,
+      MemberTableProvider memberProvider) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Verifica tus datos'),
+          content: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.17,
+            child: Column(
+              children: [
+                TextFormField(
+                  initialValue: loginProvider.getUsername(),
+                  enabled: false,
+                  decoration: const InputDecoration(
+                    labelText: 'Username',
+                    hintText: 'Ingresa tu usuario',
+                    prefixIcon: Icon(Icons.person_outline_rounded),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 15.0),
+                TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor ingresa tu contraseña';
+                    }
+
+                    if (value.length < 5) {
+                      return 'La contraseña debe tener al menos 6 caracteres';
+                    }
+                    return null;
+                  },
+                  obscureText: !isPasswordVisible,
+                  decoration: InputDecoration(
+                      labelText: 'Contraseña',
+                      hintText: 'Ingresa tu contraseña',
+                      prefixIcon: const Icon(Icons.lock_outline_rounded),
+                      border: const OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        icon: Icon(isPasswordVisible
+                            ? Icons.visibility_off
+                            : Icons.visibility),
+                        onPressed: () {
+                          setState(() {
+                            isPasswordVisible = !isPasswordVisible;
+                          });
+                        },
+                      )),
+                  onChanged: (value) {
+                    password = value;
+                  },
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              child: const Text('Aceptar'),
+              onPressed: () async {
+                if (password == loginProvider.user.password) {
+                  try {
+                    await dio.post(
+                      'http://localhost:3569/payment/add',
+                      data: payment.toJson(),
+                    );
+
+                    memberProvider.refresh();
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                    }
+                  } catch (e) {
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                    }
+                    showDialog(
+                      context: context.mounted ? context : context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('Error'),
+                          content:
+                              const Text('Hubo un error al guardar el miembro'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text('Aceptar'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
+                } else {
+                  Navigator.pop(context);
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('Contraseña Incorrecta'),
+                        content: const Text(
+                            'La contraseña ingresada no coincide con la de tu usuario'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Aceptar'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -1110,7 +1123,7 @@ class MembersTable extends StatefulWidget {
 
 class MembersTableState extends State<MembersTable> {
   int selectedIndex = -1;
-  
+
   @override
   Widget build(BuildContext context) {
     final memberProvider = context.watch<MemberTableProvider>();
@@ -1130,7 +1143,6 @@ class MembersTableState extends State<MembersTable> {
       dataRowMaxHeight: 60,
       showCheckboxColumn: false,
       columns: const <DataColumn>[
-
         //fot de perfil
         DataColumn(label: Center(child: Text('Nombre'))),
         DataColumn(label: Center(child: Text('Estado'))),

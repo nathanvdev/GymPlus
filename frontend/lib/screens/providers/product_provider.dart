@@ -31,7 +31,7 @@ class ProductProvider extends ChangeNotifier {
           id: element['id'].toString(),
           name: element['name'],
           stock: element['stock'].toString(),
-          price: element['price'].toString(),
+          price: element['price'].toStringAsFixed(2),
           imageurl: element['imageurl'],
         );
         productList.add(newProduct);
@@ -62,39 +62,96 @@ class ProductProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> deleteProduct(String id) async {
-    try {
-      await dio.delete('http://localhost:3569/product/delete/$id');
-      refresh();
-      notifyListeners();
-    } catch (e) {
-      return;
-    }
-  }
-
-  Future<void> addProduct(Product product) async {
-    try {
-      await dio.post('http://localhost:3569/product/add',
-          data: product.toJson());
-      refresh();
-      notifyListeners();
-    } catch (e) {
-      return;
-    }
-  }
-
-  Future<void> updateProduct(Product product) async {
-    try {
-      await dio.put('http://localhost:3569/product/update/${product.id}',
-          data: product.toJson());
-      refresh();
-      notifyListeners();
-    } catch (e) {
-      return;
-    }
-  }
 
   getProductById(String id) {
     return productList.firstWhere((element) => element.id == id);
   }
+
+  getProduct() {
+    return productList;
+  }
+
+  deleteProduct(id){
+    productList.removeWhere((element) => element.id == id);
+    notifyListeners();
+  }
+}
+
+// class CartItemsProvider extends ChangeNotifier {
+//   var selectedProduct = [];
+
+//   void addProduct(int id) {
+//     selectedProduct.add(id);
+
+//     notifyListeners();
+//   }
+
+//   void removeProduct(int id) {
+//     selectedProduct.remove(id);
+//     notifyListeners();
+//   }
+
+//   void clear() {
+//     selectedProduct.clear();
+//     notifyListeners();
+//   }
+
+//   List getProducts() {
+//     return selectedProduct;
+//   }
+
+//   String getProductById(int id) {
+//     try {
+//       return selectedProduct.firstWhere((element) => element == id).toString();
+//     } catch (e) {
+//       throw Exception('Product with id $id not found');
+//     }
+//   }
+// }
+
+class ItemCart{
+  int id;
+  int quantity;
+  double subtotal;
+
+  ItemCart(this.id, this.quantity, {this.subtotal = 0});
+
+  setSubtotal(double price){
+    subtotal = quantity * price;
+    return subtotal;
+  }
+}
+
+
+class CartItemsProvider extends ChangeNotifier{
+  List<ItemCart> cartItems = [];
+
+  void addProduct(int id, double price) {
+    cartItems.add(ItemCart(id, 1));
+    cartItems.last.setSubtotal(price);
+    notifyListeners();
+  }
+
+  void removeProduct(int id) {
+    cartItems.removeWhere((element) => element.id == id);
+    notifyListeners();
+  }
+
+  void clear() {
+    cartItems.clear();
+    notifyListeners();
+  }
+
+  List<ItemCart> getProducts() {
+    return cartItems;
+  }
+
+  String getProductById(int id) {
+    try {
+      return cartItems.firstWhere((element) => element.id == id).toString();
+    } catch (e) {
+      throw Exception('Product with id $id not found');
+    }
+  }
+
 }

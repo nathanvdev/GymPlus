@@ -3,6 +3,7 @@ import memberRoutes from '../routes/member.route'
 import loginRoutes from '../routes/login.route'
 import paymentRoutes from '../routes/payment.route'
 import productRoutes from '../routes/product.route'
+import saleRoutes from '../routes/sales.route'
 import cors from 'cors'
 import db from '../../db/connection';
 
@@ -14,7 +15,8 @@ class Server {
         member: '/member',
         login: '/login',
         payment : '/payment',
-        product : '/product'
+        product : '/product',
+        sale : '/sale'
     }
     constructor() {
         this.app = express()
@@ -46,6 +48,7 @@ class Server {
         this.app.use(this.apiPaths.login, loginRoutes)
         this.app.use(this.apiPaths.payment, paymentRoutes)
         this.app.use(this.apiPaths.product, productRoutes)
+        this.app.use(this.apiPaths.sale, saleRoutes)
     }
 
     listen() {
