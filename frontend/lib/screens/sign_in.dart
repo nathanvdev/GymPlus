@@ -71,22 +71,6 @@ class __FormContentState extends State<_FormContent> {
     late String usuario = "";
     late String password = "";
 
-    @override
-    void initState() {
-      super.initState();
-      // Limpia el controlador cuando la página se inicializa
-      _usuarioController.clear();
-      _passwordController.clear();
-    }
-
-    @override
-    void dispose() {
-      // Asegúrate de limpiar el controlador cuando la página se destruya
-      _usuarioController.dispose();
-      _passwordController.dispose();
-      super.dispose();
-    }
-
     return Container(
       constraints: const BoxConstraints(maxWidth: 300),
       child: Form(
@@ -177,7 +161,7 @@ class __FormContentState extends State<_FormContent> {
 
                     if (response == null) {
                       showDialog(
-                        context: context,
+                        context: context.mounted ? context : context,
                         builder: (context) {
                           return AlertDialog(
                             title: const Text('Error'),
@@ -195,12 +179,30 @@ class __FormContentState extends State<_FormContent> {
                         },
                       );
                     } else {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const Panel()),
-                      );
+                      if(context.mounted){
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Panel()),);
                       loginProvider.setUser(response);
                       memberProvider.refresh();
+                      }else{
+                        showDialog(
+                          context: context.mounted ? context : context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Error'),
+                              content:
+                                  const Text('Usuario o contraseña incorrectos'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Aceptar'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
                     }
                   }
                 },

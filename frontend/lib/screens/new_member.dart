@@ -27,7 +27,6 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
   String _date = '';
   String _email = '';
 
-
   @override
   Widget build(BuildContext context) {
     final memberProvider = context.watch<MemberTableProvider>();
@@ -289,48 +288,46 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
                                     _bloodType = value;
                                   },
                                 )),
-                                SizedBox(
-                                  width: 200,
-                                  child: MemberFormWidget(
-                                    validator: (p0) {
-                                      if (p0 == null || p0.isEmpty) {
-                                        return 'Por favor selecciona un genero';
-                                      }
-                                      return null;
-                                    
-                                    },
-                                    controller: _gender,
-                                    labelText: 'Genero',
-                                    hintText: 'Genero del miembro',
-                                    onTap: () {
-                                      showMenu(
-                                        context: context,
-                                        position: const RelativeRect.fromLTRB(350, 700, 300, 300),
-                                        items: const [
-                                          PopupMenuItem(
-                                            value: 'Masculino',
-                                            child: Text('Masculino'),
-                                          ),
-                                          PopupMenuItem(
-                                            value: 'Femenino',
-                                            child: Text('Femenino'),
-                                          ),
-                                          PopupMenuItem(
-                                            value: 'Otro',
-                                            child: Text('Otro'),
-                                          ),
-                                        ],
-                                      ).then((value) {
-                                        if (value != null) {
-                                        _gender.text =value.toString();
-                                        }
-                                      });
-                                    },
-                                    onChanged: (p0) {
-                                      
-                                    },
-                                  ),
-                                ),
+                            SizedBox(
+                              width: 200,
+                              child: MemberFormWidget(
+                                validator: (p0) {
+                                  if (p0 == null || p0.isEmpty) {
+                                    return 'Por favor selecciona un genero';
+                                  }
+                                  return null;
+                                },
+                                controller: _gender,
+                                labelText: 'Genero',
+                                hintText: 'Genero del miembro',
+                                onTap: () {
+                                  showMenu(
+                                    context: context,
+                                    position: const RelativeRect.fromLTRB(
+                                        350, 700, 300, 300),
+                                    items: const [
+                                      PopupMenuItem(
+                                        value: 'Masculino',
+                                        child: Text('Masculino'),
+                                      ),
+                                      PopupMenuItem(
+                                        value: 'Femenino',
+                                        child: Text('Femenino'),
+                                      ),
+                                      PopupMenuItem(
+                                        value: 'Otro',
+                                        child: Text('Otro'),
+                                      ),
+                                    ],
+                                  ).then((value) {
+                                    if (value != null) {
+                                      _gender.text = value.toString();
+                                    }
+                                  });
+                                },
+                                onChanged: (p0) {},
+                              ),
+                            ),
                             Expanded(
                                 child: MemberFormWidget(
                               labelText: 'Email',
@@ -459,11 +456,17 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
                                               );
 
                                               memberProvider.refresh();
-                                              Navigator.pop(context);
+                                              if (context.mounted) {
+                                                Navigator.pop(context);
+                                              }
                                             } catch (e) {
-                                              Navigator.pop(context);
+                                              if (context.mounted) {
+                                                Navigator.pop(context);
+                                              }
                                               showDialog(
-                                                context: context,
+                                                context: context.mounted
+                                                    ? context
+                                                    : context,
                                                 builder: (context) {
                                                   return AlertDialog(
                                                     title: const Text('Error'),
@@ -483,7 +486,9 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
                                                 },
                                               );
                                             }
-                                            Navigator.pop(context);
+                                            if (context.mounted) {
+                                              Navigator.pop(context);
+                                            }
                                           } else {
                                             Navigator.pop(context);
                                             showDialog(
