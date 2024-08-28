@@ -7,6 +7,10 @@ export const postpayment = async (req: Request, res: Response) => {
     const { body } = req;
 
     try {
+        if (body.cash == ''){
+            body.cash = body.total;
+            body.change = 0;
+        }
 
         const newPayment = await Payment.create(body);
         const bill = newPayment.toJSON();

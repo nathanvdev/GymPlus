@@ -19,6 +19,8 @@ class User{
     this.updatedAt = "",
   });
 
+  get id => null;
+
   static User fromJson(data) {
     return User(
       memberId: data['member_id'],
