@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Payment } from "../models/payment";
 import { generateMembershipBill } from "../utilities/membership_bill";
+import member from "../models/member";
 
 export const postpayment = async (req: Request, res: Response) => {
 
@@ -125,14 +126,24 @@ export const getBill = async (_: Request, res: Response) => {
 
 }
 
+
 export const getPayments = async (_: Request, res: Response) => {
-
     try {
-
         const payments = await Payment.findAll();
+
+        const paymentsWithMemberInfo = await Promise.all(payments.map(async (payment) => {
+            const tmp = await member.findByPk(payment.dataValues.member_id);
+            return {
+                ...payment.toJSON(),
+                member_name: tmp ? tmp.dataValues.name : 'N/A',
+                member_lastname: tmp ? tmp.dataValues.last_name : 'N/A'
+            };
+        }));
+
+
         res.status(200).json({
             msg: 'Pagos',
-            payments
+            payments: paymentsWithMemberInfo
         });
 
     } catch (error) {
@@ -141,5 +152,4 @@ export const getPayments = async (_: Request, res: Response) => {
             msg: 'Error en el servidor'
         });
     }
-
-}
+};

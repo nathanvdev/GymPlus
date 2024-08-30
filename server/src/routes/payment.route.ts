@@ -4,7 +4,7 @@ import { getPayments, postpayment, getBill } from "../controllers/payment.contro
 const router = Router();
 
 router.post('/add', postpayment)
-router.get('/get', getPayments)
+router.get('/getall', getPayments)
 router.get('/getBill', getBill)
 
 export default router;

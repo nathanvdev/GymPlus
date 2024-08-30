@@ -16,6 +16,7 @@ export const Payment = db.define('membership_payment', {
     billing_quantity: {
         type: DataTypes.INTEGER
     },
+    // 1 = Diario, 2 = Semanal, 3 = Mensual, 4 = Anual
     billing_cycle: {
         type: DataTypes.INTEGER
     },
@@ -46,6 +47,7 @@ export const Payment = db.define('membership_payment', {
     change: {
         type: DataTypes.FLOAT
     },
+    
     payment_status: {
         type: DataTypes.INTEGER
     },
