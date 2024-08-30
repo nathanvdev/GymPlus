@@ -1,21 +1,25 @@
 class MembershipPayment{
-
-  String memberId;
-  String membershipPlan;
-  String billingQuantity;
-  String billingCycle;
+  late int id;
+  int memberId;
+  int membershipPlan;
+  int billingQuantity;
+  int billingCycle;
   String initialPaymentDate;
   String nextPaymentDate;
-  String subtotal;
-  String discounts;
+  double subtotal;
+  double discounts;
   String discountsDescription;
-  String total;
-  String paymentMethod;
-  String cash;
-  String change;
-  String paymentStatus;
+  double total;
+  int paymentMethod;
+  double cash;
+  double change;
+  int paymentStatus;
   String paymentReference;
-  String adminMemberId;
+  int adminMemberId;
+   String createdAt;
+   String updatedAt;
+   String name;
+   String lastName;
 
   MembershipPayment({
     required this.memberId,
@@ -34,6 +38,10 @@ class MembershipPayment{
     required this.paymentStatus,
     required this.paymentReference,
     required this.adminMemberId,
+    this.createdAt = '--/--/----',
+    this.updatedAt = '--/--/----',
+    this.name = '',
+    this.lastName = '',
   });
 
   factory MembershipPayment.fromJson(Map<String, dynamic> json) {

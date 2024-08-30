@@ -116,9 +116,9 @@ List<BoxShadow> buildShadowBox() {
   return List<BoxShadow>.generate(
     3,
     (int index) => BoxShadow(
-      color: Colors.black.withOpacity(0.3),
-      spreadRadius: 1,
-      blurRadius: 9,
+      color: Colors.black.withOpacity(0.2),
+      spreadRadius: 0.5,
+      blurRadius: 10,
       offset: const Offset(0, 0),
     ),
   );
