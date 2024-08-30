@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:frontend/config/theme/app_theme.dart';
 import 'package:frontend/screens/panel.dart';
+import 'package:frontend/screens/payments.dart';
 import 'package:frontend/screens/providers/login.provider.dart';
 import 'package:frontend/screens/providers/member_table.provider.dart';
+import 'package:frontend/screens/providers/payments.provider.dart';
 import 'package:frontend/screens/providers/product_provider.dart';
 import 'package:frontend/screens/store.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +29,8 @@ class Options extends StatelessWidget {
   final loginProvider = context.read<LoginProvider>();
   final productProvider = context.read<ProductProvider>();
   final memberProvider = context.read<MemberTableProvider>();
-    
+  final paymentProvider = context.read<PaymentsProvider>(); 
+
     return ListView(
       children: <Widget>[
         Container(
@@ -74,6 +77,15 @@ class Options extends StatelessWidget {
             productProvider.refresh();
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const StoreScreen()));
           },
+        ),
+        MenuButtonBar(
+          title: "Pagos",
+          icon: Icons.attach_money,
+          onPressed: () {
+            paymentProvider.refresh();
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const PaymentsScreen()));
+          }
+          ,
         ),
         MenuButtonBar(
           title: "Configuracion",
