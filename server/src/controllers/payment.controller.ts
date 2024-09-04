@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import { Payment } from "../models/payment";
 import { generateMembershipBill } from "../utilities/membership_bill";
+import member from "../models/member";
 
 export const postpayment = async (req: Request, res: Response) => {
 
     const { body } = req;
 
     try {
-        if (body.cash == ''){
+        if (body.cash == '') {
             body.cash = body.total;
             body.change = 0;
         }
@@ -95,8 +96,8 @@ export const getBill = async (_: Request, res: Response) => {
         doc.font('Times-Roman').text('Metodo de Pago: Efectivo')
         doc.font('Times-Roman').text('Efectivo: Q.500.00')
         doc.font('Times-Roman').text('Cambio: Q.320.00')
-        doc.font('Times-Roman').text('Descripcion del Descuento: \nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur', { align: 'justify' , width: 300})
-        
+        doc.font('Times-Roman').text('Descripcion del Descuento: \nSed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur', { align: 'justify', width: 300 })
+
         doc.fontSize(15).font('Times-Roman').text('Subtotal: Q.200.00', 320, 300, { align: 'right' })
             .fontSize(15).font('Times-Roman').text('Descuentos: Q.20.00', 320, 315, { align: 'right', underline: true })
             .fontSize(15).font('Times-Roman').text('Total: Q.180.00', 320, 333, { align: 'right' })
@@ -104,7 +105,7 @@ export const getBill = async (_: Request, res: Response) => {
 
         // Pie de página
         //autorizado por:
-        doc.fontSize(7).font('Times-Roman').text('Fecha de emision: 2024-07-23     No Referencia: 123434-23        Autorizado por: admin', 73,390, { align: 'left'});
+        doc.fontSize(7).font('Times-Roman').text('Fecha de emision: 2024-07-23     No Referencia: 123434-23        Autorizado por: admin', 73, 390, { align: 'left' });
         doc.moveDown(1);
         doc.fontSize(13).font('Times-Roman').text('Gracias por su preferencia', { align: 'center' });
 
@@ -125,14 +126,24 @@ export const getBill = async (_: Request, res: Response) => {
 
 }
 
+
 export const getPayments = async (_: Request, res: Response) => {
-
     try {
-
         const payments = await Payment.findAll();
+
+        const paymentsWithMemberInfo = await Promise.all(payments.map(async (payment) => {
+            const tmp = await member.findByPk(payment.dataValues.member_id);
+            return {
+                ...payment.toJSON(),
+                member_name: tmp ? tmp.dataValues.name : 'N/A',
+                member_lastname: tmp ? tmp.dataValues.last_name : 'N/A'
+            };
+        }));
+
+
         res.status(200).json({
             msg: 'Pagos',
-            payments
+            payments: paymentsWithMemberInfo
         });
 
     } catch (error) {
@@ -141,5 +152,74 @@ export const getPayments = async (_: Request, res: Response) => {
             msg: 'Error en el servidor'
         });
     }
+};
 
+export const getPaymentById = async (req: Request, res: Response) => {
+
+    const { id } = req.params;
+
+    try {
+        const payment = await Payment.findByPk(id);
+
+        if (!payment) {
+            return res.status(404).json({
+                msg: 'Pago no encontrado'
+            });
+        }
+
+        const memberInfo = await member.findByPk(payment.dataValues.member_id);
+        payment.dataValues.member_name = memberInfo ? memberInfo.dataValues.name : 'N/A';
+        payment.dataValues.member_lastname = memberInfo ? memberInfo.dataValues.last_name : 'N/A';
+        res.status(200).json({
+            payment
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: 'Error en el servidor'
+        });
+    }
+};
+
+
+export const updatePayment = async (req: Request, res: Response) => {
+
+    const { body } = req;
+
+    try {
+
+        const payment = await Payment.findByPk(req.params.id);
+
+        if (!payment) {
+            return res.status(404).json({
+                msg: 'Pago no encontrado'
+            });
+        }
+        const updatedPayment ={
+            membership_plan: body.membership_plan,
+            billing_quantity: body.billing_quantity,
+            billing_cycle: body.billing_cycle,
+            initialpaymentdate: body.initialpaymentdate,
+            nextpaymentdate: body.nextpaymentdate,
+            subtotal: body.subtotal,
+            discounts: body.discounts,
+            discounts_description: body.discounts_description,
+            total: body.total,
+            payment_method: body.payment_method,
+            cash: body.cash,
+            change: body.change,
+            payment_status: body.payment_status,
+            payment_reference: body.payment_reference,
+        }
+        await payment.update(updatedPayment);
+
+        res.status(200).send({ "msg": "Pago actualizado" });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            msg: 'Error en el servidor'
+        });
+    }
 }

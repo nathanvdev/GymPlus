@@ -11,7 +11,6 @@ class MemberTableProvider extends ChangeNotifier {
     try {
       final response = await dio.get('http://localhost:3569/member/get');
       final List<dynamic> memberListData = response.data['members'];
-      memberList.clear();
 
       for (var element in memberListData) {
         for (var key in element.keys) {
@@ -21,6 +20,7 @@ class MemberTableProvider extends ChangeNotifier {
         }
       }
 
+      memberList.clear();
       for (var element in memberListData) {
         var newMember = Member(
           id: element['id'],
@@ -37,6 +37,7 @@ class MemberTableProvider extends ChangeNotifier {
       filtredMemberList.clear();
       filtredMemberList.addAll(memberList);
       notifyListeners();
+      return;
     } catch (e) {
       return;
     }

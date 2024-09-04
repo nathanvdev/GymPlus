@@ -8,12 +8,13 @@ export const getProducts = async (_: Request, res: Response) => {
         res.status(200).json({
             products
         });
-
+        return;
     } catch (error) {
         console.log(error);
         res.status(500).json({
             msg: 'Error en el servidor'
         });
+        return;
     }
 
 }

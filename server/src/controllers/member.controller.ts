@@ -6,30 +6,6 @@ import { Payment } from '../models/payment';
 
 export const getmembers = async (_req: Request, res: Response) => {
 
-    // const response = await member.findAll();
-
-    // var lastPaymentDate = '';
-    // var nextPaymentDate = '';
-    
-    // const members = response.map(  member => {
-
-    //     return {
-    //         id: member.dataValues.id,
-    //         name: member.dataValues.name,
-    //         lastname: member.dataValues.last_name,
-    //         membershipStatus: member.dataValues.membership_status,
-    //         lastPaymentDate: lastPaymentDate,
-    //         nextPaymentDate: nextPaymentDate,
-    //         lastVisit: member.dataValues.last_visit,
-    //         activeDays: member.dataValues.active_days
-    //     }
-    // }
-    // )
-    // res.json({ members });
-
-
-
-
     try {
         const response = await member.findAll({
             include: [{

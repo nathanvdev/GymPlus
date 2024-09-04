@@ -11,7 +11,6 @@ class ProductProvider extends ChangeNotifier {
     try {
       final response = await dio.get('http://localhost:3569/product/getall');
       final List<dynamic> productListData = response.data['products'];
-      productList.clear();
 
       for (var element in productListData) {
         if (element['imageurl'] != null) {
@@ -26,6 +25,7 @@ class ProductProvider extends ChangeNotifier {
         }
       }
 
+      productList.clear();
       for (var element in productListData) {
         var newProduct = Product(
           id: element['id'].toString(),
@@ -39,6 +39,7 @@ class ProductProvider extends ChangeNotifier {
       filtredProductList.clear();
       filtredProductList.addAll(productList);
       notifyListeners();
+      return;
     } catch (e) {
       return;
     }
@@ -76,38 +77,6 @@ class ProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
-
-// class CartItemsProvider extends ChangeNotifier {
-//   var selectedProduct = [];
-
-//   void addProduct(int id) {
-//     selectedProduct.add(id);
-
-//     notifyListeners();
-//   }
-
-//   void removeProduct(int id) {
-//     selectedProduct.remove(id);
-//     notifyListeners();
-//   }
-
-//   void clear() {
-//     selectedProduct.clear();
-//     notifyListeners();
-//   }
-
-//   List getProducts() {
-//     return selectedProduct;
-//   }
-
-//   String getProductById(int id) {
-//     try {
-//       return selectedProduct.firstWhere((element) => element == id).toString();
-//     } catch (e) {
-//       throw Exception('Product with id $id not found');
-//     }
-//   }
-// }
 
 class ItemCart{
   int id;
