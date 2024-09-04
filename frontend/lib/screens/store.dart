@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/config/theme/app_theme.dart';
-import 'package:frontend/screens/providers/login.provider.dart';
+import 'package:frontend/screens/providers/login_provider.dart';
 import 'package:frontend/screens/providers/product_provider.dart';
 import 'package:frontend/screens/widgets/display_menu.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +37,14 @@ class StorePage extends StatefulWidget {
 }
 
 class _StorePageState extends State<StorePage> {
+  Future<void> _future = Future.any([]);
+
+  @override
+  void initState() {
+    super.initState();
+    _future = context.read<ProductProvider>().refresh();
+  }
+
   @override
   Widget build(BuildContext context) {
     final producProvider = context.watch<ProductProvider>();
@@ -45,49 +53,56 @@ class _StorePageState extends State<StorePage> {
 
     return Scaffold(
         body: Center(
-            child: SafeArea(
-                child: Row(
-      children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.24,
-          height: MediaQuery.of(context).size.height,
-          child: Container(
-            padding:
-                const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              boxShadow: buildShadowBox(),
-            ),
-            child: const Menu(), // Removed const
-          ),
-        ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.76,
-          child: Row(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width * 0.5,
-                height: MediaQuery.of(context).size.height,
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.07,
-                      child: buttonsView(
-                          context, loginProvider, producProvider, cartProvider),
-                    ),
-                    productsView(context, producProvider),
-                  ],
-                ),
-              ),
-              cartView(context, cartProvider, producProvider),
-            ],
-          ),
-        )
-      ],
-    ))));
+            child: FutureBuilder(
+                future: _future,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  }
+                  return Row(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.24,
+                        height: MediaQuery.of(context).size.height,
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              top: 20, left: 20, right: 20, bottom: 20),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            boxShadow: buildShadowBox(),
+                          ),
+                          child: const Menu(), // Removed const
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.76,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              height: MediaQuery.of(context).size.height,
+                              padding: const EdgeInsets.all(20),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.07,
+                                    child: buttonsView(context, loginProvider,
+                                        producProvider, cartProvider),
+                                  ),
+                                  productsView(context, producProvider),
+                                ],
+                              ),
+                            ),
+                            cartView(context, cartProvider, producProvider),
+                          ],
+                        ),
+                      )
+                    ],
+                  );
+                })));
   }
 
   Row buttonsView(BuildContext context, LoginProvider loginProvider,
@@ -473,27 +488,12 @@ class _StorePageState extends State<StorePage> {
                     try {
                       if (context.mounted) {
                         final loginProvider = context.read<LoginProvider>();
-                        var data = {
-                          'total': getSubtotalCart(),
-                          'admin_id': loginProvider.getUserId(),
-                          'items': cartProvider.cartItems
-                              .map((item) => {
-                                    'product_name': producProvider
-                                        .getProductById(item.id.toString())
-                                        .name,
-                                    'price': double.parse(producProvider
-                                        .getProductById(item.id.toString())
-                                        .price),
-                                    'quantity': item.quantity,
-                                  })
-                              .toList(),
-                        };
                         final dio = Dio();
                         final response = await dio.post(
                           'http://localhost:3569/sale/add',
                           data: {
                             'total': getSubtotalCart(),
-                            'admin_id': loginProvider.getUserId(),
+                            'admin_id': loginProvider.user.memberId,
                             'items': cartProvider.cartItems
                                 .map((item) => {
                                       'product_name': producProvider
@@ -526,6 +526,10 @@ class _StorePageState extends State<StorePage> {
                         displayMessageDialog(
                             context, 'Hubo un error al realizar la compra $e');
                       }
+                    }
+                  }else{
+                    if (context.mounted) {
+                      displayMessageDialog(context, 'Contraseña Incorrecta');
                     }
                   }
                 }

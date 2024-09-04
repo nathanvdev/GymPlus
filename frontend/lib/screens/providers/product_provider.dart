@@ -11,7 +11,6 @@ class ProductProvider extends ChangeNotifier {
     try {
       final response = await dio.get('http://localhost:3569/product/getall');
       final List<dynamic> productListData = response.data['products'];
-      productList.clear();
 
       for (var element in productListData) {
         if (element['imageurl'] != null) {
@@ -26,6 +25,7 @@ class ProductProvider extends ChangeNotifier {
         }
       }
 
+      productList.clear();
       for (var element in productListData) {
         var newProduct = Product(
           id: element['id'].toString(),
@@ -39,6 +39,7 @@ class ProductProvider extends ChangeNotifier {
       filtredProductList.clear();
       filtredProductList.addAll(productList);
       notifyListeners();
+      return;
     } catch (e) {
       return;
     }

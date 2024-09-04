@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:frontend/config/theme/app_theme.dart';
 import 'package:frontend/screens/panel.dart';
-import 'package:frontend/screens/providers/login.provider.dart';
+import 'package:frontend/screens/providers/login_provider.dart';
 import 'package:frontend/screens/providers/member_table.provider.dart';
 import 'package:provider/provider.dart';
 
@@ -67,7 +67,6 @@ class __FormContentState extends State<_FormContent> {
   @override
   Widget build(BuildContext context) {
     final loginProvider = context.read<LoginProvider>();
-    final memberProvider = context.read<MemberTableProvider>();
     late String usuario = "";
     late String password = "";
 
@@ -182,7 +181,6 @@ class __FormContentState extends State<_FormContent> {
                       if(context.mounted){
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Panel()),);
                       loginProvider.setUser(response);
-                      memberProvider.refresh();
                       }else{
                         showDialog(
                           context: context.mounted ? context : context,

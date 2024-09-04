@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:frontend/config/theme/app_theme.dart';
 import 'package:frontend/screens/panel.dart';
 import 'package:frontend/screens/payments.dart';
-import 'package:frontend/screens/providers/login.provider.dart';
-import 'package:frontend/screens/providers/member_table.provider.dart';
-import 'package:frontend/screens/providers/payments.provider.dart';
-import 'package:frontend/screens/providers/product_provider.dart';
+import 'package:frontend/screens/providers/login_provider.dart';
+import 'package:frontend/screens/providers/payments_provider.dart';
+import 'package:frontend/screens/sign_in.dart';
 import 'package:frontend/screens/store.dart';
 import 'package:provider/provider.dart';
 
@@ -27,8 +26,6 @@ class Options extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
   final loginProvider = context.read<LoginProvider>();
-  final productProvider = context.read<ProductProvider>();
-  final memberProvider = context.read<MemberTableProvider>();
   final paymentProvider = context.read<PaymentsProvider>(); 
 
     return ListView(
@@ -66,7 +63,6 @@ class Options extends StatelessWidget {
           title: "Miembros",
           icon: Icons.people,
           onPressed: () {
-            memberProvider.refresh();
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Panel()));
           },
         ),
@@ -74,7 +70,6 @@ class Options extends StatelessWidget {
           title: "Tienda",
           icon: Icons.store,
           onPressed: () {
-            productProvider.refresh();
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const StoreScreen()));
           },
         ),
@@ -95,7 +90,7 @@ class Options extends StatelessWidget {
         MenuButtonBar(
           title: "Cerrar Sesion",
           icon: Icons.logout,
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SignInPage2()))
         ),
       ],
     );

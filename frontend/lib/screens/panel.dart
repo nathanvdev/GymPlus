@@ -1,13 +1,9 @@
-import 'package:dio/dio.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/config/theme/app_theme.dart';
 
 import 'package:frontend/models/member.dart';
-import 'package:frontend/models/membership_payment.dart';
 import 'package:frontend/screens/new_member.dart';
-import 'package:frontend/screens/providers/login.provider.dart';
 import 'package:frontend/screens/providers/member_table.provider.dart';
 import 'package:frontend/screens/widgets/display_menu.dart';
 import 'package:provider/provider.dart';
@@ -31,182 +27,348 @@ class Dashboard extends StatefulWidget {
 }
 
 class Dashboardstate extends State<Dashboard> {
+
+  Future<void> _future = Future.any([]);
+
+  @override
+  void initState() {
+    super.initState();
+    _future = context.read<MemberTableProvider>().refresh();
+  }
+
   @override
   Widget build(BuildContext context) {
     final memberProvider = context.read<MemberTableProvider>();
     final memberselectedProvider = context.read<MemberSelectedProvider>();
     return Scaffold(
       body: Center(
-        child: SafeArea(
-            child: Row(
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.24,
-              height: MediaQuery.of(context).size.height,
-              child: Container(
-                padding: const EdgeInsets.only(
-                    top: 20, left: 20, right: 20, bottom: 20),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  boxShadow: buildShadowBox(),
-                ),
-                child: const Menu(), // Removed const
-              ),
-            ),
-            Expanded(
-                flex: 3,
-                child: Container(
-                  margin: const EdgeInsets.only(
-                      top: 10, bottom: 10, right: 10, left: 20),
-                  child: Column(
-                      // Removed const
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        const TopBanner(),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Row(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: FilledButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const NewMemberScreen()));
-                                          },
-                                          child: const Text("Agregar Miembro"),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: FilledButton(
-                                          onPressed: () {
-                                            if (memberselectedProvider
-                                                    .getSelectedMemberId() ==
-                                                -1) {
-                                              showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return AlertDialog(
-                                                    title: const Text('Error'),
-                                                    content: const Text(
-                                                        'Seleccione un miembro para realizar el pago'),
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                        child: const Text(
-                                                            'Aceptar'),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
-                                            } else {
-                                              showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return const PaymentProcessWidget();
-                                                },
-                                              );
-                                            }
-                                          },
-                                          child: const Text("Realizar Pago"),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: FilledButton(
-                                          onPressed: () {
-                                            if (memberselectedProvider
-                                                    .getSelectedMemberId() ==
-                                                -1) {
-                                              showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return AlertDialog(
-                                                    title: const Text('Error'),
-                                                    content: const Text(
-                                                        'Seleccione un miembro para realizar la medición'),
-                                                    actions: <Widget>[
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                        child: const Text(
-                                                            'Aceptar'),
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
-                                            }
-                                          },
-                                          child: const Text(
-                                              "Medición Antropométrica"),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+        child: FutureBuilder(
+          future: _future,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  }
+                  return Row(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.24,
+                        height: MediaQuery.of(context).size.height,
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              top: 20, left: 20, right: 20, bottom: 20),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            boxShadow: buildShadowBox(),
+                          ),
+                          child: const Menu(), // Removed const
+                        ),
+                      ),
+                      Expanded(
+                          flex: 3,
+                          child: Container(
+                            margin: const EdgeInsets.only(
+                                top: 10, bottom: 10, right: 10, left: 20),
+                            child: Column(
+                                // Removed const
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  const TopBanner(),
                                   SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.15,
-                                    height: 50,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: SearchBar(
-                                        hintText: "Buscar Miembro",
-                                        shadowColor: WidgetStatePropertyAll(
-                                          Theme.of(context).shadowColor,
-                                        ),
-                                        elevation:
-                                            const WidgetStatePropertyAll(8),
-                                        shape: WidgetStatePropertyAll(
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(30.0),
-                                            side: BorderSide(
-                                              color:
-                                                  Theme.of(context).shadowColor,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: FilledButton(
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  const NewMemberScreen()));
+                                                    },
+                                                    child: const Text(
+                                                        "Agregar Miembro"),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: FilledButton(
+                                                    onPressed: () {
+                                                      if (memberselectedProvider
+                                                              .getSelectedMemberId() ==
+                                                          -1) {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return AlertDialog(
+                                                              title: const Text(
+                                                                  'Error'),
+                                                              content: const Text(
+                                                                  'Seleccione un miembro para realizar el pago'),
+                                                              actions: <Widget>[
+                                                                TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop();
+                                                                  },
+                                                                  child: const Text(
+                                                                      'Aceptar'),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          },
+                                                        );
+                                                      } else {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return const PaymentProcessWidget(
+                                                                type: 1);
+                                                          },
+                                                        );
+                                                      }
+                                                    },
+                                                    child: const Text(
+                                                        "Realizar Pago"),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: FilledButton(
+                                                    onPressed: () {
+                                                      if (memberselectedProvider
+                                                              .getSelectedMemberId() ==
+                                                          -1) {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return AlertDialog(
+                                                              title: const Text(
+                                                                  'Error'),
+                                                              content: const Text(
+                                                                  'Seleccione un miembro para realizar la medición'),
+                                                              actions: <Widget>[
+                                                                TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop();
+                                                                  },
+                                                                  child: const Text(
+                                                                      'Aceptar'),
+                                                                ),
+                                                              ],
+                                                            );
+                                                          },
+                                                        );
+                                                      }
+                                                    },
+                                                    child: const Text(
+                                                        "Medición Antropométrica"),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ),
+                                            SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.15,
+                                              height: 50,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: SearchBar(
+                                                  hintText: "Buscar Miembro",
+                                                  shadowColor:
+                                                      WidgetStatePropertyAll(
+                                                    Theme.of(context)
+                                                        .shadowColor,
+                                                  ),
+                                                  elevation:
+                                                      const WidgetStatePropertyAll(
+                                                          8),
+                                                  shape: WidgetStatePropertyAll(
+                                                    RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30.0),
+                                                      side: BorderSide(
+                                                        color: Theme.of(context)
+                                                            .shadowColor,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  onChanged: (value) {
+                                                    memberProvider
+                                                        .filtringMembers(value);
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        onChanged: (value) {
-                                          memberProvider.filtringMembers(value);
-                                        },
-                                      ),
+                                      ],
                                     ),
                                   ),
+                                  const TableWdgt(),
+                                ]),
+                          )),
+                    ],
+                  );
+          },
+        ),
+      ),
+    );
+  }
+
+  SizedBox actionsButtons(
+      BuildContext context,
+      MemberSelectedProvider memberselectedProvider,
+      MemberTableProvider memberProvider) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FilledButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const NewMemberScreen()));
+                      },
+                      child: const Text("Agregar Miembro"),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FilledButton(
+                      onPressed: () {
+                        if (memberselectedProvider.getSelectedMemberId() ==
+                            -1) {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Error'),
+                                content: const Text(
+                                    'Seleccione un miembro para realizar el pago'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('Aceptar'),
+                                  ),
                                 ],
-                              ),
-                            ],
-                          ),
+                              );
+                            },
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return const PaymentProcessWidget(type: 1);
+                            },
+                          );
+                        }
+                      },
+                      child: const Text("Realizar Pago"),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: FilledButton(
+                      onPressed: () {
+                        if (memberselectedProvider.getSelectedMemberId() ==
+                            -1) {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Error'),
+                                content: const Text(
+                                    'Seleccione un miembro para realizar la medición'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('Aceptar'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      },
+                      child: const Text("Medición Antropométrica"),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.15,
+                height: 50,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SearchBar(
+                    hintText: "Buscar Miembro",
+                    shadowColor: WidgetStatePropertyAll(
+                      Theme.of(context).shadowColor,
+                    ),
+                    elevation: const WidgetStatePropertyAll(8),
+                    shape: WidgetStatePropertyAll(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        side: BorderSide(
+                          color: Theme.of(context).shadowColor,
                         ),
-                        const TableWdgt(),
-                      ]),
-                )),
-          ],
-        )),
+                      ),
+                    ),
+                    onChanged: (value) {
+                      memberProvider.filtringMembers(value);
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
 }
-
 
 class TopBanner extends StatelessWidget {
   const TopBanner({

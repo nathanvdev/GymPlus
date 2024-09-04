@@ -36,7 +36,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
-  google_fonts: ^2.1.0  # Asegúrate de usar la última versión
+  google_fonts: ^6.2.1  # Asegúrate de usar la última versión
   flutter_svg: ^2.0.9
   pluto_grid: ^8.0.0 
   flutter_carousel_widget: 2.2.0
