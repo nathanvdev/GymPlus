@@ -25,11 +25,12 @@ export const getmembers = async (_req: Request, res: Response) => {
                 lastPaymentDate: payment ? payment.initialpaymentdate : null,
                 nextPaymentDate: payment ? payment.nextpaymentdate : null,
                 lastVisit: member.dataValues.last_visit,
-                activeDays: member.dataValues.active_days
+                activeDays: member.dataValues.active_days,
+                profileImage: member.dataValues.porfileImage
             }
         });
 
-        res.json({ members });
+        res.status(200).json(members);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Error fetching members' });
@@ -55,21 +56,24 @@ export const postmember = async (req: Request, res: Response) => {
 
     try {
 
-        const phoneExist = await member.findOne({
+        const NameExist = await member.findOne({
             where: {
-                phone_number: body.phone_number
+                name: body.name,
+                last_name: body.last_name
             }
         });
 
-        if (phoneExist) {
+        if (NameExist) {
             return res.status(400).json({
-                msg: 'Ya existe un miembro con el número de teléfono ingresado'
+                msg: 'Ya existe un miembro con el nombre y apellido ingresado'
             });
         }
 
 
         const newMember = await member.create(body);
-        res.json(newMember);
+        res.status(201).json(newMember);
+
+
 
 
     } catch (error) {

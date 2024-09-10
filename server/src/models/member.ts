@@ -53,7 +53,9 @@ const member = db.define('member', {
     active_days: {
         type: DataTypes.INTEGER
     },
-    
+    porfileImage: {
+        type: DataTypes.STRING
+    }
 },
     {
         freezeTableName: true
