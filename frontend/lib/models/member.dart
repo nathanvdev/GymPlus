@@ -7,6 +7,7 @@ class Member {
   final String nextPaymentDate;
   final String lastVisit;
   final String activeDays;
+  final String porfileImage;
 
   Member({
     required this.id,
@@ -17,6 +18,7 @@ class Member {
     required this.nextPaymentDate,
     required this.lastVisit,
     required this.activeDays,
+    required this.porfileImage,
   });
 }
 
@@ -38,6 +40,7 @@ class FullMember {
   String? membershipStatus;
   String? lastVisit;
   String? activeDays;
+  String? profileImage;
 
   FullMember({
     this.id,
@@ -57,6 +60,7 @@ class FullMember {
     this.membershipStatus,
     this.lastVisit,
     this.activeDays,
+    this.profileImage,
   });
 }
 

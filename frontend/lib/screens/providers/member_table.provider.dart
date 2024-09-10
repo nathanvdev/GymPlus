@@ -10,7 +10,7 @@ class MemberTableProvider extends ChangeNotifier {
   Future<void> refresh() async {
     try {
       final response = await dio.get('http://localhost:3569/member/get');
-      final List<dynamic> memberListData = response.data['members'];
+      final List<dynamic> memberListData = response.data;
 
       for (var element in memberListData) {
         for (var key in element.keys) {
@@ -31,6 +31,7 @@ class MemberTableProvider extends ChangeNotifier {
           nextPaymentDate: element['nextPaymentDate'],
           lastVisit: element['lastVisit'],
           activeDays: element['activeDays'].toString(),
+          porfileImage: element['profileImage'],
         );
         memberList.add(newMember);
       }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/config/theme/app_theme.dart';
@@ -496,13 +498,13 @@ class MembersTableState extends State<MembersTable> {
           memberselectedProvider.setSelectedMemberId(-1);
         });
       },
-      checkboxHorizontalMargin: 0,
       showBottomBorder: true,
-      columnSpacing: 0,
+      columnSpacing: 1,
       headingRowHeight: 50,
       dataRowMinHeight: 60,
       dataRowMaxHeight: 60,
       showCheckboxColumn: false,
+      horizontalMargin: 10,
       columns: const <DataColumn>[
         //fot de perfil
         DataColumn(label: Center(child: Text('Nombre'))),
@@ -561,17 +563,16 @@ class MembersTableState extends State<MembersTable> {
               DataCell(Row(
                 children: [
                   Container(
-                    height: 40,
-                    width: 40,
+                    width: 50,
+                    height: 50,
                     decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(50),
-                      border: Border.all(
-                          color: const Color.fromARGB(255, 0, 0, 0), width: 2),
-                    ),
-                    child: const Icon(
-                      Icons.person,
-                      size: 30,
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: member.porfileImage != ''
+                            ? FileImage(File('lib/assets/tmp/${member.porfileImage}'))
+                            : const AssetImage('lib/assets/defaultprofile.webp'),
+                        fit: BoxFit.fitWidth,
+                      ),
                     ),
                   ),
                   const SizedBox(
