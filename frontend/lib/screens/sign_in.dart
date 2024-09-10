@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:frontend/config/theme/app_theme.dart';
 import 'package:frontend/screens/panel.dart';
 import 'package:frontend/screens/providers/login_provider.dart';
-import 'package:frontend/screens/providers/member_table.provider.dart';
 import 'package:provider/provider.dart';
 
 class SignInPage2 extends StatelessWidget {
