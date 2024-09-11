@@ -10,7 +10,7 @@ export const generateMembershipBill = async (payment: typeof Payment.arguments) 
     const memberInfo = {
         fullName: `null`,
         idNumber: `0000`,
-        
+
     };
 
     const paymentInfo = {
@@ -18,8 +18,8 @@ export const generateMembershipBill = async (payment: typeof Payment.arguments) 
         initialdate: `null`,
         nextdate: `null`,
         paymentDate: `null`,
-        pUnidad : 0.00,
-        pTotal : 0.00
+        pUnidad: 0.00,
+        pTotal: 0.00
     };
 
     //busca miembro por id 
@@ -60,7 +60,7 @@ export const generateMembershipBill = async (payment: typeof Payment.arguments) 
             paymentInfo.nextdate = formattedDate;
         }
     });
-    
+
     await member.findByPk(payment.admin_member_id).then((member) => {
         if (member) {
             payment.admin_member_id = `${member.dataValues.name} ${member.dataValues.last_name}` || 'null';
@@ -110,8 +110,8 @@ export const generateMembershipBill = async (payment: typeof Payment.arguments) 
     doc.fontSize(9).font(`Times-Roman`).text(`Metodo de Pago: Efectivo`)
     doc.fontSize(9).font(`Times-Roman`).text(`Efectivo: Q.${payment.cash}`)
     doc.fontSize(9).font(`Times-Roman`).text(`Cambio: Q.${payment.change}`)
-    doc.fontSize(9).font(`Times-Roman`).text(`Descripcion del Descuento: \n${payment.discounts_description}`, { align: `justify` , width: 250})
-    
+    doc.fontSize(9).font(`Times-Roman`).text(`Descripcion del Descuento: \n${payment.discounts_description}`, { align: `justify`, width: 250 })
+
     doc.fontSize(15).font(`Times-Roman`).text(`Subtotal: Q.${payment.subtotal}`, 320, 300, { align: `right` })
         .fontSize(15).font(`Times-Roman`).text(`Descuentos: Q.${payment.discounts}`, 320, 315, { align: `right`, underline: true })
         .fontSize(15).font(`Times-Roman`).text(`Total: Q.${payment.total}`, 320, 333, { align: `right` })
@@ -125,7 +125,7 @@ export const generateMembershipBill = async (payment: typeof Payment.arguments) 
     const currentDate = new Date();
     const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}   ${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}:${String(currentDate.getSeconds()).padStart(2, '0')}`;
 
-    doc.fontSize(7).font(`Times-Roman`).text(`Fecha de emision: ${formattedDate}          No Referencia:${payment.id}          Autorizado por: ${payment.admin_member_id}`,{ align: `left` });
+    doc.fontSize(7).font(`Times-Roman`).text(`Fecha de emision: ${formattedDate}          No Referencia:${payment.id}          Autorizado por: ${payment.admin_member_id}`, { align: `left` });
     // Finalizar el documento
     doc.end();
 }
