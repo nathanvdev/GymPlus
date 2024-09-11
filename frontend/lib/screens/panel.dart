@@ -649,7 +649,13 @@ class MembersTableState extends State<MembersTable> {
                 children: [
                   IconButton(
                     icon: const Icon(Icons.edit),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => NewMemberScreen(type: 2, memberID: member.id)));
+                      
+                    },
                   ),
                   IconButton(
                     icon: const Icon(Icons.remove_red_eye_outlined),

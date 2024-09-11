@@ -108,6 +108,16 @@ class AppTheme {
             fontWeight: FontWeight.w900,
           ),
           showValueIndicator: ShowValueIndicator.always,
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Color(0xFF99292F),
+          foregroundColor: Colors.white,
+          elevation: 8,
+          focusElevation: 8,
+          hoverElevation: 8,
+          highlightElevation: 8,
+          disabledElevation: 8,
+          shape: CircleBorder(),
         ));
   }
 }

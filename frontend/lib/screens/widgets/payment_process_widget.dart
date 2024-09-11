@@ -19,12 +19,9 @@ class PaymentProcessWidget extends StatefulWidget {
 }
 
 class _PaymentProcessState extends State<PaymentProcessWidget> {
-  //1-> agregar, 2-> editar
-  int type = 1;
   int paymentID = -1;
 
   final _formKey = GlobalKey<FormState>();
-
   // 1-> standard
   int? membershipType = 1;
   double billingQuantity = 0;
@@ -50,12 +47,11 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
   @override
   void initState() {
     super.initState();
+    _initialDate.text = DateTime.now().toString().substring(0, 10);
     if (widget.type == 2) {
-      type = widget.type;
       paymentID = widget.paymentID;
       _future = updateFields(paymentID);
     } else if (widget.type == 1) {
-      type = widget.type;
       setState(() {
         fullName.text = context.read<MemberTableProvider>().getMemberNameById(
             context.read<MemberSelectedProvider>().getSelectedMemberId());
@@ -81,7 +77,7 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
           );
         }
         return AlertDialog(
-          title: type == 1
+          title: widget.type == 1
               ? const Text('Agregar Pago')
               : const Text('Editar Pago'),
           content: Container(
@@ -598,7 +594,7 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
                     return;
                   }
 
-                  if (type == 1) {
+                  if (widget.type == 1) {
                     final response = await dio.post(
                       'http://localhost:3569/payment/add',
                       data: payment.toJson(),
@@ -620,7 +616,7 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
                     }
                     clearFields();
                     return;
-                  } else if (type == 2) {
+                  } else if (widget.type == 2) {
                     final response = await dio.put(
                       'http://localhost:3569/payment/update/$paymentID',
                       data: payment.toJson(),

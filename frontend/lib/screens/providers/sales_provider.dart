@@ -61,11 +61,9 @@ class SalesProvider with ChangeNotifier {
     try {
       final dio = Dio();
       final response = await dio.delete('http://localhost:3569/sale/delete/$id');
-      //TODO
       if (response.statusCode == 200) {
         refresh();
         notifyListeners();
-        
       }
       return;
     } catch (e) {
