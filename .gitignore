@@ -133,3 +133,5 @@ dist
 frontend/lib/assets/tmp/
 
 server/tmp/
+
+frontend/.vscode/
