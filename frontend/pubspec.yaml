@@ -44,6 +44,7 @@ dependencies:
   provider: 6.1.2
   dio: 5.4.3
   file_picker: ^8.1.2
+  intl_phone_field: ^3.2.0 
 
 dev_dependencies:
   flutter_test:

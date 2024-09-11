@@ -38,14 +38,27 @@ export const getmembers = async (_req: Request, res: Response) => {
 }
 
 
-export const getmember = (req: Request, res: Response) => {
+export const getmember = async (req: Request, res: Response) => {
 
     const { id } = req.params;
 
-    res.json({
-        msg: 'member',
-        id
-    });
+    try {
+        const response = await member.findOne({
+            where: {
+                id
+            }
+        });
+
+        if (!response) {
+            return res.status(400).json({
+                msg: 'No existe un miembro con el id ingresado'
+            });
+        }
+
+        res.status(200).json(response);
+    } catch (error) {
+
+    }
 
 }
 
@@ -92,11 +105,28 @@ export const putmember = (req: Request, res: Response) => {
     const { id } = req.params;
     const { body } = req;
 
-    res.json({
-        msg: 'putmember',
-        id,
-        body
-    });
+    try {
+        const memberExist = member.findByPk(id);
+        if (!memberExist) {
+            return res.status(400).json({
+                msg: 'No existe un miembro con el id ingresado'
+            });
+        }
+
+        member.update(body, {
+            where: {
+                id
+            }
+        });
+
+        res.status(200).json({
+            msg: 'Miembro actualizado'
+        });
+    } catch (error) {
+        res.status(500).json({
+            msg: 'Error en el servidor'
+        });
+    }
 
 }
 
