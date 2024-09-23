@@ -458,7 +458,7 @@ class TableWdgtState extends State<TableWdgt> {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border:
-                Border.all(color: Theme.of(context).primaryColor, width: 3)),
+                Border.all(color: Theme.of(context).primaryColor, width: 5)),
         child: SingleChildScrollView(
           controller: _scrollController,
           scrollDirection: Axis.horizontal,
