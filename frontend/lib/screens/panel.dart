@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/config/theme/app_theme.dart';
 
 import 'package:frontend/models/member.dart';
+import 'package:frontend/screens/member_profile.dart';
 import 'package:frontend/screens/new_member.dart';
 import 'package:frontend/screens/providers/member_table.provider.dart';
 import 'package:frontend/screens/widgets/display_menu.dart';
@@ -659,7 +660,9 @@ class MembersTableState extends State<MembersTable> {
                   ),
                   IconButton(
                     icon: const Icon(Icons.remove_red_eye_outlined),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MemberProfile()));
+                    },
                   ),
                 ],
               )),
