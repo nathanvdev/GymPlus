@@ -1,13 +1,13 @@
 import {Request, Response} from 'express';
-import medida from '../models/medida_corporal';
+import measurement from '../models/measurement';
 
-export const postmedida = async (req: Request, res: Response) => {
+export const postmeasurement = async (req: Request, res: Response) => {
     
         const {body} = req;
     
         try {
-            const newMedida = await medida.create(body);
-            res.status(201).json(newMedida);
+            const newMedida = await measurement.create(body);
+            res.status(200).json(newMedida);
     
         } catch (error) {
             console.error(error);

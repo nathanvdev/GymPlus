@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 import db from "../../db/connection";
 import Member from "./member";
 
-const MedidaCorporal = db.define('medida_corporal', {
+const Measurement = db.define('measurement', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -11,36 +11,35 @@ const MedidaCorporal = db.define('medida_corporal', {
     member_id: {
         type: DataTypes.INTEGER
     },
-    altura: {
+    height: {
         type: DataTypes.FLOAT
     },
-    peso: {
+    weight: {
         type: DataTypes.FLOAT
     },
     imc: {
         type: DataTypes.FLOAT
     },
-    brazo: {
+    arm: {
         type: DataTypes.FLOAT
     },
-    pecho: {
+    chest: {
         type: DataTypes.FLOAT
     },
     abdomen: {
         type: DataTypes.FLOAT
     },
-    gluteo: {
+    gluteus: {
         type: DataTypes.FLOAT
     },
-    pantorrila: {
+    thigh: {
         type: DataTypes.FLOAT
     }
 },
     {
         freezeTableName: true,
-        timestamps: true
     })
 
-MedidaCorporal.belongsTo(Member, { foreignKey: 'member_id' });
+    Measurement.belongsTo(Member, { foreignKey: 'member_id' });
 
-export default MedidaCorporal;
+export default Measurement;
