@@ -11,6 +11,7 @@ import 'package:frontend/screens/providers/member_table.provider.dart';
 import 'package:frontend/screens/widgets/display_menu.dart';
 import 'package:provider/provider.dart';
 
+import 'widgets/body_measurements.dart';
 import 'widgets/payment_process_widget.dart';
 
 class Panel extends StatelessWidget {
@@ -182,6 +183,14 @@ class Dashboardstate extends State<Dashboard> {
                                                                 ),
                                                               ],
                                                             );
+                                                          },
+                                                        );
+                                                      }
+                                                      else {
+                                                       showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return const BodyMeasurements();
                                                           },
                                                         );
                                                       }
