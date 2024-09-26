@@ -4,6 +4,7 @@ import loginRoutes from '../routes/login.route'
 import paymentRoutes from '../routes/payment.route'
 import productRoutes from '../routes/product.route'
 import saleRoutes from '../routes/sales.route'
+import medidasRoutes from '../routes/medidas.route'
 import cors from 'cors'
 import db from '../../db/connection';
 
@@ -16,7 +17,8 @@ class Server {
         login: '/login',
         payment : '/payment',
         product : '/product',
-        sale : '/sale'
+        sale : '/sale',
+        medida: '/medida'
     }
     constructor() {
         this.app = express()
@@ -49,6 +51,7 @@ class Server {
         this.app.use(this.apiPaths.payment, paymentRoutes)
         this.app.use(this.apiPaths.product, productRoutes)
         this.app.use(this.apiPaths.sale, saleRoutes)
+        this.app.use(this.apiPaths.medida, medidasRoutes)
     }
 
     listen() {
