@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'widgets/payment_process_widget.dart';
 
@@ -34,7 +32,7 @@ class __MemberPagStateState extends State<_MemberPagState> {
               Container(
                   height: 400,
                   margin: const EdgeInsets.only(
-                      left: 70, right: 70, bottom: 10, top: 10),
+                      left: 70, right: 70, bottom: 10, top: 20),
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
@@ -54,7 +52,7 @@ class __MemberPagStateState extends State<_MemberPagState> {
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                 image: AssetImage(
-                                    'lib/assets/defaultprofile.webp'),
+                                    'lib/assets/tmp/Cristiano-Ronaldo-ceremony-rename-airport-Santa-Cruz-Madeira-Portugal-March-29-2017.webp'),
                                 fit: BoxFit.fitWidth,
                               ),
                             ),
@@ -219,6 +217,19 @@ class __MemberPagStateState extends State<_MemberPagState> {
                                     width: 5,
                                   ),
                                   Text('Ultimo Pago: 2021-10-10'),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              // nextDuePayment
+                              Row(
+                                children: [
+                                  Icon(Icons.money),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text('Proximo Pago: 2021-11-10'),
                                 ],
                               ),
                               SizedBox(
@@ -507,13 +518,25 @@ class MembershipCard extends StatelessWidget {
           ),
           Column(
             children: [
-              const Text(
-                'Estado: Pagado',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              Container(
+                      height: 30,
+                      width: 80,
+                      padding: const EdgeInsets.only(left: 5, right: 5),
+                      decoration: BoxDecoration(
+                        color: payment.paymentStatus == 1
+                            ? Colors.green
+                            : Colors.yellow,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                          width: 2,
+                        ),
+                      ),
+                      child: Center(
+                          child: Text(
+                        payment.paymentStatus == 1 ? 'Pagado' : 'Pendiente',
+                      )),
+                    ),
               Row(
                 children: [
                   IconButton(
@@ -542,4 +565,8 @@ class MembershipCard extends StatelessWidget {
       ),
     );
   }
+}
+
+mixin payment {
+  static int paymentStatus = 2;
 }
