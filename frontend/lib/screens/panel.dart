@@ -1,8 +1,6 @@
 import 'dart:io';
-import 'package:flutter/material.dart' hide CarouselController;
-import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
+import 'package:flutter/material.dart';
 import 'package:frontend/config/theme/app_theme.dart';
-
 import 'package:frontend/models/member.dart';
 import 'package:frontend/screens/member_profile.dart';
 import 'package:frontend/screens/new_member.dart';
@@ -397,35 +395,7 @@ class TopBanner extends StatelessWidget {
           border:
               Border.all(color: const Color.fromARGB(255, 0, 0, 0), width: 2),
         ),
-        child: FlutterCarousel.builder(
-            itemCount: 4,
-            itemBuilder:
-                (BuildContext context, int itemIndex, int pageViewIndex) {
-              return const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SmallCardWidget(),
-                  SmallCardWidget(),
-                  SmallCardWidget(),
-                ],
-              );
-            },
-            options: CarouselOptions(
-                autoPlayCurve: Curves.easeInCubic,
-                pauseAutoPlayOnTouch: true,
-                pauseAutoPlayOnManualNavigate: true,
-                autoPlay: true,
-                autoPlayAnimationDuration: const Duration(seconds: 1),
-                autoPlayInterval: const Duration(seconds: 7),
-                enableInfiniteScroll: true,
-                slideIndicator: CircularSlideIndicator(
-                  indicatorBackgroundColor: Colors.white,
-                  indicatorBorderColor: Colors.black,
-                  indicatorRadius: 5,
-                  indicatorBorderWidth: 1,
-                  currentIndicatorColor: Theme.of(context).shadowColor,
-                ))));
+        child: Text('Banner'));
   }
 }
 
