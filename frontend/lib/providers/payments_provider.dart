@@ -36,7 +36,9 @@ class PaymentsProvider extends ChangeNotifier {
         }
         if (element['changue'] == null) {}
         element['changue'] = 0.0;
+
         var newPayment = MembershipPayment(
+          id: element['id'],
           memberId: element['member_id'],
           membershipPlan: element['membership_plan'],
           billingQuantity: element['billing_quantity'],
@@ -122,6 +124,7 @@ class PaymentsProvider extends ChangeNotifier {
 
   emptyMembershipPaymeny() {
     var newPayment = MembershipPayment(
+      id: 0,
       memberId: 0,
       membershipPlan: 0,
       billingQuantity: 0,
@@ -168,6 +171,7 @@ class PaymentsProvider extends ChangeNotifier {
         }
       }
       var newPayment = MembershipPayment(
+        id: element['id'],
         memberId: element['member_id'],
         membershipPlan: element['membership_plan'],
         billingQuantity: element['billing_quantity'],
