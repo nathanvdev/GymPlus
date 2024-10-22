@@ -4,7 +4,7 @@ import 'package:frontend/config/theme/app_theme.dart';
 import 'package:frontend/models/member.dart';
 import 'package:frontend/screens/member_profile.dart';
 import 'package:frontend/screens/new_member.dart';
-import 'package:frontend/screens/providers/member_table.provider.dart';
+import 'package:frontend/providers/member_table.provider.dart';
 import 'package:frontend/screens/widgets/display_menu.dart';
 import 'package:provider/provider.dart';
 
@@ -395,7 +395,7 @@ class TopBanner extends StatelessWidget {
           border:
               Border.all(color: const Color.fromARGB(255, 0, 0, 0), width: 2),
         ),
-        child: Text('Banner'));
+        child: const Text('Banner'));
   }
 }
 
@@ -639,6 +639,7 @@ class MembersTableState extends State<MembersTable> {
                   IconButton(
                     icon: const Icon(Icons.remove_red_eye_outlined),
                     onPressed: () {
+                      memberselectedProvider.setSelectedMemberId(member.id);
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const MemberProfile()));
                     },
                   ),

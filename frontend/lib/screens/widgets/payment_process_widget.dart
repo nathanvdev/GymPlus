@@ -2,9 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/models/membership_payment.dart';
-import 'package:frontend/screens/providers/login_provider.dart';
-import 'package:frontend/screens/providers/member_table.provider.dart';
-import 'package:frontend/screens/providers/payments_provider.dart';
+import 'package:frontend/providers/login_provider.dart';
+import 'package:frontend/providers/member_table.provider.dart';
+import 'package:frontend/providers/payments_provider.dart';
 import 'package:provider/provider.dart';
 
 class PaymentProcessWidget extends StatefulWidget {
@@ -162,6 +162,7 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
                                 label: billingQuantity.round().toString(),
                                 onChanged: (double value) {
                                   setState(() {
+                                    discount = 0;
                                     if (membershipType == 0) {
                                       _showDialog('Error',
                                           'Por favor seleccione un tipo de membresia');
@@ -217,6 +218,7 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
                                 label: billingRateToString(billingRate.toInt()),
                                 onChanged: (double value) {
                                   setState(() {
+                                    discount = 0;
                                     if (membershipType == 0) {
                                       _showDialog('Error',
                                           'Por favor seleccione un tipo de membresia');
@@ -337,6 +339,7 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
                           child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
+                          controller: TextEditingController(text: discount.toString()),
                             decoration: const InputDecoration(
                               labelText: "Descuento",
                               hintText: "Descuento a aplicar",
@@ -567,6 +570,7 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
 
                 try {
                   final payment = MembershipPayment(
+                    id: paymentID,
                     memberId: memberselectedProvider.getSelectedMemberId(),
                     membershipPlan: int.parse(membershipType.toString()),
                     billingQuantity: billingQuantity.toInt(),
@@ -624,6 +628,7 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
 
                     if (response.statusCode == 200) {
                       memberProvider.refresh();
+                      
                       if (context.mounted) {
                         Navigator.pop(context);
                       }

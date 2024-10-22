@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/login_provider.dart';
-import '../providers/member_table.provider.dart';
+import '../../providers/login_provider.dart';
+import '../../providers/member_table.provider.dart';
 
 class BodyMeasurements extends StatefulWidget {
   const BodyMeasurements({super.key});

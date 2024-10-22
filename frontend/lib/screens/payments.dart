@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/config/theme/app_theme.dart';
-import 'package:frontend/screens/providers/login_provider.dart';
-import 'package:frontend/screens/providers/payments_provider.dart';
-import 'package:frontend/screens/providers/sales_provider.dart';
+import 'package:frontend/providers/login_provider.dart';
+import 'package:frontend/providers/payments_provider.dart';
+import 'package:frontend/providers/sales_provider.dart';
 import 'package:frontend/screens/widgets/payment_process_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';

@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/screens/providers/login_provider.dart';
-import 'package:frontend/screens/providers/member_table.provider.dart';
+import 'package:frontend/providers/login_provider.dart';
+import 'package:frontend/providers/member_table.provider.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
@@ -106,33 +106,50 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
                                             ),
                                           ),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Container(
-                                            padding: const EdgeInsets.all(2.0),
-                                            height: 100,
-                                            width: 100,
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey[200],
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              border: Border.all(
-                                                color: Colors.grey,
-                                                width: 2.0,
-                                              ),
+                                        // Padding(
+                                        //   padding: const EdgeInsets.all(8.0),
+                                        //   child: Container(
+                                        //     padding: const EdgeInsets.all(2.0),
+                                        //     height: 100,
+                                        //     width: 100,
+                                        //     decoration: BoxDecoration(
+                                        //       color: Colors.grey[200],
+                                        //       borderRadius:
+                                        //           BorderRadius.circular(10),
+                                        //       border: Border.all(
+                                        //         color: Colors.grey,
+                                        //         width: 2.0,
+                                        //       ),
+                                        //     ),
+                                        //     child: imageProductController
+                                        //             .text.isEmpty
+                                        //         ? const Icon(
+                                        //             Icons
+                                        //                 .person_outline_rounded,
+                                        //             size: 50,
+                                        //           )
+                                        //         : Image.file(
+                                        //             File(
+                                        //                 'lib/assets/tmp/${imageProductController.text}'),
+                                        //             fit: BoxFit.fitHeight,
+                                        //           ),
+                                        //   ),
+                                        // ),
+
+                                        Container(
+                                          width: 130,
+                                          height: 130,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                              image: imageProductController
+                                                      .text.isEmpty
+                                                  ? const AssetImage(
+                                                      'lib/assets/defaultprofile.webp')
+                                                  : FileImage(File(
+                                                      'lib/assets/tmp/${imageProductController.text}')),
+                                              fit: BoxFit.fitWidth,
                                             ),
-                                            child: imageProductController
-                                                    .text.isEmpty
-                                                ? const Icon(
-                                                    Icons
-                                                        .person_outline_rounded,
-                                                    size: 50,
-                                                  )
-                                                : Image.file(
-                                                    File(
-                                                        'lib/assets/tmp/${imageProductController.text}'),
-                                                    fit: BoxFit.fitHeight,
-                                                  ),
                                           ),
                                         ),
                                         Padding(
@@ -182,19 +199,23 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
                                             ),
                                           ),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Container(
-                                            padding: const EdgeInsets.all(8.0),
-                                            height: 100,
-                                            width: 100,
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey[200],
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
+                                        Container(
+                                            width: 130,
+                                            height: 130,
+                                            decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
                                             ),
-                                          ),
-                                        ),
+                                            // child: const Icon(
+                                            //   Icons.fingerprint,
+                                            //   size: 100,
+                                            //   color: Color.fromRGBO(0, 167, 42, 1),
+                                            // )
+                                            child: const Icon(
+                                              Icons.not_interested_outlined,
+                                              size: 100,
+                                              color: Colors.red,
+                                            ),
+                                            ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: ElevatedButton(
@@ -787,7 +808,7 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
       _bloodType.text = member['blood_type'];
       _gender.text = member['gender'];
       _email.text = member['email'];
-      imageProductController.text = member['porfileImage'];
+      imageProductController.text = member['profileImage'];
     });
 
     if (_emergencyContactPhone.text != '') {

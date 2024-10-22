@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart'; 
 import 'package:frontend/config/theme/app_theme.dart';
-import 'package:frontend/screens/providers/login_provider.dart';
-import 'package:frontend/screens/providers/member_table.provider.dart';
-import 'package:frontend/screens/providers/payments_provider.dart';
-import 'package:frontend/screens/providers/product_provider.dart';
+import 'package:frontend/providers/login_provider.dart';
+import 'package:frontend/providers/member_table.provider.dart';
+import 'package:frontend/providers/payments_provider.dart';
+import 'package:frontend/providers/product_provider.dart';
 import 'package:frontend/screens/sign_in.dart';
 import 'package:provider/provider.dart';
 
