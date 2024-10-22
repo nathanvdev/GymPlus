@@ -53,7 +53,7 @@ const member = db.define('member', {
     active_days: {
         type: DataTypes.INTEGER
     },
-    porfileImage: {
+    profileImage: {
         type: DataTypes.STRING
     }
 },

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import member from '../models/member';
 import { Payment } from '../models/payment';
-// import Payment from '../models/payment';
+import Measurement from '../models/measurement';
 
 
 export const getmembers = async (_req: Request, res: Response) => {
@@ -26,7 +26,7 @@ export const getmembers = async (_req: Request, res: Response) => {
                 nextPaymentDate: payment ? payment.nextpaymentdate : null,
                 lastVisit: member.dataValues.last_visit,
                 activeDays: member.dataValues.active_days,
-                profileImage: member.dataValues.porfileImage
+                profileImage: member.dataValues.profileImage
             }
         });
 
@@ -139,4 +139,52 @@ export const deletemember = (req: Request, res: Response) => {
         id
     });
 
+}
+
+
+export const getFullMember = async (req: Request, res: Response) => {
+
+    const { id } = req.params
+
+    try {
+        const memberInfo = await member.findByPk(id, {
+        });  
+
+        if (!memberInfo) {
+            return res.status(400).json({
+                msg: 'No existe un miembro con el id ingresado'
+            });
+        }
+
+        const last_payment_info = await Payment.findByPk(memberInfo.dataValues.last_payment);
+
+        if (last_payment_info) {
+            memberInfo.dataValues.last_payment = last_payment_info.dataValues.createdAt;
+            memberInfo.dataValues.next_payment = last_payment_info.dataValues.nextpaymentdate;
+        }
+
+        const payments = await Payment.findAll({
+            where: {
+                member_id: id
+            }
+        });
+
+        const measurements = await Measurement.findAll({
+            where: {
+                member_id: id
+            }
+        });
+    
+    
+        res.status(200).json({
+            memberInfo,
+            payments,
+            measurements
+        });
+    } catch (error) {
+        res.status(500).json({
+            msg: 'Error en el servidor'
+        });
+    }
+    
 }
