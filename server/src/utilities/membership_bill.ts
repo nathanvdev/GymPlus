@@ -1,5 +1,5 @@
 import { Payment } from "../models/payment";
-import member from "../models/member";
+import { member } from '../models/member';
 
 
 export const generateMembershipBill = async (payment: typeof Payment.arguments) => {
@@ -69,7 +69,11 @@ export const generateMembershipBill = async (payment: typeof Payment.arguments) 
 
 
     // Guardar el PDF en un archivo
-    doc.pipe(fs.createWriteStream(`./tmp/comprobante_pago.pdf`));
+    const dir = './tmp';
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir, { recursive: true });
+    }
+    doc.pipe(fs.createWriteStream(`${dir}/comprobante_pago.pdf`));
 
     // Encabezado
     doc.image(`../logo.jpg`, 205, 20, { width: 200, align: `center` }).moveDown(1);

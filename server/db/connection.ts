@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 
-const db = new Sequelize('gymplus', 'root', '1234',{
+const db = new Sequelize('gymplus', 'root', 'admin',{
     host: 'localhost',
     dialect: 'mysql',
     // logging: false

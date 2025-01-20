@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import member from '../models/member';
+import { member } from '../models/member';
 import { Payment } from '../models/payment';
 import Measurement from '../models/measurement';
 
@@ -26,7 +26,7 @@ export const getmembers = async (_req: Request, res: Response) => {
                 nextPaymentDate: payment ? payment.nextpaymentdate : null,
                 lastVisit: member.dataValues.last_visit,
                 activeDays: member.dataValues.active_days,
-                profileImage: member.dataValues.profileImage
+                porfileImage: member.dataValues.porfileImage
             }
         });
 
@@ -134,10 +134,23 @@ export const deletemember = (req: Request, res: Response) => {
 
     const { id } = req.params;
 
-    res.json({
-        msg: 'deletemember',
-        id
-    });
+    try {
+        member.destroy({
+            where: {
+                id
+            }
+        });
+
+        res.json({
+            msg: 'deletemember',
+            id
+        });
+        
+    } catch (error) {
+        res.status(500).json({
+            msg: 'Error en el servidor\n' + error
+        });
+    }
 
 }
 
@@ -148,7 +161,7 @@ export const getFullMember = async (req: Request, res: Response) => {
 
     try {
         const memberInfo = await member.findByPk(id, {
-        });  
+        });
 
         if (!memberInfo) {
             return res.status(400).json({
@@ -174,8 +187,8 @@ export const getFullMember = async (req: Request, res: Response) => {
                 member_id: id
             }
         });
-    
-    
+
+
         res.status(200).json({
             memberInfo,
             payments,
@@ -186,5 +199,5 @@ export const getFullMember = async (req: Request, res: Response) => {
             msg: 'Error en el servidor'
         });
     }
-    
+
 }

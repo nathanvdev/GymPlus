@@ -31,7 +31,7 @@ class MemberTableProvider extends ChangeNotifier {
           nextPaymentDate: element['nextPaymentDate'],
           lastVisit: element['lastVisit'],
           activeDays: element['activeDays'].toString(),
-          porfileImage: element['profileImage'],
+          porfileImage: element['porfileImage'],
         );
         memberList.add(newMember);
       }

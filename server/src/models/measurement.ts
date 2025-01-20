@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import db from "../../db/connection";
-import Member from "./member";
+import { member } from '../models/member';
 
 const Measurement = db.define('measurement', {
     id: {
@@ -40,6 +40,6 @@ const Measurement = db.define('measurement', {
         freezeTableName: true,
     })
 
-    Measurement.belongsTo(Member, { foreignKey: 'member_id' });
+    Measurement.belongsTo(member, { foreignKey: 'member_id' });
 
 export default Measurement;

@@ -1,9 +1,13 @@
 import 'dart:io';
+import 'dart:math';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/membership_payment.dart';
 import 'package:frontend/providers/profileview_provider.dart';
+import 'package:frontend/screens/new_member.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/login_provider.dart';
 import '../providers/member_table.provider.dart';
 import 'widgets/payment_process_widget.dart';
 
@@ -13,9 +17,7 @@ class MemberProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(providers: [
-      ChangeNotifierProvider(
-        create: (memberProvider) => ProfileviewProvider(),
-      )
+      ChangeNotifierProvider(create: (memberProvider) => ProfileviewProvider())
     ], child: const _MemberPagState());
   }
 }
@@ -35,8 +37,7 @@ class __MemberPagStateState extends State<_MemberPagState> {
     super.initState();
     final memberID =
         context.read<MemberSelectedProvider>().getSelectedMemberId();
-    final tmpvar = getInitialInfo(memberID);
-    _future = Future.any([tmpvar]);
+    _future = context.read<ProfileviewProvider>().refresh(memberID, context);
   }
 
   @override
@@ -45,6 +46,25 @@ class __MemberPagStateState extends State<_MemberPagState> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Member Profile'),
+        ),
+        floatingActionButton: Positioned(
+          bottom: 80,
+          right: 10,
+          child: FloatingActionButton(
+            heroTag: 'editButton',
+            onPressed: () async {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NewMemberScreen(
+                            type: 2,
+                            memberID:
+                                int.parse(memberProfileProvider.member.id),
+                          )));
+            },
+            tooltip: 'Editar', // Asigna un tag único
+            child: const Icon(Icons.edit),
+          ),
         ),
         body: Center(
           child: FutureBuilder(
@@ -79,13 +99,16 @@ class __MemberPagStateState extends State<_MemberPagState> {
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       image: DecorationImage(
-                                        image: memberProfileProvider.member.profileImage ==
+                                        image: memberProfileProvider
+                                                        .member.porfileImage ==
                                                     "N/A" ||
-                                                memberProfileProvider.member.profileImage == ''
+                                                memberProfileProvider
+                                                        .member.porfileImage ==
+                                                    ''
                                             ? const AssetImage(
                                                 'lib/assets/defaultprofile.webp')
                                             : FileImage(File(
-                                                'lib/assets/tmp/${memberProfileProvider.member.profileImage}')),
+                                                'lib/assets/tmp/${memberProfileProvider.member.porfileImage}')),
                                         fit: BoxFit.fitWidth,
                                       ),
                                     ),
@@ -110,22 +133,25 @@ class __MemberPagStateState extends State<_MemberPagState> {
                                         height: 5,
                                       ),
                                       Container(
-                                        padding: const EdgeInsets.only(
-                                            left: 5, right: 5),
+                                        padding: const EdgeInsets.only(left: 5, right: 5),
                                         decoration: BoxDecoration(
-                                          color:
-                                              memberProfileProvider.member.membershipStatus ==
-                                                      "Activo"
-                                                  ? Colors.green
-                                                  : Colors.red,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          color: memberProfileProvider.member.membershipStatus == "Activo"
+                                              ? Colors.green
+                                              : memberProfileProvider.member.membershipStatus == "Inactivo"
+                                                  ? Colors.red
+                                                  : Colors.yellow, // Color para "Por vencer"
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(
+                                            color: const Color.fromARGB(255, 0, 0, 0),
+                                            width: 1,
+                                          ),
                                         ),
                                         child: Text(
-                                          memberProfileProvider.member.membershipStatus ==
-                                                  "Activo"
+                                          memberProfileProvider.member.membershipStatus == "Activo"
                                               ? 'Activo'
-                                              : 'Inactivo',
+                                              : memberProfileProvider.member.membershipStatus == "Inactivo"
+                                                  ? 'Inactivo'
+                                                  : 'Por vencer', // Texto para "Por vencer"
                                           style: const TextStyle(
                                             fontSize: 15,
                                             color: Colors.white,
@@ -165,7 +191,8 @@ class __MemberPagStateState extends State<_MemberPagState> {
                                           const SizedBox(
                                             width: 5,
                                           ),
-                                          Text(memberProfileProvider.member.phoneNumber),
+                                          Text(memberProfileProvider
+                                              .member.phoneNumber),
                                         ],
                                       ),
                                       const SizedBox(
@@ -177,7 +204,8 @@ class __MemberPagStateState extends State<_MemberPagState> {
                                           const SizedBox(
                                             width: 5,
                                           ),
-                                          Text(memberProfileProvider.member.email),
+                                          Text(memberProfileProvider
+                                              .member.email),
                                         ],
                                       ),
                                       const SizedBox(
@@ -189,7 +217,8 @@ class __MemberPagStateState extends State<_MemberPagState> {
                                           const SizedBox(
                                             width: 5,
                                           ),
-                                          Text(memberProfileProvider.member.gender),
+                                          Text(memberProfileProvider
+                                              .member.gender),
                                         ],
                                       ),
                                       const SizedBox(
@@ -201,7 +230,8 @@ class __MemberPagStateState extends State<_MemberPagState> {
                                           const SizedBox(
                                             width: 5,
                                           ),
-                                          Text(memberProfileProvider.member.birthDate),
+                                          Text(memberProfileProvider
+                                              .member.birthDate),
                                         ],
                                       ),
                                     ],
@@ -353,8 +383,10 @@ class __MemberPagStateState extends State<_MemberPagState> {
                                   width: 2,
                                 ),
                               ),
-                              child: memberProfileProvider.member.payments == null ||
-                                      memberProfileProvider.member.payments!.isEmpty
+                              child: memberProfileProvider.member.payments ==
+                                          null ||
+                                      memberProfileProvider
+                                          .member.payments!.isEmpty
                                   ? const Center(
                                       child: Text(
                                         'No hay pagos',
@@ -386,21 +418,29 @@ class __MemberPagStateState extends State<_MemberPagState> {
                                             constraints: const BoxConstraints(
                                               maxHeight: 450,
                                             ),
-                                            child: (memberProfileProvider.member.payments ==
+                                            child: (memberProfileProvider
+                                                            .member.payments ==
                                                         null ||
-                                                    memberProfileProvider.member.payments ==
+                                                    memberProfileProvider
+                                                            .member.payments ==
                                                         [])
                                                 ? const Center(
                                                     child: Text('No hay pagos'),
                                                   )
                                                 : ListView.builder(
-                                                    itemCount: memberProfileProvider.member
-                                                        .payments!.length,
+                                                    itemCount:
+                                                        memberProfileProvider
+                                                            .member
+                                                            .payments!
+                                                            .length,
                                                     itemBuilder:
                                                         (context, index) {
                                                       return MembershipCard(
-                                                        payment: memberProfileProvider.member
-                                                            .payments![index],
+                                                        payment:
+                                                            memberProfileProvider
+                                                                    .member
+                                                                    .payments![
+                                                                index],
                                                       );
                                                     },
                                                   ),
@@ -525,8 +565,10 @@ class __MemberPagStateState extends State<_MemberPagState> {
                             width: 2,
                           ),
                         ),
-                        child: memberProfileProvider.member.measurements == null ||
-                                memberProfileProvider.member.measurements!.isEmpty
+                        child: memberProfileProvider.member.measurements ==
+                                    null ||
+                                memberProfileProvider
+                                    .member.measurements!.isEmpty
                             ? const Center(
                                 child: Text(
                                   'No hay mediciones',
@@ -565,9 +607,12 @@ class __MemberPagStateState extends State<_MemberPagState> {
                                         DataColumn(label: Text('Pantorrilla')),
                                         DataColumn(label: Text('Acciones')),
                                       ],
-                                      rows: (memberProfileProvider.member.measurements ==
+                                      rows: (memberProfileProvider
+                                                      .member.measurements ==
                                                   null ||
-                                              memberProfileProvider.member.measurements == [])
+                                              memberProfileProvider
+                                                      .member.measurements ==
+                                                  [])
                                           ? const <DataRow>[]
                                           : List<DataRow>.generate(
                                               memberProfileProvider
@@ -581,56 +626,74 @@ class __MemberPagStateState extends State<_MemberPagState> {
                                                           MainAxisAlignment
                                                               .spaceEvenly,
                                                       children: [
-                                                        Text(memberProfileProvider
-                                                            .member
-                                                            .measurements![
-                                                                index]
-                                                            .createdAt
-                                                            .substring(0, 10)),
+                                                        Text(
+                                                            memberProfileProvider
+                                                                .member
+                                                                .measurements![
+                                                                    index]
+                                                                .createdAt
+                                                                .substring(
+                                                                    0, 10)),
                                                         Text(
                                                             '${memberProfileProvider.member.measurements![index].createdAt.substring(11, 16)} hrs'),
                                                       ],
                                                     )),
-                                                    DataCell(Text(memberProfileProvider
-                                                        .member
-                                                        .measurements![index]
-                                                        .weight
-                                                        .toString())),
-                                                    DataCell(Text(memberProfileProvider
-                                                        .member
-                                                        .measurements![index]
-                                                        .height
-                                                        .toString())),
-                                                    DataCell(Text(memberProfileProvider
-                                                        .member
-                                                        .measurements![index]
-                                                        .imc
-                                                        .toString())),
-                                                    DataCell(Text(memberProfileProvider
-                                                        .member
-                                                        .measurements![index]
-                                                        .arm
-                                                        .toString())),
-                                                    DataCell(Text(memberProfileProvider
-                                                        .member
-                                                        .measurements![index]
-                                                        .chest
-                                                        .toString())),
-                                                    DataCell(Text(memberProfileProvider
-                                                        .member
-                                                        .measurements![index]
-                                                        .abdomen
-                                                        .toString())),
-                                                    DataCell(Text(memberProfileProvider
-                                                        .member
-                                                        .measurements![index]
-                                                        .gluteus
-                                                        .toString())),
-                                                    DataCell(Text(memberProfileProvider
-                                                        .member
-                                                        .measurements![index]
-                                                        .thigh
-                                                        .toString())),
+                                                    DataCell(Text(
+                                                        memberProfileProvider
+                                                            .member
+                                                            .measurements![
+                                                                index]
+                                                            .weight
+                                                            .toString())),
+                                                    DataCell(Text(
+                                                        memberProfileProvider
+                                                            .member
+                                                            .measurements![
+                                                                index]
+                                                            .height
+                                                            .toString())),
+                                                    DataCell(Text(
+                                                        memberProfileProvider
+                                                            .member
+                                                            .measurements![
+                                                                index]
+                                                            .imc
+                                                            .toString())),
+                                                    DataCell(Text(
+                                                        memberProfileProvider
+                                                            .member
+                                                            .measurements![
+                                                                index]
+                                                            .arm
+                                                            .toString())),
+                                                    DataCell(Text(
+                                                        memberProfileProvider
+                                                            .member
+                                                            .measurements![
+                                                                index]
+                                                            .chest
+                                                            .toString())),
+                                                    DataCell(Text(
+                                                        memberProfileProvider
+                                                            .member
+                                                            .measurements![
+                                                                index]
+                                                            .abdomen
+                                                            .toString())),
+                                                    DataCell(Text(
+                                                        memberProfileProvider
+                                                            .member
+                                                            .measurements![
+                                                                index]
+                                                            .gluteus
+                                                            .toString())),
+                                                    DataCell(Text(
+                                                        memberProfileProvider
+                                                            .member
+                                                            .measurements![
+                                                                index]
+                                                            .thigh
+                                                            .toString())),
                                                     DataCell(Row(
                                                       children: [
                                                         IconButton(
@@ -660,10 +723,6 @@ class __MemberPagStateState extends State<_MemberPagState> {
               }),
         ));
   }
-
-  Future<void> getInitialInfo(int id) async {
-    context.read<ProfileviewProvider>().refresh(id);
-  }
 }
 
 class MembershipCard extends StatelessWidget {
@@ -673,6 +732,7 @@ class MembershipCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final memberProvider = context.read<ProfileviewProvider>();
     return Container(
       margin: const EdgeInsets.all(5),
       padding: const EdgeInsets.all(15),
@@ -739,8 +799,8 @@ class MembershipCard extends StatelessWidget {
                 children: [
                   IconButton(
                     icon: const Icon(Icons.edit),
-                    onPressed: () {
-                      showDialog(
+                    onPressed: () async {
+                      await showDialog(
                         context: context,
                         builder: (context) {
                           return PaymentProcessWidget(
@@ -750,12 +810,40 @@ class MembershipCard extends StatelessWidget {
                           );
                         },
                       );
-                      context.read<ProfileviewProvider>().refresh(context.read<MemberSelectedProvider>().getSelectedMemberId());
+                      memberProvider.refresh(
+                          context
+                              .read<MemberSelectedProvider>()
+                              .getSelectedMemberId(),
+                          context);
                     },
                   ),
                   IconButton(
                     icon: const Icon(Icons.delete),
-                    onPressed: () {},
+                    onPressed: () async {
+                      final isPasswordCorrect =
+                          await showPasswordDialog(context);
+                      if (isPasswordCorrect == false) {
+                        if (context.mounted) {
+                          displayMessageDialog(
+                              context, 'Contraseña incorrecta');
+                        }
+                        return;
+                      }
+                      final dio = Dio();
+                      final response = await dio.delete(
+                          'http://localhost:3569/payment/delete/${payment.id}');
+
+                      if (response.statusCode == 200) {
+                        memberProvider.refresh(
+                            context
+                                .read<MemberSelectedProvider>()
+                                .getSelectedMemberId(),
+                            context);
+                      } else {
+                        displayMessageDialog(context,
+                            'Error al eliminar el pago\n${response.data.msg}');
+                      }
+                    },
                   ),
                 ],
               ),
@@ -765,4 +853,112 @@ class MembershipCard extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<bool> showPasswordDialog(
+  BuildContext context,
+) {
+  final loginProvider = context.read<LoginProvider>();
+  var password = '';
+  bool isPasswordVisible = false;
+
+  return showDialog<bool>(
+    context: context,
+    builder: (context) {
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return AlertDialog(
+            title: const Text('Verifica tus datos'),
+            content: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.17,
+              child: Column(
+                children: [
+                  TextFormField(
+                    initialValue: loginProvider.getUsername(),
+                    enabled: false,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Username',
+                      hintText: 'Ingresa tu usuario',
+                      prefixIcon: Icon(Icons.person_outline_rounded),
+                    ),
+                  ),
+                  const SizedBox(height: 15.0),
+                  TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor ingresa tu contraseña';
+                      }
+                      if (value.length < 5) {
+                        return 'La contraseña debe tener al menos 6 caracteres';
+                      }
+                      return null;
+                    },
+                    obscureText: !isPasswordVisible,
+                    decoration: InputDecoration(
+                      labelText: 'Contraseña',
+                      hintText: 'Ingresa tu contraseña',
+                      prefixIcon: const Icon(Icons.lock_outline_rounded),
+                      border: const OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        icon: Icon(isPasswordVisible
+                            ? Icons.visibility_off
+                            : Icons.visibility),
+                        onPressed: () {
+                          setState(() {
+                            isPasswordVisible = !isPasswordVisible;
+                          });
+                        },
+                      ),
+                    ),
+                    onChanged: (value) {
+                      password = value;
+                    },
+                  ),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context, false);
+                },
+                child: const Text('Cancelar'),
+              ),
+              TextButton(
+                child: const Text('Aceptar'),
+                onPressed: () {
+                  if (password == loginProvider.user.password) {
+                    Navigator.pop(context, true);
+                  } else {
+                    Navigator.pop(context, false);
+                  }
+                },
+              ),
+            ],
+          );
+        },
+      );
+    },
+  ).then((value) => value ?? false);
+}
+
+void displayMessageDialog(BuildContext context, String message) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Mensaje'),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Aceptar'),
+          ),
+        ],
+      );
+    },
+  );
 }

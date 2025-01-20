@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Sale, SaleItem } from "../models/sales";
-import member from "../models/member";
+import { member } from "../models/member";
 
 export const addSale = async (req: Request, res: Response) => {
     const { total, admin_id, items } = req.body;

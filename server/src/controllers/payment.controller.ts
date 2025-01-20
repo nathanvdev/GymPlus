@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Payment } from "../models/payment";
 import { generateMembershipBill } from "../utilities/membership_bill";
-import member from "../models/member";
+import { member } from "../models/member";
 
 export const postpayment = async (req: Request, res: Response) => {
 
@@ -220,6 +220,53 @@ export const updatePayment = async (req: Request, res: Response) => {
         console.log(error);
         res.status(500).json({
             msg: 'Error en el servidor'
+        });
+    }
+}
+
+export const deletePayment = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    try {
+        const payment = await Payment.findByPk(id);
+        if (!payment) {
+            return res.status(404).json({
+                msg: 'Pago no encontrado'
+            });
+        }
+
+        const tmpMember = await member.findOne({
+            where: {
+                id: payment.dataValues.member_id
+            }
+        });
+        if (tmpMember) {
+            await tmpMember.update({
+                last_payment: null
+            });
+        }
+
+        await payment.destroy();
+
+        const last_payment = await Payment.findOne({
+            order: [['createdAt', 'DESC']],
+            where: {
+                member_id: payment.dataValues.member_id
+            }
+        });
+        if (last_payment && tmpMember) {
+            await tmpMember.update({
+                last_payment: last_payment.dataValues.id
+            });
+        }
+
+        res.status(200).json({
+            msg: 'Pago eliminado'
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            msg: error
         });
     }
 }

@@ -22,7 +22,7 @@ class Server {
     }
     constructor() {
         this.app = express()
-        this.port = process.env.PORT
+        this.port = "3569"
         this.dbConnection()
         this.midelwares()
         this.routes()

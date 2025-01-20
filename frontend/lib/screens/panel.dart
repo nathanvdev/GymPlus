@@ -633,7 +633,6 @@ class MembersTableState extends State<MembersTable> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => NewMemberScreen(type: 2, memberID: member.id)));
-                      
                     },
                   ),
                   IconButton(

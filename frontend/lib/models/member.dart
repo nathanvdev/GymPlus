@@ -43,7 +43,7 @@ class FullMember {
   String membershipStatus;
   String lastVisit;
   String activeDays;
-  String profileImage;
+  String porfileImage;
   String createdAt;
 
   List<MembershipPayment>? payments;
@@ -67,7 +67,7 @@ class FullMember {
     required this.membershipStatus,
     required this.lastVisit,
     required this.activeDays,
-    required this.profileImage,
+    required this.porfileImage,
     required this.createdAt,
     this.payments,
     this.measurements,
@@ -78,7 +78,7 @@ class FullMember {
 
     for (var key in tmpMemberInfo.keys) {
       if (tmpMemberInfo[key] == null || tmpMemberInfo[key] == '') {
-        if (key == 'profileImage') {
+        if (key == 'porfileImage') {
           tmpMemberInfo[key] = '';
         } else {
           tmpMemberInfo[key] = 'N/A';
@@ -97,7 +97,6 @@ class FullMember {
     });
 
     String tmpLastPayment;
-
     try {
       tmpLastPayment = tmpMemberInfo['last_payment'].substring(0, 10);
     } catch (e) {
@@ -109,6 +108,13 @@ class FullMember {
       tmpNextDuePayment = tmpMemberInfo['next_payment'].substring(0, 10);
     } catch (e) {
       tmpNextDuePayment = 'N/A';
+    }
+
+    String tmpCreatedAt;
+    try {
+      tmpCreatedAt = tmpMemberInfo['createdAt'].substring(0, 10);
+    } catch (e) {
+      tmpCreatedAt = 'N/A';
     }
 
     return FullMember(
@@ -130,8 +136,8 @@ class FullMember {
       membershipStatus: tmpMemberInfo['membership_status'],
       lastVisit: tmpMemberInfo['last_visit'],
       activeDays: tmpMemberInfo['active_days'].toString(),
-      profileImage: tmpMemberInfo['profileImage'],
-      createdAt: tmpMemberInfo['createdAt'].substring(0, 10),
+      porfileImage: tmpMemberInfo['porfileImage'],
+      createdAt: tmpCreatedAt,
       payments: tmpPayments,
       measurements: tmpMeasurements,
     );
@@ -156,7 +162,7 @@ class FullMember {
       membershipStatus: 'N/A',
       lastVisit: 'N/A',
       activeDays: 'N/A',
-      profileImage: 'N/A',
+      porfileImage: 'N/A',
       createdAt: 'N/A',
     );
   }

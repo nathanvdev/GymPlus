@@ -244,9 +244,6 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
                                         hintText: 'Nombre del miembro',
                                         border: OutlineInputBorder(),
                                       ),
-                                      onChanged: (value) {
-                                        _name.text = value;
-                                      },
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return 'Por favor ingresa un nombre';
@@ -263,9 +260,6 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
                                       hintText: 'Apellido del miembro',
                                       border: OutlineInputBorder(),
                                     ),
-                                    onChanged: (value) {
-                                      _lastname.text = value;
-                                    },
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'Por favor ingresa un apellido';
@@ -295,9 +289,6 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
                                                   'Numero de telefono del miembro',
                                               border: OutlineInputBorder(),
                                             ),
-                                            onChanged: (value) {
-                                              _phoneNumber.text = value.number;
-                                            },
                                             onCountryChanged: (value) {
                                               tmpCountryCode1 =
                                                   value.fullCountryCode;
@@ -311,9 +302,6 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
                                                   'Numero de telefono del miembro',
                                               border: OutlineInputBorder(),
                                             ),
-                                            onChanged: (value) {
-                                              _phoneNumber.text = value;
-                                            },
                                           ),
                                   )),
                                   Expanded(
@@ -327,9 +315,6 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
                                             'Nombre del contacto de emergencia',
                                         border: OutlineInputBorder(),
                                       ),
-                                      onChanged: (value) {
-                                        _emergencyContactName.text = value;
-                                      },
                                     ),
                                   )),
                                   Expanded(
@@ -348,10 +333,6 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
                                                     'Numero de telefono de emergencia',
                                                 border: OutlineInputBorder(),
                                               ),
-                                              onChanged: (value) {
-                                                _emergencyContactPhone.text =
-                                                    value.number;
-                                              },
                                               onCountryChanged: (value) {
                                                 tmpCountryCode2 =
                                                     value.fullCountryCode;
@@ -367,10 +348,6 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
                                                     'Numero de telefono de emergencia',
                                                 border: OutlineInputBorder(),
                                               ),
-                                              onChanged: (value) {
-                                                _emergencyContactPhone.text =
-                                                    value;
-                                              },
                                             )),
                                 ],
                               ),
@@ -414,10 +391,7 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
                                                   .toString()
                                                   .substring(0, 10);
                                             });
-                                          }
-                                        },
-                                        onChanged: (value) =>
-                                            _birthdate.text = value,
+                                          }}
                                       ),
                                     ),
                                   ),
@@ -429,9 +403,6 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
                                       hintText: 'Alergias del miembro',
                                       border: OutlineInputBorder(),
                                     ),
-                                    onChanged: (value) {
-                                      _allergies.text = value;
-                                    },
                                   )),
                                 ],
                               ),
@@ -454,9 +425,6 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
                                                   'Tipo de sangre del miembro',
                                               border: OutlineInputBorder(),
                                             ),
-                                            onChanged: (value) {
-                                              _bloodType.text = value;
-                                            },
                                           ),
                                         )),
                                     SizedBox(
@@ -503,7 +471,6 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
                                               }
                                             });
                                           },
-                                          onChanged: (p0) {},
                                         ),
                                       ),
                                     ),
@@ -516,9 +483,6 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
                                             'Correo electronico del miembro',
                                         border: OutlineInputBorder(),
                                       ),
-                                      onChanged: (value) {
-                                        _email.text = value;
-                                      },
                                     )),
                                   ],
                                 )),
@@ -808,7 +772,7 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
       _bloodType.text = member['blood_type'];
       _gender.text = member['gender'];
       _email.text = member['email'];
-      imageProductController.text = member['profileImage'];
+      imageProductController.text = member['porfileImage'];
     });
 
     if (_emergencyContactPhone.text != '') {

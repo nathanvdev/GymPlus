@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 import db from "../../db/connection";
 import { Payment } from "./payment";
 
-const member = db.define('member', {
+export const member = db.define('member', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -53,7 +53,7 @@ const member = db.define('member', {
     active_days: {
         type: DataTypes.INTEGER
     },
-    profileImage: {
+    porfileImage: {
         type: DataTypes.STRING
     }
 },
@@ -63,7 +63,5 @@ const member = db.define('member', {
 
     member.hasOne(Payment, { foreignKey: 'id', sourceKey: 'last_payment' });
     Payment.belongsTo(member, { foreignKey: 'id', targetKey: 'last_payment' });
-
-export default member
 
 
