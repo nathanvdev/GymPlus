@@ -163,6 +163,8 @@ class __MemberPagStateState extends State<_MemberPagState> {
                                   )
                                 ],
                               ),
+
+                              
                               const SizedBox(
                                 height: 35,
                               ),
