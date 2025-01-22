@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Sale, SaleItem } from "../models/sales";
 import { member } from "../models/member";
+import { Product } from "../models/product";
 
 export const addSale = async (req: Request, res: Response) => {
     const { total, admin_id, items } = req.body;
@@ -12,6 +13,31 @@ export const addSale = async (req: Request, res: Response) => {
     }
 
     try {
+
+        for(const item in items){
+            const product = await Product.findByPk(items[item].id);
+            if(!product){
+                return res.status(400).json({
+                    msg: 'Producto no encontrado'
+                });
+            }
+
+            if(product.getDataValue('stock') < items[item].quantity){
+                return res.status(400).json({
+                    msg: 'No hay suficiente stock del producto ' + product.getDataValue('name')
+                });
+            }
+        }
+
+        for (const item of items) {
+            const product = await Product.findByPk(item.id);
+            if (product) {
+                await product.update({
+                    stock: product.getDataValue('stock') - item.quantity
+                });
+            }
+        }
+
         const sale = await Sale.create({
             total,
             admin_id
@@ -22,6 +48,7 @@ export const addSale = async (req: Request, res: Response) => {
             return SaleItem.create({
                 sale_id: sale_id,
                 product_name: item.product_name,
+                product_id: item.id,
                 price: item.price,
                 quantity: item.quantity
             });
@@ -74,16 +101,25 @@ export const deleteSale = async (req: Request, res: Response) => {
             });
         }
 
-        var Items = SaleItem.findAll({
+        var Items = await SaleItem.findAll({
             where: {
                 sale_id: id
             }
         });
+        
+
+        for (const item of Items) {
+            const product = await Product.findByPk(item.dataValues.product_id);
+            if (product) {
+                await product.update({
+                    stock: product.getDataValue('stock') + item.dataValues.quantity
+                });
+            }
+        }
 
         await Promise.all((await Items).map(async (item) => {
             await item.destroy();
         }));
-//TODO  await Items.destroy();
 
         await sale.destroy();
 

@@ -55,7 +55,8 @@ class MemberTableProvider extends ChangeNotifier {
       filtredMemberList.clear();
       for (var member in memberList) {
         if (member.name.toLowerCase().contains(filter.toLowerCase()) ||
-            member.lastname.toLowerCase().contains(filter.toLowerCase())) {
+            member.lastname.toLowerCase().contains(filter.toLowerCase()) ||
+            member.membershipStatus.contains(filter)){
           filtredMemberList.add(member);
         }
       }

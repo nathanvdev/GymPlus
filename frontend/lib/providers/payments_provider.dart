@@ -7,6 +7,9 @@ class PaymentsProvider extends ChangeNotifier {
   final List<MembershipPayment> filteredPaymentList = [];
   final dio = Dio();
 
+  int pendingPayments = 0;
+  int today = 0;
+
   Future<void> refresh() async {
     try {
       final response = await dio.get('http://localhost:3569/payment/getall');
@@ -65,6 +68,20 @@ class PaymentsProvider extends ChangeNotifier {
       }
       filteredPaymentList.clear();
       filteredPaymentList.addAll(paymentList);
+
+      pendingPayments = 0;
+      for (var payment in paymentList) {
+        if (payment.paymentStatus == 2) {
+          pendingPayments++;
+        }
+      }
+
+      today = 0;
+      for (var payment in paymentList) {
+        if (payment.createdAt == DateTime.now().toString().substring(0, 10)) {
+          today++;
+        }
+      }
       notifyListeners();
       return;
     } catch (e) {

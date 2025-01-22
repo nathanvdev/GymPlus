@@ -480,57 +480,73 @@ class _StorePageState extends State<StorePage> {
                 if (cartProvider.getProducts().isEmpty) {
                   displayMessageDialog(
                       context, 'No hay productos en el carrito');
-                } else {
-                  var auth = await showPasswordDialog(
-                    context,
-                  );
-                  if (auth) {
-                    try {
-                      if (context.mounted) {
-                        final loginProvider = context.read<LoginProvider>();
-                        final dio = Dio();
-                        final response = await dio.post(
-                          'http://localhost:3569/sale/add',
-                          data: {
-                            'total': getSubtotalCart(),
-                            'admin_id': loginProvider.user.memberId,
-                            'items': cartProvider.cartItems
-                                .map((item) => {
-                                      'product_name': producProvider
-                                          .getProductById(item.id.toString())
-                                          .name,
-                                      'price': double.parse(producProvider
-                                          .getProductById(item.id.toString())
-                                          .price),
-                                      'quantity': item.quantity,
-                                    })
-                                .toList(),
-                          },
-                        );
+                  return;
+                }
+                for (var item in cartProvider.cartItems) {
+                  if (item.quantity >
+                      int.parse(producProvider
+                          .getProductById(item.id.toString())
+                          .stock)) {
+                    if (context.mounted) {
+                      displayMessageDialog(context,
+                          'No hay suficiente stock para el producto ${producProvider.getProductById(item.id.toString()).name}\nStock Disponible: ${producProvider.getProductById(item.id.toString()).stock}\nCantidad Solicitada: ${item.quantity}');
+                    }
+                    return;
+                  }
+                }
+                var auth = await showPasswordDialog(
+                  context,
+                );
+                if (auth) {
+                  try {
+                    if (context.mounted) {
+                      final loginProvider = context.read<LoginProvider>();
+                      final dio = Dio();
+                      final response = await dio.post(
+                        'http://localhost:3569/sale/add',
+                        data: {
+                          'total': getSubtotalCart(),
+                          'admin_id': loginProvider.user.memberId,
+                          'items': cartProvider.cartItems
+                              .map((item) => {
+                                    'id': producProvider
+                                        .getProductById(item.id.toString())
+                                        .id,
+                                    'product_name': producProvider
+                                        .getProductById(item.id.toString())
+                                        .name,
+                                    'price': double.parse(producProvider
+                                        .getProductById(item.id.toString())
+                                        .price),
+                                    'quantity': item.quantity,
+                                  })
+                              .toList(),
+                        },
+                      );
 
-                        if (response.statusCode == 200) {
-                          cartProvider.clear();
-                          if (context.mounted) {
-                            displayMessageDialog(
-                                context, 'Compra realizada correctamente');
-                          }
-                        } else {
-                          if (context.mounted) {
-                            displayMessageDialog(context,
-                                'Error al realizar la compra: ${response.data['msg']}');
-                          }
+                      if (response.statusCode == 200) {
+                        cartProvider.clear();
+                        producProvider.refresh();
+                        if (context.mounted) {
+                          displayMessageDialog(
+                              context, 'Compra realizada correctamente');
+                        }
+                      } else {
+                        if (context.mounted) {
+                          displayMessageDialog(context,
+                              'Error al realizar la compra: ${response.data['msg']}');
                         }
                       }
-                    } catch (e) {
-                      if (context.mounted) {
-                        displayMessageDialog(
-                            context, 'Hubo un error al realizar la compra $e');
-                      }
                     }
-                  }else{
+                  } catch (e) {
                     if (context.mounted) {
-                      displayMessageDialog(context, 'Contraseña Incorrecta');
+                      displayMessageDialog(
+                          context, 'Hubo un error al realizar la compra $e');
                     }
+                  }
+                } else {
+                  if (context.mounted) {
+                    displayMessageDialog(context, 'Contraseña Incorrecta');
                   }
                 }
               },
@@ -1155,7 +1171,7 @@ class _StorePageState extends State<StorePage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text('Q $price DSP:$stock',
+            Text('Q $price \nDisponibles: $stock',
                 style: const TextStyle(
                     color: Colors.black,
                     fontSize: 16,

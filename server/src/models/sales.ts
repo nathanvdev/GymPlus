@@ -31,6 +31,9 @@ export const SaleItem = db.define('sale_item', {
     product_name: {
         type: DataTypes.STRING
     },
+    product_id: {
+        type: DataTypes.INTEGER
+    },
     price: {
         type: DataTypes.FLOAT
     },

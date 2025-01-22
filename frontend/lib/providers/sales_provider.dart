@@ -26,6 +26,7 @@ class SalesProvider with ChangeNotifier {
           id: element['id'].toString(),
           total: element['total'].toString(),
           date: element['createdAt'].toString().substring(0, 10),
+          hour: element['createdAt'].toString().substring(11, 19),
           autorizedBy: element['autorizedBy'].toString(),
         );
         saleList.add(newSale);
