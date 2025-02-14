@@ -7,6 +7,8 @@ import 'package:frontend/config/theme/app_theme.dart';
 import 'package:frontend/providers/login_provider.dart';
 import 'package:frontend/providers/product_provider.dart';
 import 'package:frontend/screens/widgets/display_menu.dart';
+import 'package:frontend/utils/auth.dart';
+import 'package:frontend/utils/show_dialog.dart';
 import 'package:provider/provider.dart';
 
 class StoreScreen extends StatelessWidget {
@@ -15,16 +17,11 @@ class StoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // return const StorePage()
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => CartItemsProvider()),
-      ],
-      child: MaterialApp(
-        title: 'Gymplus App',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme().lightMode(),
-        home: const StorePage(),
-      ),
+    return MaterialApp(
+      title: 'Gymplus App',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme().lightMode(),
+      home: const StorePage(),
     );
   }
 }
@@ -433,6 +430,16 @@ class _StorePageState extends State<StorePage> {
                             InkWell(
                               onTap: () {
                                 setState(() {
+                                  if (cartProvider.getProducts()[i].quantity +
+                                          1 >
+                                      int.parse(producProvider
+                                          .getProductById(cartProvider
+                                              .getProducts()[i]
+                                              .id
+                                              .toString())
+                                          .stock)) {
+                                    return;
+                                  }
                                   cartProvider.getProducts()[i].quantity++;
                                   double price = double.parse(producProvider
                                       .getProductById(cartProvider
@@ -454,7 +461,7 @@ class _StorePageState extends State<StorePage> {
             ),
             Container(
               height: MediaQuery.of(context).size.height * 0.09,
-              width: MediaQuery.of(context).size.width * 0.15,
+              width: MediaQuery.of(context).size.width * 0.19,
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
@@ -478,8 +485,8 @@ class _StorePageState extends State<StorePage> {
               child: const Text('Realizar Compra'),
               onPressed: () async {
                 if (cartProvider.getProducts().isEmpty) {
-                  displayMessageDialog(
-                      context, 'No hay productos en el carrito');
+                  showDialogMessage(
+                      context, 'Error', 'No hay productos en el carrito');
                   return;
                 }
                 for (var item in cartProvider.cartItems) {
@@ -488,13 +495,19 @@ class _StorePageState extends State<StorePage> {
                           .getProductById(item.id.toString())
                           .stock)) {
                     if (context.mounted) {
-                      displayMessageDialog(context,
+                      showDialogMessage(context, 'Error',
                           'No hay suficiente stock para el producto ${producProvider.getProductById(item.id.toString()).name}\nStock Disponible: ${producProvider.getProductById(item.id.toString()).stock}\nCantidad Solicitada: ${item.quantity}');
+                    }
+                    return;
+                  } else if (item.quantity <= 0) {
+                    if (context.mounted) {
+                      showDialogMessage(context, 'Error',
+                          'La cantidad del producto ${producProvider.getProductById(item.id.toString()).name} debe ser mayor a 0');
                     }
                     return;
                   }
                 }
-                var auth = await showPasswordDialog(
+                var auth = await showPasswordVerificationDialog(
                   context,
                 );
                 if (auth) {
@@ -505,6 +518,7 @@ class _StorePageState extends State<StorePage> {
                       final response = await dio.post(
                         'http://localhost:3569/sale/add',
                         data: {
+                          'status': 1,
                           'total': getSubtotalCart(),
                           'admin_id': loginProvider.user.memberId,
                           'items': cartProvider.cartItems
@@ -528,25 +542,26 @@ class _StorePageState extends State<StorePage> {
                         cartProvider.clear();
                         producProvider.refresh();
                         if (context.mounted) {
-                          displayMessageDialog(
-                              context, 'Compra realizada correctamente');
+                          showDialogMessage(context, 'Error',
+                              'Compra realizada correctamente');
                         }
                       } else {
                         if (context.mounted) {
-                          displayMessageDialog(context,
+                          showDialogMessage(context, 'Error',
                               'Error al realizar la compra: ${response.data['msg']}');
                         }
                       }
                     }
                   } catch (e) {
                     if (context.mounted) {
-                      displayMessageDialog(
-                          context, 'Hubo un error al realizar la compra $e');
+                      showDialogMessage(context, 'Error',
+                          'Hubo un error al realizar la compra $e');
                     }
                   }
                 } else {
                   if (context.mounted) {
-                    displayMessageDialog(context, 'Contraseña Incorrecta');
+                    showDialogMessage(
+                        context, 'Error', 'Contraseña Incorrecta');
                   }
                 }
               },
@@ -732,13 +747,13 @@ class _StorePageState extends State<StorePage> {
                 if (formKey.currentState!.validate() == false) {
                   return;
                 }
-                var auth = await showPasswordDialog(
+                var auth = await showPasswordVerificationDialog(
                   context,
                 );
 
                 if (auth == false) {
-                  displayMessageDialog(context.mounted ? context : context,
-                      'Contraseña Incorrecta');
+                  showDialogMessage(context.mounted ? context : context,
+                      'Error', 'Contraseña Incorrecta');
                 } else {
                   try {
                     final response = await dio.put(
@@ -757,19 +772,19 @@ class _StorePageState extends State<StorePage> {
                         Navigator.pop(context);
                       }
                       if (context.mounted) {
-                        displayMessageDialog(
-                            context, 'Producto agregado correctamente');
+                        showDialogMessage(context, 'Error',
+                            'Producto agregado correctamente');
                       }
                     } else {
                       if (context.mounted) {
-                        displayMessageDialog(context,
+                        showDialogMessage(context, 'Error',
                             'Error al agregar el producto: ${response.data['msg']}');
                       }
                     }
                   } catch (e) {
                     if (context.mounted) {
-                      displayMessageDialog(
-                          context, 'Hubo un error al agregar el producto');
+                      showDialogMessage(context, 'Error',
+                          'Hubo un error al agregar el producto');
                     }
                   }
                 }
@@ -905,13 +920,13 @@ class _StorePageState extends State<StorePage> {
                 if (formKey.currentState!.validate() == false) {
                   return;
                 }
-                var auth = await showPasswordDialog(
+                var auth = await showPasswordVerificationDialog(
                   context,
                 );
 
                 if (auth == false) {
-                  displayMessageDialog(context.mounted ? context : context,
-                      'Contraseña Incorrecta');
+                  showDialogMessage(context.mounted ? context : context,
+                      'Error', 'Contraseña Incorrecta');
                 } else {
                   try {
                     final response = await dio.put(
@@ -930,19 +945,19 @@ class _StorePageState extends State<StorePage> {
                         Navigator.pop(context);
                       }
                       if (context.mounted) {
-                        displayMessageDialog(
-                            context, 'Producto editado correctamente');
+                        showDialogMessage(
+                            context, 'Error', 'Producto editado correctamente');
                       }
                     } else {
                       if (context.mounted) {
-                        displayMessageDialog(context,
+                        showDialogMessage(context, 'Error',
                             'Error al editar el producto: ${response.data['msg']}');
                       }
                     }
                   } catch (e) {
                     if (context.mounted) {
-                      displayMessageDialog(
-                          context, 'Hubo un error al editar el producto $e');
+                      showDialogMessage(context, 'Error',
+                          'Hubo un error al editar el producto $e');
                     }
                   }
                 }
@@ -960,7 +975,7 @@ class _StorePageState extends State<StorePage> {
     LoginProvider loginProvider,
     ProductProvider productProvider,
   ) async {
-    bool isVerified = await showPasswordDialog(
+    bool isVerified = await showPasswordVerificationDialog(
       context,
     );
 
@@ -981,134 +996,26 @@ class _StorePageState extends State<StorePage> {
           productProvider.deleteProduct(id.toString());
           productProvider.refresh();
           if (context.mounted) {
-            displayMessageDialog(context, 'Producto eliminado correctamente');
+            showDialogMessage(
+                context, 'Éxito', 'Producto eliminado correctamente');
           }
         } else {
           if (context.mounted) {
-            displayMessageDialog(context,
-                'Error al eliminar el producto: ${response.data['msg']}');
+            showDialogMessage(context, 'Error',
+                'Hubo un error al eliminar el producto ${response.data['msg']}');
           }
         }
       } catch (e) {
         if (context.mounted) {
-          displayMessageDialog(
-              context, 'Hubo un error al eliminar el producto');
+          showDialogMessage(
+              context, 'Error', 'Hubo un error al eliminar el producto $e');
         }
       }
     } else {
       if (context.mounted) {
-        displayMessageDialog(context,
-            'La contraseña ingresada no coincide con la de tu usuario');
+        showDialogMessage(context, 'Error', 'Contraseña Incorrecta');
       }
     }
-  }
-
-  Future<bool> showPasswordDialog(
-    BuildContext context,
-  ) {
-    final loginProvider = context.read<LoginProvider>();
-    var password = '';
-    bool isPasswordVisible = false;
-
-    return showDialog<bool>(
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: const Text('Verifica tus datos'),
-              content: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.17,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      initialValue: loginProvider.getUsername(),
-                      enabled: false,
-                      decoration: const InputDecoration(
-                        labelText: 'Username',
-                        hintText: 'Ingresa tu usuario',
-                        prefixIcon: Icon(Icons.person_outline_rounded),
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    const SizedBox(height: 15.0),
-                    TextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Por favor ingresa tu contraseña';
-                        }
-                        if (value.length < 5) {
-                          return 'La contraseña debe tener al menos 6 caracteres';
-                        }
-                        return null;
-                      },
-                      obscureText: !isPasswordVisible,
-                      decoration: InputDecoration(
-                        labelText: 'Contraseña',
-                        hintText: 'Ingresa tu contraseña',
-                        prefixIcon: const Icon(Icons.lock_outline_rounded),
-                        border: const OutlineInputBorder(),
-                        suffixIcon: IconButton(
-                          icon: Icon(isPasswordVisible
-                              ? Icons.visibility_off
-                              : Icons.visibility),
-                          onPressed: () {
-                            setState(() {
-                              isPasswordVisible = !isPasswordVisible;
-                            });
-                          },
-                        ),
-                      ),
-                      onChanged: (value) {
-                        password = value;
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context, false);
-                  },
-                  child: const Text('Cancelar'),
-                ),
-                TextButton(
-                  child: const Text('Aceptar'),
-                  onPressed: () {
-                    if (password == loginProvider.user.password) {
-                      Navigator.pop(context, true);
-                    } else {
-                      Navigator.pop(context, false);
-                    }
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      },
-    ).then((value) => value ?? false);
-  }
-
-  void displayMessageDialog(BuildContext context, String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Mensaje'),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Aceptar'),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   InkWell itemcard(BuildContext context, String id, String name, String price,
@@ -1192,9 +1099,9 @@ class _StorePageState extends State<StorePage> {
 }
 
 class ItemCart {
-  String productName;
-  double price;
-  int quantity;
-
   ItemCart(this.productName, this.price, this.quantity);
+
+  double price;
+  String productName;
+  int quantity;
 }

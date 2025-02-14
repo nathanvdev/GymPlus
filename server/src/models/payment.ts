@@ -47,7 +47,7 @@ export const Payment = db.define('membership_payment', {
     change: {
         type: DataTypes.FLOAT
     },
-    
+    //1 = aprobado, 2 = pendiente, 3 = anulado
     payment_status: {
         type: DataTypes.INTEGER
     },

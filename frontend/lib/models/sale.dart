@@ -2,14 +2,14 @@ class Sale {
   String id;
   String total;
   String date;
-  String hour;
+  String status;
   String autorizedBy;
 
   Sale({
     required this.id,
     required this.total,
     required this.date,
-    required this.hour,
+    required this.status,
     required this.autorizedBy,
   });
 
@@ -18,7 +18,7 @@ class Sale {
       'id': id,
       'total': total,
       'date': date,
-      'hour': hour,
+      'status': status,
       'autorizedBy': autorizedBy,
     };
   }

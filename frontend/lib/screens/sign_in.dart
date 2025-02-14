@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:frontend/config/theme/app_theme.dart';
@@ -5,8 +6,8 @@ import 'package:frontend/screens/panel.dart';
 import 'package:frontend/providers/login_provider.dart';
 import 'package:provider/provider.dart';
 
-class SignInPage2 extends StatelessWidget {
-  const SignInPage2({super.key});
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +67,6 @@ class __FormContentState extends State<_FormContent> {
   @override
   Widget build(BuildContext context) {
     final loginProvider = context.read<LoginProvider>();
-    late String usuario = "";
-    late String password = "";
 
     return Container(
       constraints: const BoxConstraints(maxWidth: 300),
@@ -79,41 +78,22 @@ class __FormContentState extends State<_FormContent> {
           children: [
             TextFormField(
               controller: _usuarioController,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor ingresa tu usuario';
-                }
-
-                if (value.length < 5) {
-                  return 'El usuario debe tener al menos 6 caracteres';
-                }
-                return null;
-              },
               decoration: const InputDecoration(
                 labelText: 'Usuario',
                 hintText: 'Ingresa tu usuario',
                 prefixIcon: Icon(Icons.person_outline_rounded),
                 border: OutlineInputBorder(),
               ),
-              onChanged: (value) {
-                usuario = '';
-                usuario = value;
-              },
-            ),
-            _gap(),
-            TextFormField(
-              controller: _passwordController,
-              initialValue: null,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Por favor ingresa tu contraseña';
-                }
-
-                if (value.length < 5) {
-                  return 'La contraseña debe tener al menos 6 caracteres';
+                  return 'Por favor ingresa tu usuario';
                 }
                 return null;
               },
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _passwordController,
               obscureText: !_isPasswordVisible,
               decoration: InputDecoration(
                   labelText: 'Contraseña',
@@ -130,12 +110,14 @@ class __FormContentState extends State<_FormContent> {
                       });
                     },
                   )),
-              onChanged: (value) {
-                password = '';
-                password = value;
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Por favor ingresa tu contraseña';
+                }
+                return null;
               },
             ),
-            _gap(),
+            const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -154,17 +136,17 @@ class __FormContentState extends State<_FormContent> {
                 ),
                 onPressed: () async {
                   if (_formKey.currentState?.validate() ?? false) {
-                    final response =
-                        await LoginProvider().login(usuario, password);
+                    var response = await loginProvider.login(
+                        _usuarioController.text, _passwordController.text);
+                    response = jsonDecode(response);
 
-                    if (response == null) {
+                    if (response['statusCode'] != 200) {
                       showDialog(
                         context: context.mounted ? context : context,
                         builder: (context) {
                           return AlertDialog(
                             title: const Text('Error'),
-                            content:
-                                const Text('Usuario o contraseña incorrectos'),
+                            content: Text(response['msg']),
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () {
@@ -176,28 +158,12 @@ class __FormContentState extends State<_FormContent> {
                           );
                         },
                       );
-                    } else {
-                      if(context.mounted){
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Panel()),);
-                      loginProvider.setUser(response);
-                      }else{
-                        showDialog(
-                          context: context.mounted ? context : context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Error'),
-                              content:
-                                  const Text('Usuario o contraseña incorrectos'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text('Aceptar'),
-                                ),
-                              ],
-                            );
-                          },
+                    } else if (response['statusCode'] == 200) {
+                      if (context.mounted) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Panel()),
                         );
                       }
                     }
@@ -210,6 +176,4 @@ class __FormContentState extends State<_FormContent> {
       ),
     );
   }
-
-  Widget _gap() => const SizedBox(height: 16);
 }

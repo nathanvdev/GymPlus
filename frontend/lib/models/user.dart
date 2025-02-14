@@ -1,3 +1,5 @@
+import 'package:frontend/utils/time_convert.dart';
+
 class User{
   final int memberId;
   final String username;
@@ -27,8 +29,8 @@ class User{
       rol: data['rol'],
       employmentStatus: data['employment_status'],
       dateOfEmployment: data['date_of_employment'],
-      createdAt: data['createdAt'],
-      updatedAt: data['updatedAt'],
+      createdAt: convertToGuatemalaTime(data['createdAt']),
+      updatedAt: convertToGuatemalaTime(data['updatedAt']),
     );
   }
 }

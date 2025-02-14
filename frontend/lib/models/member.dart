@@ -1,5 +1,6 @@
 import 'package:frontend/models/measurement.dart';
 import 'package:frontend/models/membership_payment.dart';
+import 'package:frontend/utils/time_convert.dart';
 
 class Member {
   final int id;
@@ -110,13 +111,6 @@ class FullMember {
       tmpNextDuePayment = 'N/A';
     }
 
-    String tmpCreatedAt;
-    try {
-      tmpCreatedAt = tmpMemberInfo['createdAt'].substring(0, 10);
-    } catch (e) {
-      tmpCreatedAt = 'N/A';
-    }
-
     return FullMember(
       id: tmpMemberInfo['id'].toString(),
       name: tmpMemberInfo['name'],
@@ -137,7 +131,7 @@ class FullMember {
       lastVisit: tmpMemberInfo['last_visit'],
       activeDays: tmpMemberInfo['active_days'].toString(),
       porfileImage: tmpMemberInfo['porfileImage'],
-      createdAt: tmpCreatedAt,
+      createdAt: convertToGuatemalaTime(tmpMemberInfo['createdAt']),
       payments: tmpPayments,
       measurements: tmpMeasurements,
     );

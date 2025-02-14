@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/sale.dart';
+import 'package:frontend/utils/time_convert.dart';
 
 class SalesProvider with ChangeNotifier {
   final dio = Dio();
@@ -25,9 +26,9 @@ class SalesProvider with ChangeNotifier {
         var newSale = Sale(
           id: element['id'].toString(),
           total: element['total'].toString(),
-          date: element['createdAt'].toString().substring(0, 10),
-          hour: element['createdAt'].toString().substring(11, 19),
+          date: convertToGuatemalaTime(element['createdAt']),
           autorizedBy: element['autorizedBy'].toString(),
+          status: element['status'].toString(),
         );
         saleList.add(newSale);
       }

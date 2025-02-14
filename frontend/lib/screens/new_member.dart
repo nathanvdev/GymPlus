@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/providers/login_provider.dart';
 import 'package:frontend/providers/member_table.provider.dart';
+import 'package:frontend/utils/auth.dart';
+import 'package:frontend/utils/show_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
@@ -508,11 +509,11 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
                                         return;
                                       }
                                       final isPasswordCorrect =
-                                          await showPasswordDialog(context);
+                                          await showPasswordVerificationDialog(context);
                                       if (isPasswordCorrect == false) {
                                         if (context.mounted) {
-                                          displayMessageDialog(
-                                              context, 'Contraseña incorrecta');
+                                          showDialogMessage( 
+                                              context, 'Error', 'Contraseña incorrecta');
                                         }
                                         return;
                                       }
@@ -562,15 +563,15 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
                                           memberProvider.refresh();
                                           if (context.mounted) {
                                             Navigator.pop(context);
-                                            displayMessageDialog(
-                                              context,
+                                            showDialogMessage(
+                                              context, 'Exito',
                                               'Miembro guardado',
                                             );
                                           }
                                         } catch (e) {
                                           if (context.mounted) {
                                             Navigator.pop(context);
-                                            displayMessageDialog(context,
+                                            showDialogMessage(context, 'Error',
                                                 'Error al guardar el miembro');
                                           }
                                         }
@@ -591,22 +592,22 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
                                             memberProvider.refresh();
                                             if (context.mounted) {
                                               Navigator.pop(context);
-                                              displayMessageDialog(
-                                                context,
+                                              showDialogMessage(
+                                                context, 'Exito',
                                                 'Miembro modificado',
                                               );
                                             }
                                           } else {
                                             if (context.mounted) {
                                               Navigator.pop(context);
-                                              displayMessageDialog(context,
+                                              showDialogMessage(context, 'Error',
                                                   'Error al modificar el miembro');
                                             }
                                           }
                                         } catch (e) {
                                           if (context.mounted) {
                                             Navigator.pop(context);
-                                            displayMessageDialog(context,
+                                            showDialogMessage(context, 'Error',
                                                 'Error al modificar el miembro');
                                           }
                                         }
@@ -640,113 +641,7 @@ class _NewMemberScreenState extends State<NewMemberScreen> {
         });
   }
 
-  Future<bool> showPasswordDialog(
-    BuildContext context,
-  ) {
-    final loginProvider = context.read<LoginProvider>();
-    var password = '';
-    bool isPasswordVisible = false;
 
-    return showDialog<bool>(
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: const Text('Verifica tus datos'),
-              content: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.17,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      initialValue: loginProvider.getUsername(),
-                      enabled: false,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Username',
-                        hintText: 'Ingresa tu usuario',
-                        prefixIcon: Icon(Icons.person_outline_rounded),
-                      ),
-                    ),
-                    const SizedBox(height: 15.0),
-                    TextFormField(
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Por favor ingresa tu contraseña';
-                        }
-                        if (value.length < 5) {
-                          return 'La contraseña debe tener al menos 6 caracteres';
-                        }
-                        return null;
-                      },
-                      obscureText: !isPasswordVisible,
-                      decoration: InputDecoration(
-                        labelText: 'Contraseña',
-                        hintText: 'Ingresa tu contraseña',
-                        prefixIcon: const Icon(Icons.lock_outline_rounded),
-                        border: const OutlineInputBorder(),
-                        suffixIcon: IconButton(
-                          icon: Icon(isPasswordVisible
-                              ? Icons.visibility_off
-                              : Icons.visibility),
-                          onPressed: () {
-                            setState(() {
-                              isPasswordVisible = !isPasswordVisible;
-                            });
-                          },
-                        ),
-                      ),
-                      onChanged: (value) {
-                        password = value;
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context, false);
-                  },
-                  child: const Text('Cancelar'),
-                ),
-                TextButton(
-                  child: const Text('Aceptar'),
-                  onPressed: () {
-                    if (password == loginProvider.user.password) {
-                      Navigator.pop(context, true);
-                    } else {
-                      Navigator.pop(context, false);
-                    }
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      },
-    ).then((value) => value ?? false);
-  }
-
-  void displayMessageDialog(BuildContext context, String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Mensaje'),
-          content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Aceptar'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   Future<void> updateFields(int memberID) async {
     final dio = Dio();

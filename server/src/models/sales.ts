@@ -10,6 +10,11 @@ export const Sale = db.define('sale', {
     total: {
         type: DataTypes.FLOAT
     },
+    //1 = aprobado, 2 = pendiente, 3 = anulado
+    status: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
     admin_id: {
         type: DataTypes.INTEGER
     }

@@ -1,3 +1,5 @@
+import 'package:frontend/utils/time_convert.dart';
+
 class MembershipPayment{
   int id;
   int memberId;
@@ -71,7 +73,7 @@ class MembershipPayment{
       paymentStatus: json['payment_status'],
       paymentReference: json['payment_reference'],
       adminMemberId: json['admin_member_id'],
-      createdAt: json['createdAt'].substring(0, 10),
+      createdAt: convertToGuatemalaTime(json['createdAt']),
     );
   }
 

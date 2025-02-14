@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:frontend/models/membership_payment.dart';
 import 'package:frontend/providers/profileview_provider.dart';
 import 'package:frontend/screens/new_member.dart';
+import 'package:frontend/utils/auth.dart';
+import 'package:frontend/utils/show_dialog.dart';
 import 'package:provider/provider.dart';
-
-import '../providers/login_provider.dart';
 import '../providers/member_table.provider.dart';
 import 'widgets/payment_process_widget.dart';
 
@@ -15,9 +15,7 @@ class MemberProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(providers: [
-      ChangeNotifierProvider(create: (memberProvider) => ProfileviewProvider())
-    ], child: const _MemberPagState());
+    return const _MemberPagState();
   }
 }
 
@@ -132,23 +130,35 @@ class __MemberPagStateState extends State<_MemberPagState> {
                                         height: 5,
                                       ),
                                       Container(
-                                        padding: const EdgeInsets.only(left: 5, right: 5),
+                                        padding: const EdgeInsets.only(
+                                            left: 5, right: 5),
                                         decoration: BoxDecoration(
-                                          color: memberProfileProvider.member.membershipStatus == "Activo"
+                                          color: memberProfileProvider.member
+                                                      .membershipStatus ==
+                                                  "Activo"
                                               ? Colors.green
-                                              : memberProfileProvider.member.membershipStatus == "Inactivo"
+                                              : memberProfileProvider.member
+                                                          .membershipStatus ==
+                                                      "Inactivo"
                                                   ? Colors.red
-                                                  : Colors.yellow, // Color para "Por vencer"
-                                          borderRadius: BorderRadius.circular(10),
+                                                  : Colors
+                                                      .yellow, // Color para "Por vencer"
+                                          borderRadius:
+                                              BorderRadius.circular(10),
                                           border: Border.all(
-                                            color: const Color.fromARGB(255, 0, 0, 0),
+                                            color: const Color.fromARGB(
+                                                255, 0, 0, 0),
                                             width: 1,
                                           ),
                                         ),
                                         child: Text(
-                                          memberProfileProvider.member.membershipStatus == "Activo"
+                                          memberProfileProvider.member
+                                                      .membershipStatus ==
+                                                  "Activo"
                                               ? 'Activo'
-                                              : memberProfileProvider.member.membershipStatus == "Inactivo"
+                                              : memberProfileProvider.member
+                                                          .membershipStatus ==
+                                                      "Inactivo"
                                                   ? 'Inactivo'
                                                   : 'Por vencer', // Texto para "Por vencer"
                                           style: const TextStyle(
@@ -162,8 +172,6 @@ class __MemberPagStateState extends State<_MemberPagState> {
                                   )
                                 ],
                               ),
-
-                              
                               const SizedBox(
                                 height: 35,
                               ),
@@ -436,12 +444,20 @@ class __MemberPagStateState extends State<_MemberPagState> {
                                                             .length,
                                                     itemBuilder:
                                                         (context, index) {
+                                                      // Accede a los elementos en orden inverso
+                                                      final reversedIndex =
+                                                          memberProfileProvider
+                                                                  .member
+                                                                  .payments!
+                                                                  .length -
+                                                              1 -
+                                                              index;
                                                       return MembershipCard(
                                                         payment:
                                                             memberProfileProvider
                                                                     .member
                                                                     .payments![
-                                                                index],
+                                                                reversedIndex],
                                                       );
                                                     },
                                                   ),
@@ -776,8 +792,11 @@ class MembershipCard extends StatelessWidget {
                 width: 90,
                 padding: const EdgeInsets.only(left: 5, right: 5),
                 decoration: BoxDecoration(
-                  color:
-                      payment.paymentStatus == 1 ? Colors.green : Colors.yellow,
+                  color: payment.paymentStatus == 1
+                      ? Colors.green
+                      : payment.paymentStatus == 3
+                          ? Colors.red
+                          : Colors.yellow,
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(
                     color: const Color.fromARGB(255, 0, 0, 0),
@@ -786,7 +805,11 @@ class MembershipCard extends StatelessWidget {
                 ),
                 child: Center(
                     child: Text(
-                  payment.paymentStatus == 1 ? 'Pagado' : 'Pendiente',
+                  payment.paymentStatus == 1
+                      ? 'Pagado'
+                      : payment.paymentStatus == 3
+                          ? 'Anulado'
+                          : 'Pendiente',
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -796,7 +819,9 @@ class MembershipCard extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              Row(
+              payment.paymentStatus == 3
+                  ? const SizedBox()
+                  : Row(
                 children: [
                   IconButton(
                     icon: const Icon(Icons.edit),
@@ -822,11 +847,11 @@ class MembershipCard extends StatelessWidget {
                     icon: const Icon(Icons.delete),
                     onPressed: () async {
                       final isPasswordCorrect =
-                          await showPasswordDialog(context);
+                          await showPasswordVerificationDialog(context);
                       if (isPasswordCorrect == false) {
                         if (context.mounted) {
-                          displayMessageDialog(
-                              context, 'Contraseña incorrecta');
+                          showDialogMessage( 
+                              context, 'Error', 'Contraseña incorrecta');
                         }
                         return;
                       }
@@ -841,7 +866,7 @@ class MembershipCard extends StatelessWidget {
                                 .getSelectedMemberId(),
                             context);
                       } else {
-                        displayMessageDialog(context,
+                        showDialogMessage(context, 'Error',
                             'Error al eliminar el pago\n${response.data.msg}');
                       }
                     },
@@ -854,112 +879,4 @@ class MembershipCard extends StatelessWidget {
       ),
     );
   }
-}
-
-Future<bool> showPasswordDialog(
-  BuildContext context,
-) {
-  final loginProvider = context.read<LoginProvider>();
-  var password = '';
-  bool isPasswordVisible = false;
-
-  return showDialog<bool>(
-    context: context,
-    builder: (context) {
-      return StatefulBuilder(
-        builder: (context, setState) {
-          return AlertDialog(
-            title: const Text('Verifica tus datos'),
-            content: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.17,
-              child: Column(
-                children: [
-                  TextFormField(
-                    initialValue: loginProvider.getUsername(),
-                    enabled: false,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Username',
-                      hintText: 'Ingresa tu usuario',
-                      prefixIcon: Icon(Icons.person_outline_rounded),
-                    ),
-                  ),
-                  const SizedBox(height: 15.0),
-                  TextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor ingresa tu contraseña';
-                      }
-                      if (value.length < 5) {
-                        return 'La contraseña debe tener al menos 6 caracteres';
-                      }
-                      return null;
-                    },
-                    obscureText: !isPasswordVisible,
-                    decoration: InputDecoration(
-                      labelText: 'Contraseña',
-                      hintText: 'Ingresa tu contraseña',
-                      prefixIcon: const Icon(Icons.lock_outline_rounded),
-                      border: const OutlineInputBorder(),
-                      suffixIcon: IconButton(
-                        icon: Icon(isPasswordVisible
-                            ? Icons.visibility_off
-                            : Icons.visibility),
-                        onPressed: () {
-                          setState(() {
-                            isPasswordVisible = !isPasswordVisible;
-                          });
-                        },
-                      ),
-                    ),
-                    onChanged: (value) {
-                      password = value;
-                    },
-                  ),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context, false);
-                },
-                child: const Text('Cancelar'),
-              ),
-              TextButton(
-                child: const Text('Aceptar'),
-                onPressed: () {
-                  if (password == loginProvider.user.password) {
-                    Navigator.pop(context, true);
-                  } else {
-                    Navigator.pop(context, false);
-                  }
-                },
-              ),
-            ],
-          );
-        },
-      );
-    },
-  ).then((value) => value ?? false);
-}
-
-void displayMessageDialog(BuildContext context, String message) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Mensaje'),
-        content: Text(message),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Aceptar'),
-          ),
-        ],
-      );
-    },
-  );
 }

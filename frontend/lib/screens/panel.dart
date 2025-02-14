@@ -28,7 +28,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class Dashboardstate extends State<Dashboard> {
-
   Future<void> _future = Future.any([]);
 
   @override
@@ -47,204 +46,190 @@ class Dashboardstate extends State<Dashboard> {
           future: _future,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
-                  return Row(
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.24,
-                        height: MediaQuery.of(context).size.height,
-                        child: Container(
-                          padding: const EdgeInsets.only(
-                              top: 20, left: 20, right: 20, bottom: 20),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            boxShadow: buildShadowBox(),
-                          ),
-                          child: const Menu(), // Removed const
-                        ),
-                      ),
-                      Expanded(
-                          flex: 3,
-                          child: Container(
-                            margin: const EdgeInsets.only(
-                                top: 10, bottom: 10, right: 10, left: 20),
-                            child: Column(
-                                // Removed const
+              return const CircularProgressIndicator();
+            }
+            return Row(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.24,
+                  height: MediaQuery.of(context).size.height,
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                        top: 20, left: 20, right: 20, bottom: 20),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      boxShadow: buildShadowBox(),
+                    ),
+                    child:  Menu(), // Removed const
+                  ),
+                ),
+                Expanded(
+                    flex: 3,
+                    child: Container(
+                      margin: const EdgeInsets.only(
+                          top: 10, bottom: 10, right: 10, left: 20),
+                      child: Column(
+                          // Removed const
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            const TopBanner(),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  const TopBanner(),
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: FilledButton(
-                                                    onPressed: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  const NewMemberScreen()));
-                                                    },
-                                                    child: const Text(
-                                                        "Agregar Miembro"),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: FilledButton(
-                                                    onPressed: () {
-                                                      if (memberselectedProvider
-                                                              .getSelectedMemberId() ==
-                                                          -1) {
-                                                        showDialog(
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return AlertDialog(
-                                                              title: const Text(
-                                                                  'Error'),
-                                                              content: const Text(
-                                                                  'Seleccione un miembro para realizar el pago'),
-                                                              actions: <Widget>[
-                                                                TextButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop();
-                                                                  },
-                                                                  child: const Text(
-                                                                      'Aceptar'),
-                                                                ),
-                                                              ],
-                                                            );
-                                                          },
-                                                        );
-                                                      } else {
-                                                        showDialog(
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return const PaymentProcessWidget(
-                                                                type: 1);
-                                                          },
-                                                        );
-                                                      }
-                                                    },
-                                                    child: const Text(
-                                                        "Realizar Pago"),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: FilledButton(
-                                                    onPressed: () {
-                                                      if (memberselectedProvider
-                                                              .getSelectedMemberId() ==
-                                                          -1) {
-                                                        showDialog(
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return AlertDialog(
-                                                              title: const Text(
-                                                                  'Error'),
-                                                              content: const Text(
-                                                                  'Seleccione un miembro para realizar la medición'),
-                                                              actions: <Widget>[
-                                                                TextButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop();
-                                                                  },
-                                                                  child: const Text(
-                                                                      'Aceptar'),
-                                                                ),
-                                                              ],
-                                                            );
-                                                          },
-                                                        );
-                                                      }
-                                                      else {
-                                                       showDialog(
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return const BodyMeasurements();
-                                                          },
-                                                        );
-                                                      }
-                                                    },
-                                                    child: const Text(
-                                                        "Medición Antropométrica"),
-                                                  ),
-                                                ),
-                                              ],
+                                children: [
+                                  Row(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: FilledButton(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const NewMemberScreen()));
+                                              },
+                                              child:
+                                                  const Text("Agregar Miembro"),
                                             ),
-                                            SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.15,
-                                              height: 50,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: SearchBar(
-                                                  hintText: "Buscar Miembro",
-                                                  shadowColor:
-                                                      WidgetStatePropertyAll(
-                                                    Theme.of(context)
-                                                        .shadowColor,
-                                                  ),
-                                                  elevation:
-                                                      const WidgetStatePropertyAll(
-                                                          8),
-                                                  shape: WidgetStatePropertyAll(
-                                                    RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30.0),
-                                                      side: BorderSide(
-                                                        color: Theme.of(context)
-                                                            .shadowColor,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  onChanged: (value) {
-                                                    memberProvider
-                                                        .filtringMembers(value);
-                                                  },
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: FilledButton(
+                                              onPressed: () {
+                                                if (memberselectedProvider
+                                                        .getSelectedMemberId() ==
+                                                    -1) {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return AlertDialog(
+                                                        title:
+                                                            const Text('Error'),
+                                                        content: const Text(
+                                                            'Seleccione un miembro para realizar el pago'),
+                                                        actions: <Widget>[
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                            child: const Text(
+                                                                'Aceptar'),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                } else {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return const PaymentProcessWidget(
+                                                          type: 1);
+                                                    },
+                                                  );
+                                                }
+                                              },
+                                              child:
+                                                  const Text("Realizar Pago"),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: FilledButton(
+                                              onPressed: () {
+                                                if (memberselectedProvider
+                                                        .getSelectedMemberId() ==
+                                                    -1) {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return AlertDialog(
+                                                        title:
+                                                            const Text('Error'),
+                                                        content: const Text(
+                                                            'Seleccione un miembro para realizar la medición'),
+                                                        actions: <Widget>[
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                            child: const Text(
+                                                                'Aceptar'),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                } else {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return const BodyMeasurements();
+                                                    },
+                                                  );
+                                                }
+                                              },
+                                              child: const Text(
+                                                  "Medición Antropométrica"),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.15,
+                                        height: 50,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: SearchBar(
+                                            hintText: "Buscar Miembro",
+                                            shadowColor: WidgetStatePropertyAll(
+                                              Theme.of(context).shadowColor,
+                                            ),
+                                            elevation:
+                                                const WidgetStatePropertyAll(8),
+                                            shape: WidgetStatePropertyAll(
+                                              RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(30.0),
+                                                side: BorderSide(
+                                                  color: Theme.of(context)
+                                                      .shadowColor,
                                                 ),
                                               ),
                                             ),
-                                          ],
+                                            onChanged: (value) {
+                                              memberProvider
+                                                  .filtringMembers(value);
+                                            },
+                                          ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                  const TableWdgt(),
-                                ]),
-                          )),
-                    ],
-                  );
+                                ],
+                              ),
+                            ),
+                            const TableWdgt(),
+                          ]),
+                    )),
+              ],
+            );
           },
         ),
       ),
@@ -548,8 +533,10 @@ class MembersTableState extends State<MembersTable> {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         image: member.porfileImage != ''
-                            ? FileImage(File('lib/assets/tmp/${member.porfileImage}'))
-                            : const AssetImage('lib/assets/defaultprofile.webp'),
+                            ? FileImage(
+                                File('lib/assets/tmp/${member.porfileImage}'))
+                            : const AssetImage(
+                                'lib/assets/defaultprofile.webp'),
                         fit: BoxFit.fitWidth,
                       ),
                     ),
@@ -632,14 +619,18 @@ class MembersTableState extends State<MembersTable> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => NewMemberScreen(type: 2, memberID: member.id)));
+                              builder: (context) => NewMemberScreen(
+                                  type: 2, memberID: member.id)));
                     },
                   ),
                   IconButton(
                     icon: const Icon(Icons.remove_red_eye_outlined),
                     onPressed: () {
                       memberselectedProvider.setSelectedMemberId(member.id);
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const MemberProfile()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MemberProfile()));
                     },
                   ),
                 ],

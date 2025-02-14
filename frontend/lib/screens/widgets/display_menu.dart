@@ -2,16 +2,18 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/config/theme/app_theme.dart';
+import 'package:frontend/screens/admin.dart';
 import 'package:frontend/screens/panel.dart';
 import 'package:frontend/screens/payments.dart';
 import 'package:frontend/providers/login_provider.dart';
-import 'package:frontend/providers/payments_provider.dart';
 import 'package:frontend/screens/sign_in.dart';
 import 'package:frontend/screens/store.dart';
 import 'package:provider/provider.dart';
 
 class Menu extends StatelessWidget {
+
   const Menu({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const Options();
@@ -25,8 +27,7 @@ class Options extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  final loginProvider = context.read<LoginProvider>();
-  final paymentProvider = context.read<PaymentsProvider>(); 
+  final loginProvider = context.watch<LoginProvider>();
 
     return ListView(
       children: <Widget>[
@@ -77,7 +78,6 @@ class Options extends StatelessWidget {
           title: "Pagos",
           icon: Icons.attach_money,
           onPressed: () {
-            paymentProvider.refresh();
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const PaymentsScreen()));
           }
           ,
@@ -85,12 +85,18 @@ class Options extends StatelessWidget {
         MenuButtonBar(
           title: "Configuracion",
           icon: Icons.settings,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AdminPage()));
+          },
         ),
         MenuButtonBar(
           title: "Cerrar Sesion",
           icon: Icons.logout,
-          onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SignInPage2()))
+          onPressed: () {
+            loginProvider.logout();
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+          },
+
         ),
       ],
     );

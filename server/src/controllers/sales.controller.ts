@@ -4,7 +4,7 @@ import { member } from "../models/member";
 import { Product } from "../models/product";
 
 export const addSale = async (req: Request, res: Response) => {
-    const { total, admin_id, items } = req.body;
+    const { total, admin_id, items, status } = req.body;
 
     if (!total || !admin_id || !items || !Array.isArray(items)) {
         return res.status(400).json({
@@ -40,7 +40,8 @@ export const addSale = async (req: Request, res: Response) => {
 
         const sale = await Sale.create({
             total,
-            admin_id
+            admin_id,
+            status
         });
         const sale_id = sale.getDataValue('id');
 
@@ -117,11 +118,9 @@ export const deleteSale = async (req: Request, res: Response) => {
             }
         }
 
-        await Promise.all((await Items).map(async (item) => {
-            await item.destroy();
-        }));
-
-        await sale.destroy();
+        await sale.update({
+            status : 3
+        });
 
         res.status(200).json({
             msg: 'Venta eliminada'

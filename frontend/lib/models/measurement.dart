@@ -1,3 +1,5 @@
+import 'package:frontend/utils/time_convert.dart';
+
 class Measurement {
   int id;
   int memberId;
@@ -45,7 +47,7 @@ class Measurement {
       abdomen: json['abdomen'] != null ? double.parse(json['abdomen'].toString()) : 0.00,
       gluteus: json['gluteus'] != null ? double.parse(json['gluteus'].toString()) : 0.00,
       thigh: json['thigh'] != null ? double.parse(json['thigh'].toString()) : 0.00,
-      createdAt: json['createdAt'],
+      createdAt: convertToGuatemalaTime(json['createdAt']),
     );
   }
 }

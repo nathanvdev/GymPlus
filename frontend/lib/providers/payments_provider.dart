@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/membership_payment.dart';
+import 'package:frontend/utils/time_convert.dart';
 
 class PaymentsProvider extends ChangeNotifier {
   final List<MembershipPayment> paymentList = [];
@@ -62,8 +63,8 @@ class PaymentsProvider extends ChangeNotifier {
         newPayment.id = element['id'];
         newPayment.name = element['member_name'];
         newPayment.lastName = element['member_lastname'];
-        newPayment.createdAt = element['createdAt'].substring(0, 10);
-        newPayment.updatedAt = element['updatedAt'].substring(0, 10);
+        newPayment.createdAt = convertToGuatemalaTime(element['createdAt']);
+        newPayment.updatedAt = convertToGuatemalaTime(element['updatedAt']);
         paymentList.add(newPayment);
       }
       filteredPaymentList.clear();
@@ -78,7 +79,7 @@ class PaymentsProvider extends ChangeNotifier {
 
       today = 0;
       for (var payment in paymentList) {
-        if (payment.createdAt == DateTime.now().toString().substring(0, 10)) {
+        if (payment.createdAt.substring(0,10) == DateTime.now().toString().substring(0, 10)) {
           today++;
         }
       }
@@ -102,12 +103,16 @@ class PaymentsProvider extends ChangeNotifier {
           if (payment.paymentStatus == 2) {
             filteredPaymentList.add(payment);
           }
-          
         }else if (filter.toLowerCase() == 'pagado') {
           if (payment.paymentStatus == 1) {
             filteredPaymentList.add(payment);
           }
-        } else if (filter.toLowerCase() == 'dia') {
+        } else if(filter.toLowerCase() == 'anulado'){
+          if (payment.paymentStatus == 3) {
+            filteredPaymentList.add(payment);
+          }
+        }
+        else if (filter.toLowerCase() == 'dia') {
           if (payment.billingCycle == 1) {
             filteredPaymentList.add(payment);
           }
@@ -209,8 +214,8 @@ class PaymentsProvider extends ChangeNotifier {
       newPayment.id = element['id'];
       newPayment.name = element['member_name'];
       newPayment.lastName = element['member_lastname'];
-      newPayment.createdAt = element['createdAt'].substring(0, 10);
-      newPayment.updatedAt = element['updatedAt'].substring(0, 10);
+      newPayment.createdAt = convertToGuatemalaTime(element['createdAt']);
+      newPayment.updatedAt = convertToGuatemalaTime(element['updatedAt']);
 
       return newPayment;
     } catch (e) {

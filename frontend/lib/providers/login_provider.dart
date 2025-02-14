@@ -1,24 +1,16 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/user.dart';
 
 class LoginProvider extends ChangeNotifier {
   final dio = Dio();
-  
-  var user = User(
-    memberId: 0,
-    username: 'none',
-    password: '',
-    rol: '',
-    employmentStatus: '',
-    dateOfEmployment: '',
-    createdAt: '',
-    updatedAt: '',
-  );
+  late User user;
 
   login(String username, String password) async {
     try {
-      final response = await dio.get(
+      final response = await dio.post(
         'http://localhost:3569/login',
         data: {
           'username': username,
@@ -26,17 +18,38 @@ class LoginProvider extends ChangeNotifier {
         },
       );
 
-      if (response.statusCode != 200) {
-        return null;
+      if (response.statusCode == 200) {
+        user = User.fromJson(response.data["userExist"]);
+        notifyListeners();
+        return jsonEncode({
+          'statusCode': response.statusCode,
+        });
       }
-
-      user = User.fromJson(response.data);
-      notifyListeners();
-
-      return user;
+    } on DioException catch (e) {
+      return jsonEncode({
+        'statusCode': e.response?.statusCode ?? 500,
+        'msg': e.response?.data['msg'] ?? 'Error en el servidor',
+      });
     } catch (e) {
-      return null;
+      return jsonEncode({
+        'statusCode': 500,
+        'msg': 'An unexpected error occurred',
+      });
     }
+  }
+
+  logout() {
+    user = User(
+      username: '',
+      password: '',
+      memberId: 0,
+      createdAt: '',
+      updatedAt: '',
+      dateOfEmployment: '',
+      employmentStatus: '',
+      rol: '',
+    );
+    notifyListeners();
   }
 
   setUser(User newUser) {
@@ -71,5 +84,4 @@ class LoginProvider extends ChangeNotifier {
   getUpdatedAt() {
     return user.updatedAt;
   }
-
 }

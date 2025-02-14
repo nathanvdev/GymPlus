@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Payment } from "../models/payment";
 import { generateMembershipBill } from "../utilities/membership_bill";
 import { member } from "../models/member";
+import { Op } from "sequelize";
 
 export const postpayment = async (req: Request, res: Response) => {
 
@@ -246,12 +247,15 @@ export const deletePayment = async (req: Request, res: Response) => {
             });
         }
 
-        await payment.destroy();
+        await payment.update({
+            payment_status : 3
+        });
 
         const last_payment = await Payment.findOne({
             order: [['createdAt', 'DESC']],
             where: {
-                member_id: payment.dataValues.member_id
+                member_id: payment.dataValues.member_id,
+                payment_status: { [Op.ne]: 3 }
             }
         });
         if (last_payment && tmpMember) {
