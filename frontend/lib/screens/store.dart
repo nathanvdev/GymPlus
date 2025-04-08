@@ -59,7 +59,7 @@ class _StorePageState extends State<StorePage> {
                   return Row(
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.24,
+                        width: MediaQuery.of(context).size.width * 0.21,
                         height: MediaQuery.of(context).size.height,
                         child: Container(
                           padding: const EdgeInsets.only(

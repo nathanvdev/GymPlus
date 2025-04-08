@@ -145,7 +145,7 @@ export const deletemember = (req: Request, res: Response) => {
             msg: 'deletemember',
             id
         });
-        
+
     } catch (error) {
         res.status(500).json({
             msg: 'Error en el servidor\n' + error

@@ -56,11 +56,6 @@ class Options extends StatelessWidget {
           ),
         ),
         MenuButtonBar(
-          title: "Home",
-          icon: Icons.home,
-          onPressed: () {},
-        ),
-        MenuButtonBar(
           title: "Miembros",
           icon: Icons.people,
           onPressed: () {

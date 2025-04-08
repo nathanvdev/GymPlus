@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend/config/theme/app_theme.dart';
+import 'package:frontend/providers/expense_provider.dart';
 import 'package:frontend/screens/widgets/display_menu.dart';
+import 'package:frontend/screens/widgets/expenses_widget.dart';
+import 'package:frontend/screens/widgets/stats_payment_card.dart';
+import 'package:provider/provider.dart';
 
 class AdminScreen extends StatelessWidget {
   const AdminScreen({super.key});
@@ -31,12 +35,6 @@ class _AdminPageState extends State<AdminPage> with TickerProviderStateMixin {
   }
 
   @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
@@ -49,7 +47,7 @@ class _AdminPageState extends State<AdminPage> with TickerProviderStateMixin {
             return Row(
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.24,
+                  width: MediaQuery.of(context).size.width * 0.21,
                   height: MediaQuery.of(context).size.height,
                   child: Container(
                     padding: const EdgeInsets.only(
@@ -61,8 +59,9 @@ class _AdminPageState extends State<AdminPage> with TickerProviderStateMixin {
                     child: const Menu(), // Removed const
                   ),
                 ),
-                Expanded(
-                  
+                SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width * 0.79,
                   child: NestedScrollView(
                     headerSliverBuilder: (context, innerBoxIsScrolled) {
                       return [
@@ -114,14 +113,242 @@ class _AdminPageState extends State<AdminPage> with TickerProviderStateMixin {
                     },
                     body: TabBarView(
                       controller: _tabController,
-                      children: const [
-                        Center(child: Text("Caja")),
-                        Center(child: Text("Gastos Varios")),
-                        Center(child: Text("Empleados")),
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const StatsCash(),
+                            Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.57,
+                                width: MediaQuery.of(context).size.width * 0.76,
+                                margin: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        color: Theme.of(context).primaryColor,
+                                        width: 5)),
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  child: DataTable(
+                                      showBottomBorder: true,
+                                      columnSpacing: 1,
+                                      headingRowHeight: 50,
+                                      dataRowMinHeight: 60,
+                                      dataRowMaxHeight: 60,
+                                      showCheckboxColumn: false,
+                                      horizontalMargin: 10,
+                                      columns: const [
+                                        DataColumn(label: Text("ID\nTrasacc")),
+                                        DataColumn(label: Text("ID\nRef")),
+                                        DataColumn(label: Text("Debito")),
+                                        DataColumn(label: Text("Credito")),
+                                        DataColumn(label: Text("Disponible")),
+                                        DataColumn(label: Text("Reserva")),
+                                        DataColumn(label: Text("Total")),
+                                        DataColumn(label: Text("Fecha")),
+                                      ],
+                                      rows: const [
+                                        DataRow(cells: [
+                                          DataCell(Text("1")),
+                                          DataCell(Text("1")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("2021-10-01")),
+                                        ]),
+                                        DataRow(cells: [
+                                          DataCell(Text("2")),
+                                          DataCell(Text("2")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("2021-10-01")),
+                                        ]),
+                                        DataRow(cells: [
+                                          DataCell(Text("3")),
+                                          DataCell(Text("3")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("2021-10-01")),
+                                        ]),
+                                        DataRow(cells: [
+                                          DataCell(Text("4")),
+                                          DataCell(Text("4")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("2021-10-01")),
+                                        ]),
+                                        DataRow(cells: [
+                                          DataCell(Text("5")),
+                                          DataCell(Text("5")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("2021-10-01")),
+                                        ]),
+                                        DataRow(cells: [
+                                          DataCell(Text("6")),
+                                          DataCell(Text("6")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("2021-10-01")),
+                                        ]),
+                                        DataRow(cells: [
+                                          DataCell(Text("1")),
+                                          DataCell(Text("1")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("2021-10-01")),
+                                        ]),
+                                        DataRow(cells: [
+                                          DataCell(Text("2")),
+                                          DataCell(Text("2")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("2021-10-01")),
+                                        ]),
+                                        DataRow(cells: [
+                                          DataCell(Text("3")),
+                                          DataCell(Text("3")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("2021-10-01")),
+                                        ]),
+                                        DataRow(cells: [
+                                          DataCell(Text("4")),
+                                          DataCell(Text("4")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("2021-10-01")),
+                                        ]),
+                                        DataRow(cells: [
+                                          DataCell(Text("5")),
+                                          DataCell(Text("5")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("2021-10-01")),
+                                        ]),
+                                        DataRow(cells: [
+                                          DataCell(Text("6")),
+                                          DataCell(Text("6")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("2021-10-01")),
+                                        ]),
+                                        DataRow(cells: [
+                                          DataCell(Text("1")),
+                                          DataCell(Text("1")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("2021-10-01")),
+                                        ]),
+                                        DataRow(cells: [
+                                          DataCell(Text("2")),
+                                          DataCell(Text("2")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("2021-10-01")),
+                                        ]),
+                                        DataRow(cells: [
+                                          DataCell(Text("3")),
+                                          DataCell(Text("3")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("2021-10-01")),
+                                        ]),
+                                        DataRow(cells: [
+                                          DataCell(Text("4")),
+                                          DataCell(Text("4")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("2021-10-01")),
+                                        ]),
+                                        DataRow(cells: [
+                                          DataCell(Text("5")),
+                                          DataCell(Text("5")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("2021-10-01")),
+                                        ]),
+                                        DataRow(cells: [
+                                          DataCell(Text("6")),
+                                          DataCell(Text("6")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("Q. 1,400.00")),
+                                          DataCell(Text("Q. 0.00")),
+                                          DataCell(Text("2021-10-01")),
+                                        ]),
+                                      ]),
+                                ))
+                          ],
+                        ),
+                        Center(
+                            child: Container(
+                          height: MediaQuery.of(context).size.height * 0.57,
+                          width: MediaQuery.of(context).size.width * 0.76,
+                          margin: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                  color: Theme.of(context).primaryColor,
+                                  width: 5)),
+                          // child: ExpensesWidget(expensesProvider: context.read<ExpenseProvider>(), typeEdition: 3)
+                        )),
+                        const Center(child: Text("Empleados")),
                       ],
                     ),
                   ),
-                
                 )
               ],
             );

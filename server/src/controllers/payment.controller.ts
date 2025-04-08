@@ -15,9 +15,8 @@ export const postpayment = async (req: Request, res: Response) => {
         }
 
         const newPayment = await Payment.create(body);
-        const bill = newPayment.toJSON();
-        console.log(typeof bill);
-        await generateMembershipBill(bill);
+        body.id = newPayment.dataValues.id;
+        await generateMembershipBill(body);
 
         res.status(200).json({
             msg: 'Pago creado',

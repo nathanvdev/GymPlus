@@ -47,18 +47,14 @@ export const generateMembershipBill = async (payment: typeof Payment.arguments) 
 
 
         if (payment.initialpaymentdate) {
-            const date = new Date(payment.initialpaymentdate);
-            const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-            paymentInfo.initialdate = formattedDate;
-        } else {
-            paymentInfo.initialdate = '';
-        }
+            paymentInfo.initialdate = payment.initialpaymentdate;
+        } 
 
         if (payment.nextpaymentdate) {
-            const date = new Date(payment.nextpaymentdate);
-            const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-            paymentInfo.nextdate = formattedDate;
+            paymentInfo.nextdate = payment.nextpaymentdate;
         }
+
+        
     });
 
     await member.findByPk(payment.admin_member_id).then((member) => {

@@ -13,6 +13,7 @@ export const addSale = async (req: Request, res: Response) => {
     }
 
     try {
+        
 
         for(const item in items){
             const product = await Product.findByPk(items[item].id);

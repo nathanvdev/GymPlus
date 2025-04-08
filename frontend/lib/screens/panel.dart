@@ -51,7 +51,7 @@ class Dashboardstate extends State<Dashboard> {
             return Row(
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.24,
+                  width: MediaQuery.of(context).size.width * 0.21,
                   height: MediaQuery.of(context).size.height,
                   child: Container(
                     padding: const EdgeInsets.only(
@@ -60,7 +60,7 @@ class Dashboardstate extends State<Dashboard> {
                       color: Theme.of(context).primaryColor,
                       boxShadow: buildShadowBox(),
                     ),
-                    child:  Menu(), // Removed const
+                    child: const Menu(), // Removed const
                   ),
                 ),
                 Expanded(
@@ -73,7 +73,6 @@ class Dashboardstate extends State<Dashboard> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            const TopBanner(),
                             SizedBox(
                               width: MediaQuery.of(context).size.width,
                               child: Row(
@@ -364,26 +363,6 @@ class Dashboardstate extends State<Dashboard> {
   }
 }
 
-class TopBanner extends StatelessWidget {
-  const TopBanner({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        width: MediaQuery.of(context).size.width * 0.59,
-        height: MediaQuery.of(context).size.height * 0.2,
-        padding: const EdgeInsets.only(bottom: 5),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border:
-              Border.all(color: const Color.fromARGB(255, 0, 0, 0), width: 2),
-        ),
-        child: const Text('Banner'));
-  }
-}
-
 class TableWdgt extends StatefulWidget {
   const TableWdgt({
     super.key,
@@ -398,40 +377,22 @@ class TableWdgtState extends State<TableWdgt> {
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onHover: (event) {
-        if (event.localPosition.dx > MediaQuery.of(context).size.width * 0.7) {
-          _scrollController.animateTo(
-            _scrollController.offset + 1000,
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.easeInOut,
-          );
-        } else if (event.localPosition.dx <
-            MediaQuery.of(context).size.width * 0.1) {
-          _scrollController.animateTo(
-            _scrollController.offset - 1000,
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.easeInOut,
-          );
-        }
-      },
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.65,
-        width: MediaQuery.of(context).size.width * 0.9,
-        margin: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border:
-                Border.all(color: Theme.of(context).primaryColor, width: 5)),
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.87,
+      width: MediaQuery.of(context).size.width * 0.9,
+      margin: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border:
+              Border.all(color: Theme.of(context).primaryColor, width: 5)),
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        scrollDirection: Axis.horizontal,
         child: SingleChildScrollView(
-          controller: _scrollController,
-          scrollDirection: Axis.horizontal,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(minWidth: 1384, maxWidth: 1384),
-              child: const MembersTable(),
-            ),
+          scrollDirection: Axis.vertical,
+          child: ConstrainedBox(
+            constraints:  BoxConstraints(minWidth: MediaQuery.of(context).size.width * 0.759, maxWidth: MediaQuery.of(context).size.width * 0.759),
+            child: const MembersTable(),
           ),
         ),
       ),
@@ -463,7 +424,7 @@ class MembersTableState extends State<MembersTable> {
         });
       },
       showBottomBorder: true,
-      columnSpacing: 1,
+      columnSpacing: 0,
       headingRowHeight: 50,
       dataRowMinHeight: 60,
       dataRowMaxHeight: 60,
@@ -478,8 +439,7 @@ class MembersTableState extends State<MembersTable> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Ultimo'),
-            Text('Pago'),
+            Text('Ultimo\nPago'),
           ],
         )),
         DataColumn(
@@ -487,8 +447,7 @@ class MembersTableState extends State<MembersTable> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Proximo'),
-            Text('Pago'),
+            Text('Proximo\nPago'),
           ],
         )),
         DataColumn(
@@ -496,12 +455,11 @@ class MembersTableState extends State<MembersTable> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Tiempo'),
-            Text('Activo'),
+            Text('Tiempo\nActivo'),
           ],
         )),
         DataColumn(
-          label: Text(''),
+          label: Text('Acciones'),
         ),
       ],
       rows: memberProvider.filtredMemberList.map((Member member) {
@@ -554,6 +512,7 @@ class MembersTableState extends State<MembersTable> {
                   ),
                 ],
               )),
+
               if (member.membershipStatus == "Activo")
                 const DataCell(Row(
                   children: [
@@ -602,7 +561,8 @@ class MembersTableState extends State<MembersTable> {
                     ),
                   ],
                 )),
-              DataCell(Text(member.lastPaymentDate)),
+              DataCell(
+                  SizedBox(width: 80, child: Text(member.lastPaymentDate))),
               DataCell(Text(member.nextPaymentDate)),
               DataCell(Column(
                 mainAxisAlignment: MainAxisAlignment.center,

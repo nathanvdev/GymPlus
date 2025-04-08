@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev ./src/index.ts",
+    "dev": "nodemon ./src/index.ts",
     "dev:debug": "ts-node-dev --transpile-only --respawn --inspect=4321 --project tsconfig.dev.json src/server.ts",
     "start": "node ./dist/index.js",
     "tsc": "tsc",
@@ -18,6 +18,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "mysql2": "^3.10.0",
+    "nodemon": "^3.1.9",
     "pdfkit-table": "^0.1.99",
     "sequelize": "^6.37.3",
     "typescript": "5.4.5"

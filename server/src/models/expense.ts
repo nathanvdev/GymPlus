@@ -38,5 +38,6 @@ export const Expense = db.define('expense', {
     }
 },
     {
-        freezeTableName: true
+        freezeTableName: true,
+        
     })

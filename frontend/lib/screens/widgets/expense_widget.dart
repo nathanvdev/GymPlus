@@ -8,18 +8,18 @@ import 'package:frontend/utils/auth.dart';
 import 'package:frontend/utils/show_dialog.dart';
 import 'package:provider/provider.dart';
 
-class ExpenseWidget extends StatefulWidget {
-  const ExpenseWidget({super.key, required this.type, this.expenseID = -1});
+class ExpensesWidget extends StatefulWidget {
+  const ExpensesWidget({super.key, required this.type, this.expenseID = -1});
 
   final int expenseID;
   // 1: Nuevo gasto, 2: Editar gasto
   final int type;
 
   @override
-  State<ExpenseWidget> createState() => _ExpenseWidgetState();
+  State<ExpensesWidget> createState() => _ExpensesWidgetState();
 }
 
-class _ExpenseWidgetState extends State<ExpenseWidget> {
+class _ExpensesWidgetState extends State<ExpensesWidget> {
   int expeseID = -1;
 
   final _date = TextEditingController();
@@ -201,6 +201,11 @@ class _ExpenseWidgetState extends State<ExpenseWidget> {
                 ),
               ),
               actions: [
+                if (widget.type == 3)
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text("Confirmar"),
+                  ),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
