@@ -33,9 +33,6 @@ export const SaleItem = db.define('sale_item', {
     sale_id: {
         type: DataTypes.INTEGER
     },
-    product_name: {
-        type: DataTypes.STRING
-    },
     product_id: {
         type: DataTypes.INTEGER
     },

@@ -13,28 +13,17 @@ export const addSale = async (req: Request, res: Response) => {
     }
 
     try {
-        
-
-        for(const item in items){
+        for (const item in items) {
             const product = await Product.findByPk(items[item].id);
-            if(!product){
+            if (!product) {
                 return res.status(400).json({
                     msg: 'Producto no encontrado'
                 });
             }
 
-            if(product.getDataValue('stock') < items[item].quantity){
+            if (product.getDataValue('stock') < items[item].quantity) {
                 return res.status(400).json({
                     msg: 'No hay suficiente stock del producto ' + product.getDataValue('name')
-                });
-            }
-        }
-
-        for (const item of items) {
-            const product = await Product.findByPk(item.id);
-            if (product) {
-                await product.update({
-                    stock: product.getDataValue('stock') - item.quantity
                 });
             }
         }
@@ -49,7 +38,6 @@ export const addSale = async (req: Request, res: Response) => {
         const saleItemsPromises = items.map((item: any) => {
             return SaleItem.create({
                 sale_id: sale_id,
-                product_name: item.product_name,
                 product_id: item.id,
                 price: item.price,
                 quantity: item.quantity
@@ -57,6 +45,15 @@ export const addSale = async (req: Request, res: Response) => {
         });
 
         await Promise.all(saleItemsPromises);
+
+        for (const item of items) {
+            const product = await Product.findByPk(item.id);
+            if (product) {
+                await product.update({
+                    stock: product.getDataValue('stock') - item.quantity
+                });
+            }
+        }
 
         res.status(200).json({
             sale
@@ -108,7 +105,7 @@ export const deleteSale = async (req: Request, res: Response) => {
                 sale_id: id
             }
         });
-        
+
 
         for (const item of Items) {
             const product = await Product.findByPk(item.dataValues.product_id);
@@ -120,7 +117,7 @@ export const deleteSale = async (req: Request, res: Response) => {
         }
 
         await sale.update({
-            status : 3
+            status: 3
         });
 
         res.status(200).json({

@@ -5,13 +5,16 @@ import Measurement from '../models/measurement';
 
 
 export const getmembers = async (_req: Request, res: Response) => {
+    const clientIp = _req.headers['x-forwarded-for'] || _req.connection.remoteAddress || _req.ip;
+    const formattedIp = clientIp === '::1' ? '127.0.0.1' : clientIp;
+    console.log(`[${new Date().toISOString()}] | ${formattedIp} | ${_req.originalUrl}`);
 
     try {
         const response = await member.findAll({
             include: [{
                 model: Payment,
                 as: 'membership_payment', // Usa el alias que definiste en la asociación
-                attributes: ['initialpaymentdate', 'nextpaymentdate']
+                attributes: ['createdAt', 'nextpaymentdate']
             }]
         });
 
@@ -22,7 +25,7 @@ export const getmembers = async (_req: Request, res: Response) => {
                 name: member.dataValues.name,
                 lastName: member.dataValues.last_name,
                 membershipStatus: member.dataValues.membership_status,
-                lastPaymentDate: payment ? payment.initialpaymentdate : null,
+                lastPaymentDate: payment ? payment.createdAt : null,
                 nextPaymentDate: payment ? payment.nextpaymentdate : null,
                 lastVisit: member.dataValues.last_visit,
                 activeDays: member.dataValues.active_days,
@@ -126,6 +129,7 @@ export const putmember = (req: Request, res: Response) => {
         res.status(500).json({
             msg: 'Error en el servidor'
         });
+        
     }
 
 }
