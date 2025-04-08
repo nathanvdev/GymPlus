@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/models/member.dart';
+import 'package:frontend/utils/time_convert.dart';
 
 class MemberTableProvider extends ChangeNotifier {
   final dio = Dio();
@@ -22,6 +23,11 @@ class MemberTableProvider extends ChangeNotifier {
 
       memberList.clear();
       for (var element in memberListData) {
+
+        if (element['lastPaymentDate'] != '') {
+          element['lastPaymentDate'] = convertToGuatemalaTime(element['lastPaymentDate']);
+        } 
+
         var newMember = Member(
           id: element['id'],
           name: element['name'],

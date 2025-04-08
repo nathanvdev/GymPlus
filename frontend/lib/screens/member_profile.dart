@@ -44,24 +44,19 @@ class __MemberPagStateState extends State<_MemberPagState> {
         appBar: AppBar(
           title: const Text('Member Profile'),
         ),
-        floatingActionButton: Positioned(
-          bottom: 80,
-          right: 10,
-          child: FloatingActionButton(
-            heroTag: 'editButton',
-            onPressed: () async {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => NewMemberScreen(
-                            type: 2,
-                            memberID:
-                                int.parse(memberProfileProvider.member.id),
-                          )));
-            },
-            tooltip: 'Editar', // Asigna un tag único
-            child: const Icon(Icons.edit),
-          ),
+        floatingActionButton: FloatingActionButton(
+          heroTag: 'editButton',
+          onPressed: () async {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => NewMemberScreen(
+                          type: 2,
+                          memberID: int.parse(memberProfileProvider.member.id),
+                        )));
+          },
+          tooltip: 'Editar', // Asigna un tag único
+          child: const Icon(Icons.edit),
         ),
         body: Center(
           child: FutureBuilder(
@@ -165,6 +160,14 @@ class __MemberPagStateState extends State<_MemberPagState> {
                                             fontSize: 15,
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
+                                            shadows: [
+                                              Shadow(
+                                                offset: Offset(0, 0),
+                                                color: Color.fromARGB(
+                                                    162, 0, 0, 0),
+                                                blurRadius: 5,
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
@@ -200,8 +203,8 @@ class __MemberPagStateState extends State<_MemberPagState> {
                                           const SizedBox(
                                             width: 5,
                                           ),
-                                          Text(memberProfileProvider
-                                              .member.phoneNumber),
+                                          Text(
+                                              '+${memberProfileProvider.member.phoneNumber}'),
                                         ],
                                       ),
                                       const SizedBox(
@@ -270,8 +273,8 @@ class __MemberPagStateState extends State<_MemberPagState> {
                                           const SizedBox(
                                             width: 5,
                                           ),
-                                          Text(memberProfileProvider
-                                              .member.emergencyContactNumber),
+                                          Text(
+                                              '+${memberProfileProvider.member.emergencyContactNumber}'),
                                         ],
                                       ),
                                       const SizedBox(
@@ -813,6 +816,13 @@ class MembershipCard extends StatelessWidget {
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
+                    shadows: [
+                      Shadow(
+                        offset: Offset(0, 0),
+                        color: Color.fromARGB(162, 0, 0, 0),
+                        blurRadius: 5,
+                      ),
+                    ],
                   ),
                 )),
               ),
@@ -822,57 +832,57 @@ class MembershipCard extends StatelessWidget {
               payment.paymentStatus == 3
                   ? const SizedBox()
                   : Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () async {
-                      await showDialog(
-                        context: context,
-                        builder: (context) {
-                          return PaymentProcessWidget(
-                            type: 2,
-                            paymentID: payment.id,
-                            // paymentID: payment.id,
-                          );
-                        },
-                      );
-                      memberProvider.refresh(
-                          context
-                              .read<MemberSelectedProvider>()
-                              .getSelectedMemberId(),
-                          context);
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () async {
-                      final isPasswordCorrect =
-                          await showPasswordVerificationDialog(context);
-                      if (isPasswordCorrect == false) {
-                        if (context.mounted) {
-                          showDialogMessage( 
-                              context, 'Error', 'Contraseña incorrecta');
-                        }
-                        return;
-                      }
-                      final dio = Dio();
-                      final response = await dio.delete(
-                          'http://localhost:3569/payment/delete/${payment.id}');
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.edit),
+                          onPressed: () async {
+                            await showDialog(
+                              context: context,
+                              builder: (context) {
+                                return PaymentProcessWidget(
+                                  type: 2,
+                                  paymentID: payment.id,
+                                  // paymentID: payment.id,
+                                );
+                              },
+                            );
+                            memberProvider.refresh(
+                                context
+                                    .read<MemberSelectedProvider>()
+                                    .getSelectedMemberId(),
+                                context);
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () async {
+                            final isPasswordCorrect =
+                                await showPasswordVerificationDialog(context);
+                            if (isPasswordCorrect == false) {
+                              if (context.mounted) {
+                                showDialogMessage(
+                                    context, 'Error', 'Contraseña incorrecta');
+                              }
+                              return;
+                            }
+                            final dio = Dio();
+                            final response = await dio.delete(
+                                'http://localhost:3569/payment/delete/${payment.id}');
 
-                      if (response.statusCode == 200) {
-                        memberProvider.refresh(
-                            context
-                                .read<MemberSelectedProvider>()
-                                .getSelectedMemberId(),
-                            context);
-                      } else {
-                        showDialogMessage(context, 'Error',
-                            'Error al eliminar el pago\n${response.data.msg}');
-                      }
-                    },
-                  ),
-                ],
-              ),
+                            if (response.statusCode == 200) {
+                              memberProvider.refresh(
+                                  context
+                                      .read<MemberSelectedProvider>()
+                                      .getSelectedMemberId(),
+                                  context);
+                            } else {
+                              showDialogMessage(context, 'Error',
+                                  'Error al eliminar el pago\n${response.data.msg}');
+                            }
+                          },
+                        ),
+                      ],
+                    ),
             ],
           ),
         ],

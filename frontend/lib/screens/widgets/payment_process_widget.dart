@@ -174,7 +174,7 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
 
   int getTotalDays() {
     if (billingRate == 1) {
-      return 1 * (billingQuantity ?? 0).toInt();
+      return 1 * (billingQuantity ?? 0).toInt() - 1;
     } else if (billingRate == 2) {
       return 7 * (billingQuantity ?? 0).toInt();
     } else if (billingRate == 3) {
@@ -603,9 +603,14 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
                                 setState(() {
                                   _finalDate.text =
                                       pickeddate.toString().substring(0, 10);
+                                  _initialDate.text = pickeddate
+                                      .subtract(Duration(days: getTotalDays()))
+                                      .toString()
+                                      .substring(0, 10);
                                 });
                               }
                             },
+                           
                           ),
                         )),
                       ],
@@ -640,8 +645,7 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
                           child: TextFormField(
                               style: const TextStyle(color: Colors.black),
                               enabled: widget.type == 1 ? true : false,
-                              controller: TextEditingController(
-                                  text: discount.toString()),
+                              initialValue: discount.toString(),
                               decoration: const InputDecoration(
                                 labelText: "Descuento",
                                 hintText: "Descuento a aplicar",
@@ -672,6 +676,7 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
                                       // Muestra un diálogo si el descuento es mayor que el subtotal
                                       _showDialog('Error',
                                           'El descuento no puede ser mayor al subtotal');
+
                                     } else {
                                       // Si todo está correcto, asigna el valor a discount y calcula el total
                                       discount = numericValue;
@@ -691,16 +696,13 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
                             child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
+                            controller: TextEditingController(
+                                text: discountsDescription),
                             decoration: const InputDecoration(
                               labelText: "Descripcion",
                               hintText: "Descripcion del descuento",
                               border: OutlineInputBorder(),
                             ),
-                            onChanged: (value) {
-                              setState(() {
-                                discountsDescription = value;
-                              });
-                            },
                           ),
                         )),
                         Expanded(
@@ -737,6 +739,7 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
                             child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
+                            initialValue: _cashController.text,
                             decoration: const InputDecoration(
                               labelText: "Monto Recibido",
                               hintText: "Monto recibido del cliente",
@@ -849,6 +852,8 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
                             margin: const EdgeInsets.only(
                                 top: 10, left: 10, right: 10, bottom: 20),
                             child: TextFormField(
+                              controller: TextEditingController(
+                                  text: paymentReference),
                               inputFormatters: [
                                 FilteringTextInputFormatter.allow(
                                     RegExp(r'^\d+')),
@@ -858,11 +863,6 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
                                 hintText: "Referencia del Pago",
                                 border: OutlineInputBorder(),
                               ),
-                              onChanged: (value) {
-                                setState(() {
-                                  paymentReference = value;
-                                });
-                              },
                             ),
                           ),
                         ),

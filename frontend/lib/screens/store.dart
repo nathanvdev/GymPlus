@@ -526,9 +526,6 @@ class _StorePageState extends State<StorePage> {
                                     'id': producProvider
                                         .getProductById(item.id.toString())
                                         .id,
-                                    'product_name': producProvider
-                                        .getProductById(item.id.toString())
-                                        .name,
                                     'price': double.parse(producProvider
                                         .getProductById(item.id.toString())
                                         .price),
@@ -756,14 +753,19 @@ class _StorePageState extends State<StorePage> {
                       'Error', 'Contraseña Incorrecta');
                 } else {
                   try {
-                    final response = await dio.put(
+                    if (imageProductController.text == '') {
+                      imageProductController.text = '';
+                    } else {
+                      imageProductController.text =
+                          'lib/assets/tmp/${imageProductController.text}';
+                    }
+                    final response = await dio.post(
                       'http://localhost:3569/product/add',
                       data: {
                         'name': nameProductController.text,
                         'price': priceProductController.text,
                         'stock': stockProductController.text,
-                        'imageurl':
-                            'lib/assets/tmp/${imageProductController.text}',
+                        'imageurl': imageProductController.text,
                       },
                     );
                     if (response.statusCode == 200) {
@@ -915,7 +917,7 @@ class _StorePageState extends State<StorePage> {
               },
             ),
             TextButton(
-              child: const Text('Agregar'),
+              child: const Text('Editar'),
               onPressed: () async {
                 if (formKey.currentState!.validate() == false) {
                   return;
@@ -929,14 +931,20 @@ class _StorePageState extends State<StorePage> {
                       'Error', 'Contraseña Incorrecta');
                 } else {
                   try {
+                    if(imageProductController.text == ''){
+                      imageProductController.text = '';
+                    }else{
+                      imageProductController.text =
+                          'lib/assets/tmp/${imageProductController.text}';
+                    }
+
                     final response = await dio.put(
                       'http://localhost:3569/product/edit/$id',
                       data: {
                         'name': nameProductController.text,
                         'price': priceProductController.text,
                         'stock': stockProductController.text,
-                        'imageurl':
-                            'lib/assets/tmp/${imageProductController.text}',
+                        'imageurl': imageProductController.text,
                       },
                     );
                     if (response.statusCode == 200) {
@@ -1064,24 +1072,26 @@ class _StorePageState extends State<StorePage> {
               height: 80,
               width: 80,
               decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(imageurl),
-                  fit: BoxFit.fitHeight,
-                ),
+              image: DecorationImage(
+                image: imageurl.isNotEmpty
+                  ? AssetImage(imageurl)
+                  : const AssetImage('lib/assets/defaultProduct_image.png'),
+                fit: BoxFit.fitHeight,
+              ),
               ),
             ),
             Text(
               name,
               style: const TextStyle(
                 color: Colors.black,
-                fontSize: 10,
+                fontSize: 12,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text('Q $price \nDisponibles: $stock',
                 style: const TextStyle(
                     color: Colors.black,
-                    fontSize: 16,
+                    fontSize: 12,
                     fontStyle: FontStyle.italic)),
           ],
         ),

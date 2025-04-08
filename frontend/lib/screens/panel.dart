@@ -455,7 +455,7 @@ class MembersTableState extends State<MembersTable> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Tiempo\nActivo'),
+            Text('Dias\nActivo'),
           ],
         )),
         DataColumn(
