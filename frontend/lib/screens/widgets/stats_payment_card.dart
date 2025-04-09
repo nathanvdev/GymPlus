@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/config/theme/app_theme.dart';
+import 'package:frontend/providers/transaction_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class StatsPaymentCard extends StatelessWidget {
   final String value;
@@ -113,6 +115,8 @@ class _StatsCashState extends State<StatsCash> {
 
   @override
   Widget build(BuildContext context) {
+    final transactionProvider = context.watch<TransactionProvider>();
+
 
     return Container(
       height: 135,
@@ -164,7 +168,9 @@ class _StatsCashState extends State<StatsCash> {
                 padding: const EdgeInsets.only(right: 10,),
                 child: Text(
                   showSensitiveDetails
-                  ? "Q. 1,400.00"
+                    ? transactionProvider.transactionList.isNotEmpty
+                      ? "Q. ${transactionProvider.transactionList.first.disponible}"
+                      : "Q. 0.00"
                   : "Q. *********",
                   style: GoogleFonts.pridi(
                       fontSize: 20,
@@ -193,8 +199,10 @@ class _StatsCashState extends State<StatsCash> {
                 padding: const EdgeInsets.only(right: 10),
                 child: Text(
                   showSensitiveDetails
-                  ? 'Q. 200.00'
-                  : 'Q. *********',
+                    ? transactionProvider.transactionList.isNotEmpty
+                      ? "Q. ${transactionProvider.transactionList.first.reserva}"
+                      : "Q. 0.00"
+                  : "Q. *********",
                   style: GoogleFonts.pridi(
                       fontSize: 20,
                       color: const Color.fromARGB(255, 154, 154, 154)),
@@ -222,7 +230,9 @@ class _StatsCashState extends State<StatsCash> {
                 padding: const EdgeInsets.only(right: 10),
                 child: Text(
                   showSensitiveDetails
-                  ? "Q. 1,600.00"
+                    ? transactionProvider.transactionList.isNotEmpty
+                      ? "Q. ${transactionProvider.transactionList.first.total}"
+                      : "Q. 0.00"
                   : "Q. *********",
                   style: GoogleFonts.pridi(
                       fontSize: 20,

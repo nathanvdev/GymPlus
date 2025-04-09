@@ -7,6 +7,7 @@ import 'package:frontend/providers/payments_provider.dart';
 import 'package:frontend/providers/product_provider.dart';
 import 'package:frontend/providers/profileview_provider.dart';
 import 'package:frontend/providers/sales_provider.dart';
+import 'package:frontend/providers/transaction_provider.dart';
 import 'package:frontend/screens/sign_in.dart';
 import 'package:provider/provider.dart';
 
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => MemberSelectedProvider()),
         ChangeNotifierProvider(create: (_) => ProfileviewProvider()),
         ChangeNotifierProvider(create: (_) => ExpenseProvider()),
+        ChangeNotifierProvider(create: (_) => TransactionProvider()),
       ],
       child: MaterialApp(
         title: 'Gymplus App',

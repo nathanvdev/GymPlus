@@ -48,7 +48,6 @@ class __PaymentsPagStateState extends State<_PaymentsPagState> {
   Widget build(BuildContext context) {
     final paymentsProvider = context.watch<PaymentsProvider>();
     final salesProvider = context.watch<SalesProvider>();
-    final expensesProvider = context.watch<ExpenseProvider>();
     final mainScroll = ScrollController();
 
     return Scaffold(

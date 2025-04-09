@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:frontend/config/theme/app_theme.dart';
 import 'package:frontend/screens/panel.dart';
@@ -42,8 +41,10 @@ class _Logo extends StatelessWidget {
               Border.all(color: const Color.fromARGB(255, 0, 0, 0), width: 2),
           borderRadius: BorderRadius.circular(30),
           boxShadow: buildShadowBox()),
-      child: Image.file(
-        File('lib/assets/logo.jpg'),
+      // child: Image.file(
+      //   File('lib/assets/logo.jpg'),
+      child: Image.asset(
+        'lib/assets/logo.jpg',
         width: MediaQuery.of(context).size.width * 0.9,
       ),
     );
