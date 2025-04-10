@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/config/theme/app_theme.dart';
 import 'package:frontend/providers/expense_provider.dart';
@@ -64,8 +63,7 @@ class __PaymentsPagStateState extends State<_PaymentsPagState> {
                     width: MediaQuery.of(context).size.width * 0.21,
                     height: MediaQuery.of(context).size.height,
                     child: Container(
-                      padding: const EdgeInsets.only(
-                          top: 20, left: 20, right: 20, bottom: 20),
+                      padding: const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
                       decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor,
                         boxShadow: buildShadowBox(),
@@ -92,15 +90,11 @@ class __PaymentsPagStateState extends State<_PaymentsPagState> {
                                   subtitle: "Total Membresias Hoy",
                                   value: paymentsProvider.today.toString(),
                                   subtitle1: "Membresias Pendientes",
-                                  value1: paymentsProvider.pendingPayments
-                                      .toString(),
+                                  value1: paymentsProvider.pendingPayments.toString(),
                                 ),
                                 const SizedBox(width: 100),
                                 const StatsPaymentCard(
-                                    value: '300',
-                                    subtitle: 'Productos Vendidos Hoy',
-                                    value1: 'ISO100',
-                                    subtitle1: 'Producto Mas Vendido'),
+                                    value: '300', subtitle: 'Productos Vendidos Hoy', value1: 'ISO100', subtitle1: 'Producto Mas Vendido'),
                               ],
                             ),
                           ),
@@ -113,16 +107,13 @@ class __PaymentsPagStateState extends State<_PaymentsPagState> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       'Pagos de Membresias',
                                       style: GoogleFonts.pridi(
                                         fontSize: 30,
-                                        color: Theme.of(context)
-                                            .shadowColor
-                                            .withOpacity(0.4),
+                                        color: Theme.of(context).shadowColor.withOpacity(0.4),
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -132,19 +123,15 @@ class __PaymentsPagStateState extends State<_PaymentsPagState> {
                                       child: SearchBar(
                                         hintText: 'Buscar',
                                         onChanged: (value) {
-                                          paymentsProvider
-                                              .filtringPayments(value);
+                                          paymentsProvider.filtringPayments(value);
                                         },
                                       ),
                                     ),
                                   ],
                                 ),
                                 SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height *
-                                          0.5,
-                                  width: MediaQuery.of(context).size.width *
-                                      0.68,
+                                  height: MediaQuery.of(context).size.height * 0.5,
+                                  width: MediaQuery.of(context).size.width * 0.68,
                                   child: SingleChildScrollView(
                                     scrollDirection: Axis.vertical,
                                     child: DataTable(
@@ -152,78 +139,53 @@ class __PaymentsPagStateState extends State<_PaymentsPagState> {
                                       horizontalMargin: 10,
                                       headingRowHeight: 50,
                                       decoration: BoxDecoration(
-                                        color:
-                                            Theme.of(context).canvasColor,
+                                        color: Theme.of(context).canvasColor,
                                       ),
                                       border: TableBorder.symmetric(
                                         outside: BorderSide(
-                                          color: Theme.of(context)
-                                              .shadowColor
-                                              .withOpacity(0.5),
+                                          color: Theme.of(context).shadowColor.withOpacity(0.5),
                                           width: 1,
                                         ),
                                       ),
-                                      dataRowColor:
-                                          const WidgetStatePropertyAll(
-                                              Colors.white),
+                                      dataRowColor: const WidgetStatePropertyAll(Colors.white),
                                       columns: const <DataColumn>[
                                         DataColumn(label: Text('# ID')),
                                         DataColumn(label: Text('Miembro')),
                                         DataColumn(label: Text('Ciclo')),
                                         DataColumn(label: Text('Cantidad')),
-                                        DataColumn(
-                                            label: Text('Fecha de Pago')),
+                                        DataColumn(label: Text('Fecha de Pago')),
                                         DataColumn(label: Text('Estado')),
                                         DataColumn(label: Text('Acciones')),
                                       ],
-                                      rows: paymentsProvider
-                                          .filteredPaymentList.reversed
-                                          .map((payment) {
+                                      rows: paymentsProvider.filteredPaymentList.reversed.map((payment) {
                                         return DataRow(
                                           cells: <DataCell>[
-                                            DataCell(Text(
-                                                payment.id.toString())),
+                                            DataCell(Text(payment.id.toString())),
                                             DataCell(Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
                                                 Text(payment.name),
                                                 Text(payment.lastName),
                                               ],
                                             )),
-                                            DataCell(Text(
-                                                billingRateToString(
-                                                    payment.billingCycle))),
-                                            DataCell(Text(payment
-                                                .billingQuantity
-                                                .toString())),
-                                            DataCell(Text(
-                                                '${DateFormat('yyyy-MM-dd\nHH:mm:ss').format(DateTime.parse(payment.createdAt))} hrs')),
+                                            DataCell(Text(billingRateToString(payment.billingCycle))),
+                                            DataCell(Text(payment.billingQuantity.toString())),
+                                            DataCell(Text('${DateFormat('yyyy-MM-dd\nHH:mm:ss').format(DateTime.parse(payment.createdAt))} hrs')),
                                             DataCell(
                                               Container(
                                                 height: 25,
                                                 width: 90,
-                                                padding:
-                                                    const EdgeInsets.only(
-                                                        left: 5, right: 5),
+                                                padding: const EdgeInsets.only(left: 5, right: 5),
                                                 decoration: BoxDecoration(
-                                                  color: payment
-                                                              .paymentStatus ==
-                                                          1
+                                                  color: payment.paymentStatus == 1
                                                       ? Colors.green
-                                                      : payment.paymentStatus ==
-                                                              3
+                                                      : payment.paymentStatus == 3
                                                           ? Colors.red
                                                           : Colors.yellow,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10),
+                                                  borderRadius: BorderRadius.circular(10),
                                                   border: Border.all(
-                                                    color: const Color
-                                                        .fromARGB(
-                                                        255, 0, 0, 0),
+                                                    color: const Color.fromARGB(255, 0, 0, 0),
                                                     width: 1,
                                                   ),
                                                 ),
@@ -231,14 +193,12 @@ class __PaymentsPagStateState extends State<_PaymentsPagState> {
                                                     child: Text(
                                                   payment.paymentStatus == 1
                                                       ? 'Pagado'
-                                                      : payment.paymentStatus ==
-                                                              3
+                                                      : payment.paymentStatus == 3
                                                           ? 'Anulado'
                                                           : 'Pendiente',
                                                   style: const TextStyle(
                                                     color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
                                                 )),
                                               ),
@@ -249,58 +209,36 @@ class __PaymentsPagStateState extends State<_PaymentsPagState> {
                                                   : Row(
                                                       children: [
                                                         IconButton(
-                                                          icon: const Icon(
-                                                              Icons.edit),
+                                                          icon: const Icon(Icons.edit),
                                                           onPressed: () {
                                                             showDialog(
-                                                              context:
-                                                                  context,
-                                                              builder:
-                                                                  (context) {
+                                                              context: context,
+                                                              builder: (context) {
                                                                 return PaymentProcessWidget(
                                                                   type: 2,
-                                                                  paymentID:
-                                                                      payment
-                                                                          .id,
+                                                                  paymentID: payment.id,
                                                                 );
                                                               },
                                                             );
                                                           },
                                                         ),
                                                         IconButton(
-                                                          icon: const Icon(
-                                                              Icons.delete),
-                                                          onPressed:
-                                                              () async {
-                                                            final isPasswordCorrect =
-                                                                await showPasswordVerificationDialog(
-                                                                    context);
-                                                            if (isPasswordCorrect ==
-                                                                false) {
-                                                              if (context
-                                                                  .mounted) {
-                                                                showDialogMessage(
-                                                                    context, "Error",
-                                                                    'Contraseña incorrecta');
+                                                          icon: const Icon(Icons.delete),
+                                                          onPressed: () async {
+                                                            final isPasswordCorrect = await showPasswordVerificationDialog(context);
+                                                            if (isPasswordCorrect == false) {
+                                                              if (context.mounted) {
+                                                                showDialogMessage(context, "Error", 'Contraseña incorrecta');
                                                               }
                                                               return;
                                                             }
-                                                            final dio =
-                                                                Dio();
-                                                            final response =
-                                                                await dio
-                                                                    .delete(
-                                                                        'http://localhost:3569/payment/delete/${payment.id}');
-                                                
-                                                            if (response
-                                                                    .statusCode ==
-                                                                200) {
-                                                              paymentsProvider
-                                                                  .refresh();
+
+                                                            final response = await paymentsProvider.deletePayment(payment.id);
+
+                                                            if (response['statusCode'] == 200) {
+                                                              paymentsProvider.refresh();
                                                             } else {
-                                                              showDialogMessage(
-                                                                  context, 'Error'
-,                                                                  'Error al eliminar el pago\n${response.data.msg}');
+                                                              showDialogMessage(context, 'Error', 'Error al eliminar el pago\n${response['msg']}');
                                                             }
                                                           },
                                                         ),
@@ -328,17 +266,13 @@ class __PaymentsPagStateState extends State<_PaymentsPagState> {
                                   'Ventas de Tienda',
                                   style: GoogleFonts.pridi(
                                     fontSize: 30,
-                                    color: Theme.of(context)
-                                        .shadowColor
-                                        .withOpacity(0.4),
+                                    color: Theme.of(context).shadowColor.withOpacity(0.4),
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 SizedBox(
-                                  height: MediaQuery.of(context).size.height *
-                                      0.5,
-                                  width: MediaQuery.of(context).size.width *
-                                      0.68,
+                                  height: MediaQuery.of(context).size.height * 0.5,
+                                  width: MediaQuery.of(context).size.width * 0.68,
                                   child: SingleChildScrollView(
                                     scrollDirection: Axis.vertical,
                                     child: DataTable(
@@ -350,56 +284,40 @@ class __PaymentsPagStateState extends State<_PaymentsPagState> {
                                         color: Theme.of(context).canvasColor,
                                       ),
                                       border: TableBorder.all(
-                                          color: Theme.of(context)
-                                              .shadowColor
-                                              .withOpacity(0.5),
+                                          color: Theme.of(context).shadowColor.withOpacity(0.5),
                                           width: 1,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          borderRadius: BorderRadius.circular(10),
                                           style: BorderStyle.none),
-                                      dataRowColor:
-                                          const WidgetStatePropertyAll(
-                                              Colors.white),
+                                      dataRowColor: const WidgetStatePropertyAll(Colors.white),
                                       columns: const [
                                         DataColumn(label: Text('id')),
                                         DataColumn(label: Text('Total')),
                                         DataColumn(label: Text('Fecha')),
-                                        DataColumn(
-                                            label: Text('Autorizado por')),
+                                        DataColumn(label: Text('Autorizado por')),
                                         DataColumn(label: Text('Estado')),
                                         DataColumn(label: Text('Acciones')),
                                       ],
-                                      rows: salesProvider
-                                          .filteredSaleList.reversed
-                                          .map((sale) {
+                                      rows: salesProvider.filteredSaleList.reversed.map((sale) {
                                         return DataRow(
                                           cells: <DataCell>[
                                             DataCell(Text(sale.id)),
-                                            DataCell(
-                                                Text('Q. ${sale.total}')),
-                                            DataCell(Text(
-                                                '${DateFormat('yyyy-MM-dd\nHH:mm:ss').format(DateTime.parse(sale.date))} hrs')),
+                                            DataCell(Text('Q. ${sale.total}')),
+                                            DataCell(Text('${DateFormat('yyyy-MM-dd\nHH:mm:ss').format(DateTime.parse(sale.date))} hrs')),
                                             DataCell(Text(sale.autorizedBy)),
                                             DataCell(
                                               Container(
                                                 height: 25,
                                                 width: 90,
-                                                padding:
-                                                    const EdgeInsets.only(
-                                                        left: 5, right: 5),
+                                                padding: const EdgeInsets.only(left: 5, right: 5),
                                                 decoration: BoxDecoration(
                                                   color: sale.status == '1'
                                                       ? Colors.green
                                                       : sale.status == '2'
                                                           ? Colors.yellow
                                                           : Colors.red,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10),
+                                                  borderRadius: BorderRadius.circular(10),
                                                   border: Border.all(
-                                                    color:
-                                                        const Color.fromARGB(
-                                                            255, 0, 0, 0),
+                                                    color: const Color.fromARGB(255, 0, 0, 0),
                                                     width: 1,
                                                   ),
                                                 ),
@@ -412,8 +330,7 @@ class __PaymentsPagStateState extends State<_PaymentsPagState> {
                                                           : 'Anulado',
                                                   style: const TextStyle(
                                                     color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.bold,
+                                                    fontWeight: FontWeight.bold,
                                                   ),
                                                 )),
                                               ),
@@ -424,17 +341,11 @@ class __PaymentsPagStateState extends State<_PaymentsPagState> {
                                                   sale.status == "3"
                                                       ? const SizedBox()
                                                       : IconButton(
-                                                          icon: const Icon(
-                                                              Icons.delete),
-                                                          onPressed:
-                                                              () async {
-                                                            var auth =
-                                                                await showPasswordVerificationDialog(
-                                                                    context);
+                                                          icon: const Icon(Icons.delete),
+                                                          onPressed: () async {
+                                                            var auth = await showPasswordVerificationDialog(context);
                                                             if (auth) {
-                                                              salesProvider
-                                                                  .deleteSale(
-                                                                      sale.id);
+                                                              salesProvider.deleteSale(sale.id);
                                                             } else {
                                                               showDialogMessage(
                                                                 context,
@@ -472,7 +383,6 @@ class __PaymentsPagStateState extends State<_PaymentsPagState> {
       ),
     );
   }
-
 
   String billingRateToString(int rate) {
     switch (rate) {

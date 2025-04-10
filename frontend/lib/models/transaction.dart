@@ -27,7 +27,7 @@ class Transaction{
       disponible: json['Disponible'] != null ? double.tryParse(json['Disponible'].toString()) ?? 0.0 : 0.0,
       reserva: json['Reserva'] != null ? double.tryParse(json['Reserva'].toString()) ?? 0.0 : 0.0,
       total: json['Total'] != null ? double.tryParse(json['Total'].toString()) ?? 0.0 : 0.0,
-      fecha: convertToGuatemalaTime(json['createdAt']) ?? '',
+      fecha: convertToGuatemalaTime(json['createdAt']),
     );
   }
 }

@@ -222,4 +222,20 @@ class PaymentsProvider extends ChangeNotifier {
       return;
     }
   }
+
+  Future deletePayment(int paymentId) async{
+    try{
+      final response = await dio.delete('http://localhost:3569/payment/delete/$paymentId');
+      return {
+        'statusCode': response.statusCode,
+        'msg': response.data['msg']
+      };
+    }catch(e){
+      return {
+        'statusCode': 400,
+        'msg': 'Error al eliminar el pago\n$e' 
+      };
+    }
+
+  }
 }

@@ -807,38 +807,39 @@ class _PaymentProcessState extends State<PaymentProcessWidget> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
+                        children: [
                         Expanded(
-                            child: Container(
+                          child: Container(
                           margin: const EdgeInsets.all(10),
                           child: DropdownMenu(
-                            initialSelection: paymentMethod,
-                            expandedInsets: const EdgeInsets.all(1),
-                            label: const Text('Metodo de Pago'),
-                            dropdownMenuEntries: const [
-                              DropdownMenuEntry(value: 1, label: 'Efectivo'),
-                              DropdownMenuEntry(
-                                  value: 2, label: 'Transferencia')
-                            ],
-                            onSelected: (value) => setState(() {
-                              paymentMethod = value;
-                            }),
+                          initialSelection: paymentMethod,
+                          expandedInsets: const EdgeInsets.all(1),
+                          label: const Text('Metodo de Pago'),
+                          dropdownMenuEntries: const [
+                            DropdownMenuEntry(value: 1, label: 'Efectivo'),
+                            DropdownMenuEntry(
+                              value: 2, label: 'Transferencia')
+                          ],
+                          onSelected: (value) => setState(() {
+                            paymentMethod = value;
+                          }),
                           ),
                         )),
                         Expanded(
-                            child: Container(
+                          child: Container(
                           margin: const EdgeInsets.all(10),
                           child: DropdownMenu(
-                            initialSelection: paymentStatus,
-                            expandedInsets: const EdgeInsets.all(1),
-                            label: const Text('Estado del Pago'),
-                            dropdownMenuEntries: const [
-                              DropdownMenuEntry(value: 1, label: 'Cancelado'),
-                              DropdownMenuEntry(value: 2, label: 'Pendiente')
-                            ],
-                            onSelected: (value) => setState(() {
-                              paymentStatus = value;
-                            }),
+                          enabled: !(widget.type == 2 && paymentStatus == 1),
+                          initialSelection: paymentStatus,
+                          expandedInsets: const EdgeInsets.all(1),
+                          label: const Text('Estado del Pago'),
+                          dropdownMenuEntries: const [
+                            DropdownMenuEntry(value: 1, label: 'Cancelado'),
+                            DropdownMenuEntry(value: 2, label: 'Pendiente')
+                          ],
+                          onSelected: (value) => setState(() {
+                            paymentStatus = value;
+                          }),
                           ),
                         ))
                       ],
