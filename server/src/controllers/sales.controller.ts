@@ -2,8 +2,10 @@ import { Request, Response } from "express";
 import { Sale, SaleItem } from "../models/sales";
 import { member } from "../models/member";
 import { Product } from "../models/product";
+import { logRequest, logError } from "../utilities/logs";
 
 export const addSale = async (req: Request, res: Response) => {
+    logRequest(req); // Log the request
     const { total, admin_id, items, status } = req.body;
 
     if (!total || !admin_id || !items || !Array.isArray(items)) {
@@ -60,14 +62,15 @@ export const addSale = async (req: Request, res: Response) => {
         });
 
     } catch (error) {
+        logError(error, req); // Log the error
         res.status(500).json({
-            msg: 'Error en el servidor',
+            msg: 'Error en el servidor\n' + error
         });
-        console.error(error);
     }
 };
 
-export const getSales = async (_: Request, res: Response) => {
+export const getSales = async (req: Request, res: Response) => {
+    logRequest(req); // Log the request
     try {
         const sales = await Sale.findAll();
 
@@ -80,14 +83,15 @@ export const getSales = async (_: Request, res: Response) => {
             sales
         });
     } catch (error) {
+        logError(error, req); // Log the error
         res.status(500).json({
-            msg: 'Error en el servidor',
+            msg: 'Error en el servidor\n' + error
         });
-        console.error(error);
     }
 }
 
 export const deleteSale = async (req: Request, res: Response) => {
+    logRequest(req); // Log the request
     const { id } = req.params
 
     try {
@@ -125,9 +129,9 @@ export const deleteSale = async (req: Request, res: Response) => {
         });
 
     } catch (error) {
+        logError(error, req); // Log the error
         res.status(500).json({
-            msg: 'Error en el servidor',
+            msg: 'Error en el servidor\n' + error
         });
-        console.error(error);
     }
 }

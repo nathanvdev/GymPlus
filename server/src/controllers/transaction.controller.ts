@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import { Transaction } from "../models/transaction";
+import { logRequest, logError } from "../utilities/logs";
 
-export const getTransactions = async (_: Request, res: Response) => {
+export const getTransactions = async (req: Request, res: Response) => {
+    logRequest(req); // Log the request
+    
     try {
         const transactions = await Transaction.findAll({
             order: [["id", "DESC"]],
@@ -11,7 +14,7 @@ export const getTransactions = async (_: Request, res: Response) => {
         });
         return;
     } catch (error) {
-        console.log(error);
+        logError(error, req); // Log the error
         res.status(500).json({
             msg: "Error en el servidor",
         });

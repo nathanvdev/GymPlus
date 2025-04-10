@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 import { Product } from "../models/product";
+import { logRequest, logError } from "../utilities/logs";
 
-export const getProducts = async (_: Request, res: Response) => {
-
+export const getProducts = async (req: Request, res: Response) => {
+    logRequest(req); // Log the request
+    
     try {
         const products = await Product.findAll();
         res.status(200).json({
@@ -10,17 +12,16 @@ export const getProducts = async (_: Request, res: Response) => {
         });
         return;
     } catch (error) {
-        console.log(error);
+        logError(error, req); // Log the error
         res.status(500).json({
-            msg: 'Error en el servidor'
+            msg: 'Error en el servidor\n' + error
         });
-        return;
     }
 
 }
 
 export const addProduct = async (req: Request, res: Response) => {
-
+    logRequest(req); // Log the request
     const { name, price, stock, imageurl } = req.body;
 
     try {
@@ -35,16 +36,16 @@ export const addProduct = async (req: Request, res: Response) => {
         });
 
     } catch (error) {
-        console.log(error);
+        logError(error, req); // Log the error
         res.status(500).json({
-            msg: 'Error en el servidor'
+            msg: 'Error en el servidor\n' + error
         });
     }
 
 }
 
 export const editProduct = async (req: Request, res: Response) => {
-
+    logRequest(req); // Log the request
     const { id } = req.params;
     const { name, price, stock, imageurl } = req.body;
 
@@ -69,16 +70,16 @@ export const editProduct = async (req: Request, res: Response) => {
         });
 
     } catch (error) {
-        console.log(error);
+        logError(error, req); // Log the error
         res.status(500).json({
-            msg: 'Error en el servidor'
+            msg: 'Error en el servidor\n' + error
         });
     }
 
 }
 
 export const deleteProduct = async (req: Request, res: Response) => {
-
+    logRequest(req); // Log the request
     const { id } = req.params;
 
     try {
@@ -96,9 +97,9 @@ export const deleteProduct = async (req: Request, res: Response) => {
         });
 
     } catch (error) {
-        console.log(error);
+        logError(error, req); // Log the error
         res.status(500).json({
-            msg: 'Error en el servidor'
+            msg: 'Error en el servidor\n' + error
         });
     }
 

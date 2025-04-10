@@ -2,12 +2,10 @@ import { Request, Response } from 'express';
 import { member } from '../models/member';
 import { Payment } from '../models/payment';
 import Measurement from '../models/measurement';
+import { logRequest, logError } from '../utilities/logs';
 
-
-export const getmembers = async (_req: Request, res: Response) => {
-    const clientIp = _req.headers['x-forwarded-for'] || _req.connection.remoteAddress || _req.ip;
-    const formattedIp = clientIp === '::1' ? '127.0.0.1' : clientIp;
-    console.log(`[${new Date().toISOString()}] | ${formattedIp} | ${_req.originalUrl}`);
+export const getmembers = async (req: Request, res: Response) => {
+    logRequest(req); // Log the request
 
     try {
         const response = await member.findAll({
@@ -35,13 +33,16 @@ export const getmembers = async (_req: Request, res: Response) => {
 
         res.status(200).json(members);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Error fetching members' });
+        logError(error, req); // Log the error
+        res.status(500).json({
+            msg: 'Error en el servidor\n' + error
+        });
     }
 }
 
 
 export const getmember = async (req: Request, res: Response) => {
+    logRequest(req); // Log the request
 
     const { id } = req.params;
 
@@ -60,14 +61,17 @@ export const getmember = async (req: Request, res: Response) => {
 
         res.status(200).json(response);
     } catch (error) {
-
+        logError(error, req); // Log the error
+        res.status(500).json({
+            msg: 'Error en el servidor\n' + error
+        });
     }
 
 }
 
 
 export const postmember = async (req: Request, res: Response) => {
-
+    logRequest(req); // Log the request
     const { body } = req;
 
     try {
@@ -93,9 +97,9 @@ export const postmember = async (req: Request, res: Response) => {
 
 
     } catch (error) {
-        console.log(error);
+        logError(error, req); // Log the error
         res.status(500).json({
-            msg: 'Error en el servidor'
+            msg: 'Error en el servidor\n' + error
         });
 
     }
@@ -104,6 +108,7 @@ export const postmember = async (req: Request, res: Response) => {
 }
 
 export const putmember = (req: Request, res: Response) => {
+    logRequest(req); // Log the request
 
     const { id } = req.params;
     const { body } = req;
@@ -126,8 +131,9 @@ export const putmember = (req: Request, res: Response) => {
             msg: 'Miembro actualizado'
         });
     } catch (error) {
+        logError(error, req); // Log the error
         res.status(500).json({
-            msg: 'Error en el servidor'
+            msg: 'Error en el servidor\n' + error
         });
         
     }
@@ -135,6 +141,7 @@ export const putmember = (req: Request, res: Response) => {
 }
 
 export const deletemember = (req: Request, res: Response) => {
+    logRequest(req); // Log the request
 
     const { id } = req.params;
 
@@ -151,6 +158,7 @@ export const deletemember = (req: Request, res: Response) => {
         });
 
     } catch (error) {
+        logError(error, req); // Log the error
         res.status(500).json({
             msg: 'Error en el servidor\n' + error
         });
@@ -160,7 +168,7 @@ export const deletemember = (req: Request, res: Response) => {
 
 
 export const getFullMember = async (req: Request, res: Response) => {
-
+    logRequest(req); // Log the request
     const { id } = req.params
 
     try {
@@ -199,8 +207,9 @@ export const getFullMember = async (req: Request, res: Response) => {
             measurements
         });
     } catch (error) {
+        logError(error, req); // Log the error
         res.status(500).json({
-            msg: 'Error en el servidor'
+            msg: 'Error en el servidor\n' + error
         });
     }
 

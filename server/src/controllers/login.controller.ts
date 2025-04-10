@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import user from '../models/logged';
+import { logRequest, logError } from '../utilities/logs';
 
 export const login = async (req: Request, res: Response) => {
-
+    logRequest(req); // Log the request
     const { username, password } = req.body;
 
     if (!username || !password) {
@@ -36,7 +37,7 @@ export const login = async (req: Request, res: Response) => {
         });
 
     } catch (error) {
-        console.log(error);
+        logError(error, req); // Log the error
         res.status(500).json({
             msg: 'Error en el servidor\n' + error
         });
