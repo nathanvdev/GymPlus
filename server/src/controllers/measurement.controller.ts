@@ -8,7 +8,10 @@ export const postmeasurement = async (req: Request, res: Response) => {
 
     try {
         const newMedida = await measurement.create(body);
-        res.status(200).json(newMedida);
+        res.status(200).json({
+            newMedida,
+            msg: 'Medida creada correctamente'
+        });
 
     } catch (error) {
         logError(error, req); // Log the error

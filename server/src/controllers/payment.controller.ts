@@ -79,7 +79,8 @@ export const getPaymentById = async (req: Request, res: Response) => {
         payment.dataValues.member_name = memberInfo ? memberInfo.dataValues.name : 'N/A';
         payment.dataValues.member_lastname = memberInfo ? memberInfo.dataValues.last_name : 'N/A';
         res.status(200).json({
-            payment
+            payment,
+            msg: 'Pago encontrado'
         });
 
     } catch (error) {
@@ -104,7 +105,7 @@ export const updatePayment = async (req: Request, res: Response) => {
                 msg: 'Pago no encontrado'
             });
         }
-        const updatedPayment ={
+        const updatedPayment = {
             membership_plan: body.membership_plan,
             billing_quantity: body.billing_quantity,
             billing_cycle: body.billing_cycle,
@@ -122,7 +123,7 @@ export const updatePayment = async (req: Request, res: Response) => {
         }
         await payment.update(updatedPayment);
 
-        res.status(200).send({ "msg": "Pago actualizado" });
+        res.status(200).send({ msg: "Pago actualizado" });
 
     } catch (error) {
         logError(error, req); // Log the error
@@ -156,7 +157,7 @@ export const deletePayment = async (req: Request, res: Response) => {
         }
 
         await payment.update({
-            payment_status : 3
+            payment_status: 3
         });
 
         const last_payment = await Payment.findOne({

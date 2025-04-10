@@ -58,7 +58,8 @@ export const addSale = async (req: Request, res: Response) => {
         }
 
         res.status(200).json({
-            sale
+            sale,
+            msg: 'Venta creada correctamente'
         });
 
     } catch (error) {
@@ -80,7 +81,8 @@ export const getSales = async (req: Request, res: Response) => {
         }
 
         res.status(200).json({
-            sales
+            sales,
+            msg: 'Ventas'
         });
     } catch (error) {
         logError(error, req); // Log the error

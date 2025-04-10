@@ -11,6 +11,7 @@ export const getTransactions = async (req: Request, res: Response) => {
         });
         res.status(200).json({
             transactions,
+            msg: "Transacciones obtenidas correctamente",
         });
         return;
     } catch (error) {

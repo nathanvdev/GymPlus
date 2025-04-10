@@ -59,7 +59,10 @@ export const getmember = async (req: Request, res: Response) => {
             });
         }
 
-        res.status(200).json(response);
+        res.status(200).json({
+            response,
+            msg: 'Miembro encontrado'
+        });
     } catch (error) {
         logError(error, req); // Log the error
         res.status(500).json({
@@ -75,7 +78,6 @@ export const postmember = async (req: Request, res: Response) => {
     const { body } = req;
 
     try {
-
         const NameExist = await member.findOne({
             where: {
                 name: body.name,
@@ -89,12 +91,11 @@ export const postmember = async (req: Request, res: Response) => {
             });
         }
 
-
         const newMember = await member.create(body);
-        res.status(201).json(newMember);
-
-
-
+        res.status(201).json({
+            newMember,
+            msg: 'Miembro creado correctamente'
+        });
 
     } catch (error) {
         logError(error, req); // Log the error
@@ -109,7 +110,6 @@ export const postmember = async (req: Request, res: Response) => {
 
 export const putmember = (req: Request, res: Response) => {
     logRequest(req); // Log the request
-
     const { id } = req.params;
     const { body } = req;
 
@@ -130,19 +130,19 @@ export const putmember = (req: Request, res: Response) => {
         res.status(200).json({
             msg: 'Miembro actualizado'
         });
+
     } catch (error) {
         logError(error, req); // Log the error
         res.status(500).json({
             msg: 'Error en el servidor\n' + error
         });
-        
+
     }
 
 }
 
 export const deletemember = (req: Request, res: Response) => {
     logRequest(req); // Log the request
-
     const { id } = req.params;
 
     try {
@@ -202,6 +202,7 @@ export const getFullMember = async (req: Request, res: Response) => {
 
 
         res.status(200).json({
+            msg: 'Miembro encontrado',
             memberInfo,
             payments,
             measurements

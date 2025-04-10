@@ -3,18 +3,19 @@ import { Expense } from '../models/expense';
 import { logRequest, logError } from '../utilities/logs';
 
 export const getExpenses = async (req: Request, res: Response) => {
-        logRequest(req); // Log the request
-    
+    logRequest(req); // Log the request
+
     try {
         const expenses = await Expense.findAll();
         res.status(200).json({
-            expenses
+            expenses,
+            msg: 'Gastos obtenidos correctamente'
         });
         return;
     } catch (error) {
         logError(error, req); // Log the error
         res.status(500).json({
-            msg: 'Error en el servidor\n'+ error
+            msg: 'Error en el servidor\n' + error
         });
         return;
     }
@@ -25,7 +26,7 @@ export const addExpense = async (req: Request, res: Response) => {
     const { product_name, description, amount, supplier, status, date, admin_member_id } = req.body;
 
     try {
-        const expense =  await Expense.create({
+        const expense = await Expense.create({
             product_name,
             description,
             amount,
@@ -35,13 +36,14 @@ export const addExpense = async (req: Request, res: Response) => {
             admin_member_id
         });
         res.status(200).json({
-            expense
+            expense,
+            msg: 'Gasto creado correctamente'
         });
 
     } catch (error) {
         logError(error, req); // Log the error
         res.status(500).json({
-            msg: 'Error en el servidor\n'+ error
+            msg: 'Error en el servidor\n' + error
         });
     }
 
@@ -75,13 +77,14 @@ export const editExpense = async (req: Request, res: Response) => {
         });
 
         res.status(200).json({
-            expense
+            expense,
+            msg: 'Gasto actualizado correctamente'
         });
 
     } catch (error) {
         logError(error, req); // Log the error
         res.status(500).json({
-            msg: 'Error en el servidor\n'+ error
+            msg: 'Error en el servidor\n' + error
         });
     }
 
@@ -111,7 +114,7 @@ export const deleteExpense = async (req: Request, res: Response) => {
     } catch (error) {
         logError(error, req); // Log the error
         res.status(500).json({
-            msg: 'Error en el servidor\n'+ error
+            msg: 'Error en el servidor\n' + error
         });
     }
 }
@@ -130,7 +133,8 @@ export const getExpense = async (req: Request, res: Response) => {
         }
 
         res.status(200).json({
-            expense
+            expense,
+            msg: 'Gasto obtenido correctamente'
         });
 
     } catch (error) {

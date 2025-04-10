@@ -4,7 +4,7 @@ import { logRequest, logError } from "../utilities/logs";
 
 export const getProducts = async (req: Request, res: Response) => {
     logRequest(req); // Log the request
-    
+
     try {
         const products = await Product.findAll();
         res.status(200).json({
